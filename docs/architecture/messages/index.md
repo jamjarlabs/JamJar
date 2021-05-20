@@ -32,7 +32,7 @@ See the [Message Bus] page for details.
 
 ## Receiving Messages
 
-See the [Subscribers] page for details.
+See the [Listeners] page for details.
 
 [Message Bus]:./message_bus.md
-[Subscribers]:./subscribers.md
+[Listeners]:./listeners.md

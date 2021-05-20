@@ -51,15 +51,15 @@ when to call it. The engine will dispatch messages in these three instances (all
 ## Subscribing to Message Types
 
 A part of the game/engine can *subscribe* to certain message types in the message bus by using the `Subscribe` method,
-which takes a *subscriber* and a message type to filter for. This means that any message that has the type subscribed
-to will be sent on to the subscriber.
+which takes a listener and a message type to filter for. This means that any message that has the type subscribed
+to will be sent on to the listener.
 
-An example of a subscriber subscribing to a message is the System subscribing to update messages:
+An example of a listener subscribing to a message is the System subscribing to update messages:
 
 ```c++
 this->m_messageBus->Subscribe(this, JamJar::System::MESSAGE_UPDATE);
 ```
 
-See the [Subscribers] page for more details about subscribers.
+See the [Listeners] page for more details about listeners.
 
-[Subscribers]:./subscribers.md
+[Listeners]:./listeners.md

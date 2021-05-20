@@ -12,7 +12,7 @@ components) and Stateful Systems (tracks entities and components).
 
 ## Messages
 
-All systems are [Subscribers], meaning that they can receive messages, alongside this all systems store a reference
+All systems are [Listeners], meaning that they can receive messages, alongside this all systems store a reference
 to a [Message Bus] which allows them to send messages.
 
 Systems can override the `OnMessage` method to handle messages, the base system includes basic handling already which
@@ -31,6 +31,6 @@ they simply send and receive messages.
 
 See the [Stateful Systems] page for details.
 
-[Subscribers]:../messages/subscribers.md
+[Listeners]:../messages/listeners.md
 [Message Bus]:../messages/message_bus.md
 [Stateful Systems]:./stateful_systems.md
