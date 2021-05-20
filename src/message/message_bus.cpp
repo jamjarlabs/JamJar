@@ -1,6 +1,6 @@
 #include "message/message_bus.hpp"
-#include "message/message.hpp"
 #include "message/listener.hpp"
+#include "message/message.hpp"
 
 JamJar::MessageBus::MessageBus() {
     this->m_subscribers = std::map<uint32_t, std::vector<Listener *>>();

@@ -2,9 +2,9 @@
 #define GAME_HPP
 
 #include "hash.hpp"
+#include "message/listener.hpp"
 #include "message/message.hpp"
 #include "message/message_bus.hpp"
-#include "message/listener.hpp"
 #include <chrono>
 
 namespace JamJar {

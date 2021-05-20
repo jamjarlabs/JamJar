@@ -2,8 +2,8 @@
 #define SYSTEM_SYSTEM_HPP
 
 #include "hash.hpp"
-#include "message/message_bus.hpp"
 #include "message/listener.hpp"
+#include "message/message_bus.hpp"
 
 namespace JamJar {
 class System : public Listener {

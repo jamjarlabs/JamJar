@@ -3,8 +3,8 @@
 
 #include "component/component_manager.hpp"
 #include "entity/entity.hpp"
-#include "message/message_bus.hpp"
 #include "message/listener.hpp"
+#include "message/message_bus.hpp"
 #include <memory>
 #include <unordered_map>
 #include <vector>

@@ -1,8 +1,8 @@
 #ifndef MESSAGE_MESSAGE_BUS_HPP
 #define MESSAGE_MESSAGE_BUS_HPP
 
-#include "message/message.hpp"
 #include "message/listener.hpp"
+#include "message/message.hpp"
 #include <map>
 #include <memory>
 #include <queue>
