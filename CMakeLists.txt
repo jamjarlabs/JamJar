@@ -37,7 +37,7 @@ set(LIB_SOURCES
     src/geometry/matrix_4d.cpp
     src/geometry/vector_2d.cpp
     src/message/message_bus.cpp
-    src/message/subscriber.cpp
+    src/message/listener.cpp
     src/render/color.cpp
     src/system/map_system.cpp
     src/system/stateful_system.cpp

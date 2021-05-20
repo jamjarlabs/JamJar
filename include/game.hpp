@@ -2,13 +2,13 @@
 #define GAME_HPP
 
 #include "hash.hpp"
+#include "message/listener.hpp"
 #include "message/message.hpp"
 #include "message/message_bus.hpp"
-#include "message/subscriber.hpp"
 #include <chrono>
 
 namespace JamJar {
-class Game : public Subscriber {
+class Game : public Listener {
 
   private:
     constexpr static int64_t TIME_STEP = 16700;

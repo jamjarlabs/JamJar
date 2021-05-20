@@ -6,9 +6,9 @@
 #include "emscripten/html5.h"
 #include "entity/entity.hpp"
 #include "hash.hpp"
+#include "message/listener.hpp"
 #include "message/message.hpp"
 #include "message/message_bus.hpp"
-#include "message/subscriber.hpp"
 #include "standard/render/render_system.hpp"
 #include "system/evaluator.hpp"
 

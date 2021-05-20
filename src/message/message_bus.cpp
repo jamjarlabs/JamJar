@@ -1,9 +1,9 @@
 #include "message/message_bus.hpp"
+#include "message/listener.hpp"
 #include "message/message.hpp"
-#include "message/subscriber.hpp"
 
 JamJar::MessageBus::MessageBus() {
-    this->m_subscribers = std::map<uint32_t, std::vector<Subscriber *>>();
+    this->m_subscribers = std::map<uint32_t, std::vector<Listener *>>();
     this->m_messages = std::queue<std::unique_ptr<Message>>();
 }
 
@@ -17,7 +17,7 @@ void JamJar::MessageBus::Dispatch() {
             continue;
         }
 
-        std::vector<Subscriber *> subscribers = this->m_subscribers[message->m_type];
+        std::vector<Listener *> subscribers = this->m_subscribers[message->m_type];
 
         for (auto *subscriber : subscribers) {
             subscriber->OnMessage(message.get());
@@ -27,9 +27,9 @@ void JamJar::MessageBus::Dispatch() {
 
 void JamJar::MessageBus::Publish(std::unique_ptr<Message> message) { this->m_messages.push(std::move(message)); }
 
-void JamJar::MessageBus::Subscribe(Subscriber *subscriber, uint32_t type) {
+void JamJar::MessageBus::Subscribe(Listener *subscriber, uint32_t type) {
     if (this->m_subscribers.count(type) == 0) {
-        this->m_subscribers[type] = std::vector<Subscriber *>();
+        this->m_subscribers[type] = std::vector<Listener *>();
     }
     this->m_subscribers[type].push_back(subscriber);
 }

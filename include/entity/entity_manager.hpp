@@ -3,15 +3,15 @@
 
 #include "component/component_manager.hpp"
 #include "entity/entity.hpp"
+#include "message/listener.hpp"
 #include "message/message_bus.hpp"
-#include "message/subscriber.hpp"
 #include <memory>
 #include <unordered_map>
 #include <vector>
 
 namespace JamJar {
 using RegisterEntityPayloadPair = std::pair<JamJar::Entity *, std::vector<JamJar::Component *>>;
-class EntityManager : public Subscriber {
+class EntityManager : public Listener {
   private:
     std::vector<std::unique_ptr<ComponentManager>> m_componentManagers;
     std::unordered_map<unsigned int, std::unique_ptr<JamJar::Entity>> m_entities;

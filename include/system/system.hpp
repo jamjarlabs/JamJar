@@ -2,11 +2,11 @@
 #define SYSTEM_SYSTEM_HPP
 
 #include "hash.hpp"
+#include "message/listener.hpp"
 #include "message/message_bus.hpp"
-#include "message/subscriber.hpp"
 
 namespace JamJar {
-class System : public Subscriber {
+class System : public Listener {
   protected:
     MessageBus *m_messageBus;
     virtual void update(float deltaTime){};
