@@ -1,5 +1,18 @@
 ---
-Checks:          'clang-diagnostic-*,clang-analyzer-*,-*,bugprone*,modernize*,performance*,-modernize-pass-by-value,-modernize-use-auto,-modernize-use-using,-modernize-use-trailing-return-type'
+Checks: >
+  -*,
+  llvm-header-guard,
+  llvm-include-order,
+  llvm-namespace-comment,
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  bugprone*,
+  modernize*,
+  performance*,
+  -modernize-pass-by-value,
+  -modernize-use-auto,
+  -modernize-use-using,
+  -modernize-use-trailing-return-type
 WarningsAsErrors: '*'
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
