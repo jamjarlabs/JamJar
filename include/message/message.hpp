@@ -6,8 +6,8 @@
 namespace JamJar {
 class Message {
   public:
-    explicit Message(uint32_t type) : m_type(type) {}
-    uint32_t m_type{};
+    explicit Message(uint32_t type) : type(type) {}
+    uint32_t type{};
 };
 }; // namespace JamJar
 

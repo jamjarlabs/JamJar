@@ -5,7 +5,7 @@
 
 unsigned int JamJar::Entity::ID = 0;
 
-JamJar::Entity::Entity(MessageBus *messageBus) : m_messageBus(messageBus), m_id(++ID) {
+JamJar::Entity::Entity(MessageBus *messageBus) : m_messageBus(messageBus), id(++ID) {
     // This is maybe a bit weird/bad, when an entity is created it will automatically send out a message with a
     // unique_ptr to register the entity as being created, an entity manager can then pick this up to handle memory
     // management of the entity

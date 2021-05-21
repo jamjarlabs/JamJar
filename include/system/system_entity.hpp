@@ -11,7 +11,7 @@ class SystemEntity {
     std::map<uint32_t, JamJar::Component *> m_components{};
 
   public:
-    Entity *m_entity;
+    Entity *entity;
     explicit SystemEntity(Entity *entity, const std::vector<JamJar::Component *> &components);
     JamJar::Component *Get(uint32_t key);
     void Remove(uint32_t key);

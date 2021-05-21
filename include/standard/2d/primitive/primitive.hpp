@@ -8,9 +8,9 @@
 namespace JamJar::Standard::_2D {
 class Primitive : public Component {
   public:
-    constexpr static uint32_t PRIMITIVE_KEY = JamJar::hash("jamjar_primitive");
+    constexpr static uint32_t KEY = JamJar::hash("jamjar_2d_primitive");
     explicit Primitive(std::vector<float> points);
-    std::vector<float> m_points{};
+    std::vector<float> points{};
 };
 }; // namespace JamJar::Standard::_2D
 

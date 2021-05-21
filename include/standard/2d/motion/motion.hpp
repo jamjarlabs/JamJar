@@ -7,16 +7,16 @@
 namespace JamJar::Standard::_2D {
 class Motion : public Component {
   public:
-    constexpr static uint32_t MOTION_KEY = JamJar::hash("jamjar_motion");
+    constexpr static uint32_t KEY = JamJar::hash("jamjar_2d_motion");
     Motion();
     explicit Motion(Vector2D velocity);
     explicit Motion(Vector2D velocity, Vector2D acceleration);
     explicit Motion(Vector2D velocity, Vector2D acceleration, float angularVelocity);
     explicit Motion(Vector2D velocity, Vector2D acceleration, float angularVelocity, float angularAcceleration);
-    Vector2D m_velocity;
-    Vector2D m_acceleration;
-    float m_angularVelocity;
-    float m_angularAcceleration;
+    Vector2D velocity;
+    Vector2D acceleration;
+    float angularVelocity;
+    float angularAcceleration;
 };
 }; // namespace JamJar::Standard::_2D
 

@@ -10,10 +10,21 @@ option(JAMJAR_NATIVE_COMPILE_UNIT_TESTS "Compile JamJarNative unit tests" OFF)
 
 include(FetchContent)
 
+FetchContent_Declare(
+    stb_image
+    URL "https://raw.githubusercontent.com/nothings/stb/master/stb_image.h"
+    DOWNLOAD_NO_EXTRACT True
+)
+
+FetchContent_MakeAvailable(stb_image)
+
+add_library(stb_image INTERFACE)
+target_include_directories(stb_image INTERFACE ${stb_image_SOURCE_DIR})
+
 if(JAMJAR_NATIVE_COMPILE_UNIT_TESTS)
     FetchContent_Declare(
-    googletest
-    URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
+        googletest
+        URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
     )
 
     # For Windows: Prevent overriding the parent project's compiler/linker settings
@@ -29,16 +40,21 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(LIB_SOURCES
+    src/stb_image.cpp
     src/game.cpp
     src/component/component_manager.cpp
     src/component/component.cpp
     src/entity/entity_manager.cpp
     src/entity/entity.cpp
+    src/geometry/aabb.cpp
     src/geometry/matrix_4d.cpp
+    src/geometry/shape_2d.cpp
     src/geometry/vector_2d.cpp
     src/message/message_bus.cpp
     src/message/listener.cpp
     src/render/color.cpp
+    src/render/material.cpp
+    src/render/texture.cpp
     src/system/map_system.cpp
     src/system/stateful_system.cpp
     src/system/system_entity.cpp
@@ -50,8 +66,11 @@ set(LIB_SOURCES
     src/standard/2d/primitive/primitive.cpp
     src/standard/2d/primitive/primitive_system.cpp
     src/standard/2d/render/render_system.cpp
+    src/standard/2d/sprite/sprite_system.cpp
+    src/standard/2d/sprite/sprite.cpp
     src/standard/2d/transform/transform.cpp
     src/standard/2d/webgl2/webgl2_system.cpp
+    src/standard/file_texture/file_texture_system.cpp
 )
 
 set(TEST_SOURCES
@@ -61,6 +80,8 @@ set(TEST_SOURCES
 add_library(JamJarNative
     ${LIB_SOURCES}
 )
+
+target_link_libraries(JamJarNative PRIVATE stb_image)
 
 target_include_directories(JamJarNative
     PUBLIC

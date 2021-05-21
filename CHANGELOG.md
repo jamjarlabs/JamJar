@@ -15,5 +15,7 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 - Simple motion based physics.
 - Interpolation between frames.
 - Orthographic camera projection.
+- Sprite rendering.
+- Image loading from filesystem (virtual or otherwise).
 
 [Unreleased]: https://github.com/jamjarlabs/JamJarNative

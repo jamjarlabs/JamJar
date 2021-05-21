@@ -26,7 +26,7 @@ FetchContent_MakeAvailable(JamJarNative)
 
 ### ===== core ===== ###
 
-set(CMAKE_CXX_FLAGS  "-s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2")
+set(CMAKE_CXX_FLAGS  "-s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2 --preload-file ${PROJECT_SOURCE_DIR}/assets@/assets")
 
 set(EXE_SOURCES
     src/main.cpp

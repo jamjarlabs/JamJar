@@ -11,19 +11,18 @@
 
 JamJar::Standard::_2D::PrimitiveSystem::PrimitiveSystem(MessageBus *messageBus)
     : MapSystem(messageBus, JamJar::Standard::_2D::PrimitiveSystem::evaluator) {
-    this->m_messageBus->Subscribe(this, JamJar::Game::MESSAGE_PRE_RENDER);
+    this->messageBus->Subscribe(this, JamJar::Game::MESSAGE_PRE_RENDER);
 }
 
-// NOLINTNEXTLINE(misc-unused-parameters)
 bool JamJar::Standard::_2D::PrimitiveSystem::evaluator(Entity *entity,
                                                        const std::vector<JamJar::Component *> &components) {
     bool hasPrimitive = false;
     bool hasTransform = false;
     for (const auto &component : components) {
-        if (component->m_key == JamJar::Standard::_2D::Primitive::PRIMITIVE_KEY) {
+        if (component->key == JamJar::Standard::_2D::Primitive::KEY) {
             hasPrimitive = true;
         }
-        if (component->m_key == JamJar::Standard::_2D::Transform::TRANSFORM_KEY) {
+        if (component->key == JamJar::Standard::_2D::Transform::KEY) {
             hasTransform = true;
         }
         if (hasPrimitive && hasTransform) {
@@ -35,10 +34,10 @@ bool JamJar::Standard::_2D::PrimitiveSystem::evaluator(Entity *entity,
 
 void JamJar::Standard::_2D::PrimitiveSystem::OnMessage(JamJar::Message *message) {
     MapSystem::OnMessage(message);
-    switch (message->m_type) {
+    switch (message->type) {
     case JamJar::Game::MESSAGE_PRE_RENDER: {
         auto *renderMessage = static_cast<JamJar::MessagePayload<float> *>(message);
-        this->preRender(renderMessage->m_payload);
+        this->preRender(renderMessage->payload);
         break;
     }
     }
@@ -46,16 +45,16 @@ void JamJar::Standard::_2D::PrimitiveSystem::OnMessage(JamJar::Message *message)
 
 void JamJar::Standard::_2D::PrimitiveSystem::preRender(float alpha) {
     std::vector<Renderable> renderables;
-    for (const auto &entityPair : this->m_entities) {
+    for (const auto &entityPair : this->entities) {
         auto entity = entityPair.second;
-        auto *transform = static_cast<JamJar::Standard::_2D::Transform *>(
-            entity.Get(JamJar::Standard::_2D::Transform::TRANSFORM_KEY));
-        auto *primitive = static_cast<JamJar::Standard::_2D::Primitive *>(
-            entity.Get(JamJar::Standard::_2D::Primitive::PRIMITIVE_KEY));
+        auto *transform =
+            static_cast<JamJar::Standard::_2D::Transform *>(entity.Get(JamJar::Standard::_2D::Transform::KEY));
+        auto *primitive =
+            static_cast<JamJar::Standard::_2D::Primitive *>(entity.Get(JamJar::Standard::_2D::Primitive::KEY));
 
-        renderables.push_back({primitive->m_points, transform->InterpolatedMatrix4D(alpha)});
+        renderables.push_back({.vertices = primitive->points, .modelMatrix = transform->InterpolatedMatrix4D(alpha)});
     }
     auto msg = std::make_unique<JamJar::MessagePayload<std::vector<Renderable>>>(
         JamJar::Standard::_2D::RenderSystem::MESSAGE_LOAD_RENDERABLES, renderables);
-    this->m_messageBus->Publish(std::move(msg));
+    this->messageBus->Publish(std::move(msg));
 }

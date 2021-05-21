@@ -11,7 +11,7 @@ class ComponentManager {
     std::map<unsigned int, std::unique_ptr<Component>> m_components;
 
   public:
-    uint32_t m_key;
+    uint32_t key;
 
     explicit ComponentManager(uint32_t key);
 

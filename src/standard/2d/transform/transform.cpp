@@ -4,8 +4,8 @@
 #include "hash.hpp"
 
 JamJar::Standard::_2D::Transform::Transform(Vector2D position, Vector2D scale, float angle)
-    : Component(JamJar::Standard::_2D::Transform::TRANSFORM_KEY), m_position(position), m_scale(scale), m_angle(angle),
-      m_previous(position) {}
+    : Component(JamJar::Standard::_2D::Transform::KEY), position(position), scale(scale), angle(angle),
+      previous(position) {}
 
 JamJar::Standard::_2D::Transform::Transform(Vector2D position, Vector2D scale) : Transform(position, scale, 0) {}
 
@@ -14,11 +14,11 @@ JamJar::Standard::_2D::Transform::Transform(Vector2D position) : Transform(posit
 JamJar::Standard::_2D::Transform::Transform() : Transform(Vector2D()) {}
 
 JamJar::Matrix4D JamJar::Standard::_2D::Transform::InterpolatedMatrix4D(float alpha) const {
-    auto interpolatedPos = Vector2D(this->m_previous.m_x * alpha + this->m_position.m_x * (1 - alpha),
-                                    this->m_previous.m_y * alpha + this->m_position.m_y * (1 - alpha));
+    auto interpolatedPos = Vector2D(this->previous.x * alpha + this->position.x * (1 - alpha),
+                                    this->previous.y * alpha + this->position.y * (1 - alpha));
     auto mat = Matrix4D();
     mat.Translate(interpolatedPos);
-    mat.Rotate(this->m_angle);
-    mat.Scale(this->m_scale);
+    mat.Rotate(this->angle);
+    mat.Scale(this->scale);
     return mat;
 }

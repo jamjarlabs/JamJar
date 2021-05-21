@@ -4,8 +4,8 @@
 namespace JamJar {
 class Vector2D {
   public:
-    float m_x;
-    float m_y;
+    float x;
+    float y;
     Vector2D();
     explicit Vector2D(float x, float y);
     Vector2D operator+(const Vector2D &other) const;

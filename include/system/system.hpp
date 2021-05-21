@@ -8,7 +8,7 @@
 namespace JamJar {
 class System : public Listener {
   protected:
-    MessageBus *m_messageBus;
+    MessageBus *messageBus;
     virtual void update(float deltaTime){};
 
   public:

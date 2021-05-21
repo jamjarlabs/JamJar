@@ -15,24 +15,24 @@ const float MICROSECOND_TO_SECOND_CONVERSION = 1000000;
 constexpr std::chrono::microseconds FRAMETIME_CAP = std::chrono::microseconds(250000);
 
 JamJar::Game::Game(JamJar::MessageBus *messageBus)
-    : m_messageBus(messageBus), m_isRunning(false), m_accumulator(std::chrono::microseconds(0)),
+    : messageBus(messageBus), isRunning(false), m_accumulator(std::chrono::microseconds(0)),
       m_currentTime(std::chrono::high_resolution_clock::now()) {
     messageBus->Subscribe(this, JamJar::Game::MESSAGE_STOP_GAME);
 }
 
 void JamJar::Game::Start() {
     this->OnStart();
-    this->m_isRunning = true;
+    this->isRunning = true;
     this->startLoop();
 }
 
 void JamJar::Game::stop() {
     this->OnStop();
-    this->m_isRunning = false;
+    this->isRunning = false;
 }
 
 void JamJar::Game::OnMessage(JamJar::Message *message) {
-    switch (message->m_type) {
+    switch (message->type) {
     case JamJar::Game::MESSAGE_STOP_GAME: {
         this->stop();
         return;
@@ -41,7 +41,7 @@ void JamJar::Game::OnMessage(JamJar::Message *message) {
 }
 
 bool JamJar::Game::Loop(std::chrono::high_resolution_clock::time_point timestamp) {
-    if (!this->m_isRunning) {
+    if (!this->isRunning) {
         return false;
     }
 
@@ -60,9 +60,9 @@ bool JamJar::Game::Loop(std::chrono::high_resolution_clock::time_point timestamp
     this->m_accumulator += frameTime;
 
     while (this->m_accumulator >= timeStep) {
-        this->m_messageBus->Publish(std::make_unique<JamJar::MessagePayload<float>>(
+        this->messageBus->Publish(std::make_unique<JamJar::MessagePayload<float>>(
             JamJar::System::MESSAGE_UPDATE, float(TIME_STEP) / MICROSECOND_TO_SECOND_CONVERSION));
-        this->m_messageBus->Dispatch();
+        this->messageBus->Dispatch();
         this->m_accumulator -= timeStep;
     }
 
@@ -71,17 +71,16 @@ bool JamJar::Game::Loop(std::chrono::high_resolution_clock::time_point timestamp
 
     // Pre-render and dispatch, must be immediately dispatched to allow pre-render systems to
     // send messages to the renderer before the actual render call.
-    this->m_messageBus->Publish(
-        std::make_unique<JamJar::MessagePayload<float>>(JamJar::Game::MESSAGE_PRE_RENDER, alpha));
-    this->m_messageBus->Dispatch();
+    this->messageBus->Publish(std::make_unique<JamJar::MessagePayload<float>>(JamJar::Game::MESSAGE_PRE_RENDER, alpha));
+    this->messageBus->Dispatch();
 
     // Render
-    this->m_messageBus->Publish(std::make_unique<JamJar::MessagePayload<float>>(JamJar::Game::MESSAGE_RENDER, alpha));
+    this->messageBus->Publish(std::make_unique<JamJar::MessagePayload<float>>(JamJar::Game::MESSAGE_RENDER, alpha));
 
     // Post render
-    this->m_messageBus->Publish(
+    this->messageBus->Publish(
         std::make_unique<JamJar::MessagePayload<float>>(JamJar::Game::MESSAGE_POST_RENDER, alpha));
-    this->m_messageBus->Dispatch();
+    this->messageBus->Dispatch();
     return true;
 }
 

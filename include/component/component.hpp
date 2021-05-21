@@ -11,7 +11,7 @@ class Component {
     constexpr static uint32_t MESSAGE_ADD = hash("jamjar_component_add");
     constexpr static uint32_t MESSAGE_REMOVE = hash("jamjar_component_remove");
 
-    uint32_t m_key;
+    uint32_t key;
 };
 }; // namespace JamJar
 
