@@ -4,10 +4,10 @@
 #include "message/message_bus.hpp"
 #include "message/message_payload.hpp"
 #include "simple_game.hpp"
-#include "standard/interpolation/interpolation_system.hpp"
-#include "standard/motion/motion_system.hpp"
-#include "standard/primitive/primitive_system.hpp"
-#include "standard/webgl2/webgl2_system.hpp"
+#include "standard/2d/interpolation/interpolation_system.hpp"
+#include "standard/2d/motion/motion_system.hpp"
+#include "standard/2d/primitive/primitive_system.hpp"
+#include "standard/2d/webgl2/webgl2_system.hpp"
 #include <iostream>
 #include <memory>
 #include <string>
@@ -25,10 +25,10 @@ int main(int argc, char *argv[]) {
     auto messageBus = new JamJar::MessageBus();
     new JamJar::EntityManager(messageBus);
     auto game = new SimpleGame(messageBus);
-    new JamJar::Standard::WebGL2System(messageBus, context);
-    new JamJar::Standard::MotionSystem(messageBus);
-    new JamJar::Standard::PrimitiveSystem(messageBus);
-    new JamJar::Standard::InterpolationSystem(messageBus);
+    new JamJar::Standard::_2D::WebGL2System(messageBus, context);
+    new JamJar::Standard::_2D::MotionSystem(messageBus);
+    new JamJar::Standard::_2D::PrimitiveSystem(messageBus);
+    new JamJar::Standard::_2D::InterpolationSystem(messageBus);
     game->Start();
 
     return 0;

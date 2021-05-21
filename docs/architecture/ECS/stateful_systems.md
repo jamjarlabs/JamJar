@@ -20,13 +20,13 @@ must return `true` if it should be tracked as a system entity, or `false` if it 
 An example of an evaluator looks like this:
 
 ```c++
-bool JamJar::Standard::MotionSystem::evaluator(Entity *entity, std::vector<JamJar::Component *> components) {
+bool JamJar::Standard::_2D::MotionSystem::evaluator(Entity *entity, std::vector<JamJar::Component *> components) {
     bool hasMotion = false;
     bool hasTransform = false;
     for (const auto &component : components) {
-        if (component->m_key == JamJar::Standard::Motion::MOTION_KEY) {
+        if (component->m_key == JamJar::Standard::_2D::Motion::MOTION_KEY) {
             hasMotion = true;
-        } else if (component->m_key == JamJar::Standard::Transform::TRANSFORM_KEY) {
+        } else if (component->m_key == JamJar::Standard::_2D::Transform::TRANSFORM_KEY) {
             hasTransform = true;
         }
 

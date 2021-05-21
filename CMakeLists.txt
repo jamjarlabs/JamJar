@@ -43,15 +43,15 @@ set(LIB_SOURCES
     src/system/stateful_system.cpp
     src/system/system_entity.cpp
     src/system/system.cpp
-    src/standard/camera/camera.cpp
-    src/standard/interpolation/interpolation_system.cpp
-    src/standard/motion/motion_system.cpp
-    src/standard/motion/motion.cpp
-    src/standard/primitive/primitive.cpp
-    src/standard/primitive/primitive_system.cpp
-    src/standard/render/render_system.cpp
-    src/standard/transform/transform.cpp
-    src/standard/webgl2/webgl2_system.cpp
+    src/standard/2d/camera/camera.cpp
+    src/standard/2d/interpolation/interpolation_system.cpp
+    src/standard/2d/motion/motion_system.cpp
+    src/standard/2d/motion/motion.cpp
+    src/standard/2d/primitive/primitive.cpp
+    src/standard/2d/primitive/primitive_system.cpp
+    src/standard/2d/render/render_system.cpp
+    src/standard/2d/transform/transform.cpp
+    src/standard/2d/webgl2/webgl2_system.cpp
 )
 
 set(TEST_SOURCES
