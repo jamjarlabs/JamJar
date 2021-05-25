@@ -10,13 +10,13 @@ JamJar::MapSystem::MapSystem(MessageBus *messageBus, Evaluator evaluator)
 
 void JamJar::MapSystem::registerEntity(Entity *entity, std::vector<Component *> components) {
 
-    this->removeEntity(entity->m_id);
+    this->removeEntity(entity->id);
 
     if (!this->m_evaluator(entity, components)) {
         return;
     }
 
-    this->m_entities.insert({entity->m_id, JamJar::SystemEntity(entity, components)});
+    this->entities.insert({entity->id, JamJar::SystemEntity(entity, components)});
 }
 
-void JamJar::MapSystem::removeEntity(unsigned int entityID) { this->m_entities.erase(entityID); }
+void JamJar::MapSystem::removeEntity(unsigned int entityID) { this->entities.erase(entityID); }

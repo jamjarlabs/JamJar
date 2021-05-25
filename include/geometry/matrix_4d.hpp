@@ -7,7 +7,7 @@
 namespace JamJar {
 class Matrix4D {
   public:
-    std::vector<float> m_data{};
+    std::vector<float> data{};
     Matrix4D();
     explicit Matrix4D(const std::vector<float> &data);
     Matrix4D *Translate(const Vector2D &translation);

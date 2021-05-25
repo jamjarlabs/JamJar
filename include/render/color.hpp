@@ -7,10 +7,10 @@ class Color {
     Color();
     explicit Color(double red, double green, double blue);
     explicit Color(double red, double green, double blue, double alpha);
-    double m_red;
-    double m_green;
-    double m_blue;
-    double m_alpha;
+    double red;
+    double green;
+    double blue;
+    double alpha;
 };
 }; // namespace JamJar
 

@@ -5,8 +5,8 @@
 
 JamJar::Standard::_2D::Motion::Motion(Vector2D velocity, Vector2D acceleration, float angularVelocity,
                                       float angularAcceleration)
-    : Component(JamJar::Standard::_2D::Motion::MOTION_KEY), m_velocity(velocity), m_acceleration(acceleration),
-      m_angularVelocity(angularVelocity), m_angularAcceleration(angularAcceleration) {}
+    : Component(JamJar::Standard::_2D::Motion::KEY), velocity(velocity), acceleration(acceleration),
+      angularVelocity(angularVelocity), angularAcceleration(angularAcceleration) {}
 
 JamJar::Standard::_2D::Motion::Motion(Vector2D velocity, Vector2D acceleration, float angularVelocity)
     : Motion(velocity, acceleration, angularVelocity, 0) {}

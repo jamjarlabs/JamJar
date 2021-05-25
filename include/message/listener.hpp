@@ -11,7 +11,7 @@ class Listener {
 
   public:
     Listener();
-    uint32_t m_listenerID;
+    uint32_t listenerID;
     virtual void OnMessage(Message *message) = 0;
 };
 }; // namespace JamJar

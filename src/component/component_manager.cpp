@@ -1,7 +1,7 @@
 #include "component/component_manager.hpp"
 #include "component/component.hpp"
 
-JamJar::ComponentManager::ComponentManager(uint32_t key) : m_key(key) {}
+JamJar::ComponentManager::ComponentManager(uint32_t key) : key(key) {}
 
 JamJar::Component *JamJar::ComponentManager::Get(unsigned int id) { return this->m_components[id].get(); }
 

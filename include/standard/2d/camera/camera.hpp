@@ -9,17 +9,17 @@
 namespace JamJar::Standard::_2D {
 class Camera : public Component {
   public:
-    constexpr static uint32_t CAMERA_KEY = JamJar::hash("jamjar_camera");
+    constexpr static uint32_t KEY = JamJar::hash("jamjar_2d_camera");
     explicit Camera();
     explicit Camera(Color backgroundColor);
     explicit Camera(Color backgroundColor, Vector2D viewportPosition);
     explicit Camera(Color backgroundColor, Vector2D viewportPosition, Vector2D viewportScale);
     explicit Camera(Color backgroundColor, Vector2D viewportPosition, Vector2D viewportScale, Vector2D virtualScale);
 
-    Color m_backgroundColor;
-    Vector2D m_viewportPosition;
-    Vector2D m_viewportScale;
-    Vector2D m_virtualScale;
+    Color backgroundColor;
+    Vector2D viewportPosition;
+    Vector2D viewportScale;
+    Vector2D virtualScale;
 
     [[nodiscard]] Matrix4D ProjectionMatrix() const;
 };

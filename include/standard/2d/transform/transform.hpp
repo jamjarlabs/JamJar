@@ -8,15 +8,15 @@
 namespace JamJar::Standard::_2D {
 class Transform : public Component {
   public:
-    constexpr static uint32_t TRANSFORM_KEY = JamJar::hash("jamjar_transform");
+    constexpr static uint32_t KEY = JamJar::hash("jamjar_2d_transform");
     Transform();
     explicit Transform(Vector2D position);
     explicit Transform(Vector2D position, Vector2D scale);
     explicit Transform(Vector2D position, Vector2D scale, float angle);
-    Vector2D m_previous;
-    Vector2D m_position;
-    Vector2D m_scale;
-    float m_angle;
+    Vector2D previous;
+    Vector2D position;
+    Vector2D scale;
+    float angle;
     [[nodiscard]] Matrix4D InterpolatedMatrix4D(float alpha) const;
 };
 }; // namespace JamJar::Standard::_2D

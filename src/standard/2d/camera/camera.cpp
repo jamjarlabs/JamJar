@@ -22,8 +22,8 @@ const float ORTHOGRAPHIC_FAR = 100;
 
 JamJar::Standard::_2D::Camera::Camera(Color backgroundColor, Vector2D viewportPosition, Vector2D viewportScale,
                                       Vector2D virtualScale)
-    : Component(JamJar::Standard::_2D::Camera::CAMERA_KEY), m_backgroundColor(backgroundColor),
-      m_viewportPosition(viewportPosition), m_viewportScale(viewportScale), m_virtualScale(virtualScale) {}
+    : Component(JamJar::Standard::_2D::Camera::KEY), backgroundColor(backgroundColor),
+      viewportPosition(viewportPosition), viewportScale(viewportScale), virtualScale(virtualScale) {}
 
 JamJar::Standard::_2D::Camera::Camera(Color backgroundColor, Vector2D viewportPosition, Vector2D viewportScale)
     : Camera(backgroundColor, viewportPosition, viewportScale,
@@ -39,7 +39,7 @@ JamJar::Standard::_2D::Camera::Camera()
     : Camera(Color(DEFAULT_BG_RED, DEFAULT_BG_GREEN, DEFAULT_BG_BLUE, DEFAULT_BG_ALPHA)) {}
 
 JamJar::Matrix4D JamJar::Standard::_2D::Camera::ProjectionMatrix() const {
-    auto halfWidth = this->m_virtualScale.m_x / 2;
-    auto halfHeight = this->m_virtualScale.m_y / 2;
+    auto halfWidth = this->virtualScale.x / 2;
+    auto halfHeight = this->virtualScale.y / 2;
     return JamJar::Matrix4D::Ortho(-halfWidth, halfWidth, -halfHeight, halfHeight, ORTHOGRAPHIC_NEAR, ORTHOGRAPHIC_FAR);
 }

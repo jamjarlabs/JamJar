@@ -24,9 +24,9 @@ bool JamJar::Standard::_2D::MotionSystem::evaluator(Entity *entity, std::vector<
     bool hasMotion = false;
     bool hasTransform = false;
     for (const auto &component : components) {
-        if (component->m_key == JamJar::Standard::_2D::Motion::MOTION_KEY) {
+        if (component->m_key == JamJar::Standard::_2D::Motion::KEY) {
             hasMotion = true;
-        } else if (component->m_key == JamJar::Standard::_2D::Transform::TRANSFORM_KEY) {
+        } else if (component->m_key == JamJar::Standard::_2D::Transform::KEY) {
             hasTransform = true;
         }
 

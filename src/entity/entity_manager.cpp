@@ -13,34 +13,34 @@ JamJar::EntityManager::EntityManager(JamJar::MessageBus *messageBus) : m_message
 }
 
 void JamJar::EntityManager::OnMessage(JamJar::Message *message) {
-    switch (message->m_type) {
+    switch (message->type) {
     case JamJar::Entity::MESSAGE_CREATE: {
         auto *createMessage = static_cast<JamJar::MessagePayload<std::unique_ptr<JamJar::Entity>> *>(message);
-        this->createEntity(std::move(createMessage->m_payload));
+        this->createEntity(std::move(createMessage->payload));
         break;
     }
     case JamJar::Entity::MESSAGE_DESTROY: {
         auto *destroyMessage = static_cast<JamJar::MessagePayload<JamJar::Entity *> *>(message);
-        this->destroyEntity(destroyMessage->m_payload);
+        this->destroyEntity(destroyMessage->payload);
         break;
     }
     case JamJar::Component::MESSAGE_ADD: {
         auto *addMessage =
             static_cast<JamJar::MessagePayload<std::unique_ptr<JamJar::AddComponentPayloadPair>> *>(message);
-        this->addComponent(addMessage->m_payload->first, std::move(addMessage->m_payload->second));
+        this->addComponent(addMessage->payload->first, std::move(addMessage->payload->second));
         break;
     }
     case JamJar::Component::MESSAGE_REMOVE: {
         auto *removeMessage =
             static_cast<JamJar::MessagePayload<std::unique_ptr<JamJar::RemoveComponentPayloadPair>> *>(message);
-        this->removeComponent(removeMessage->m_payload->first, removeMessage->m_payload->second);
+        this->removeComponent(removeMessage->payload->first, removeMessage->payload->second);
         break;
     }
     }
 }
 
 void JamJar::EntityManager::createEntity(std::unique_ptr<JamJar::Entity> entity) {
-    this->m_entities.insert({entity->m_id, std::move(entity)});
+    this->m_entities.insert({entity->id, std::move(entity)});
 }
 
 void JamJar::EntityManager::registerEntity(JamJar::Entity *entity) {
@@ -53,12 +53,12 @@ void JamJar::EntityManager::registerEntity(JamJar::Entity *entity) {
 
 void JamJar::EntityManager::destroyEntity(JamJar::Entity *entity) {
     for (const auto &componentManager : this->m_componentManagers) {
-        componentManager->Remove(entity->m_id);
+        componentManager->Remove(entity->id);
     }
     auto msg =
-        std::make_unique<JamJar::MessagePayload<unsigned int>>(JamJar::EntityManager::MESSAGE_DEREGISTER, entity->m_id);
+        std::make_unique<JamJar::MessagePayload<unsigned int>>(JamJar::EntityManager::MESSAGE_DEREGISTER, entity->id);
     this->m_messageBus->Publish(std::move(msg));
-    this->m_entities.erase(entity->m_id);
+    this->m_entities.erase(entity->id);
 }
 
 void JamJar::EntityManager::removeComponent(JamJar::Entity *entity, uint32_t key) {
@@ -66,25 +66,25 @@ void JamJar::EntityManager::removeComponent(JamJar::Entity *entity, uint32_t key
     if (componentManager == nullptr) {
         return;
     }
-    componentManager->Remove(entity->m_id);
+    componentManager->Remove(entity->id);
     this->registerEntity(entity);
 }
 
 void JamJar::EntityManager::addComponent(JamJar::Entity *entity, std::unique_ptr<Component> component) {
-    auto *componentManager = this->getComponentManager(component->m_key);
+    auto *componentManager = this->getComponentManager(component->key);
     if (componentManager == nullptr) {
-        auto newComponentManager = std::make_unique<JamJar::ComponentManager>(component->m_key);
+        auto newComponentManager = std::make_unique<JamJar::ComponentManager>(component->key);
         componentManager = newComponentManager.get();
         this->m_componentManagers.push_back(std::move(newComponentManager));
     }
-    componentManager->Add(entity->m_id, std::move(component));
+    componentManager->Add(entity->id, std::move(component));
     this->registerEntity(entity);
 }
 
 std::vector<JamJar::Component *> JamJar::EntityManager::getComponents(JamJar::Entity *entity) {
     auto components = std::vector<JamJar::Component *>();
     for (const auto &componentManager : this->m_componentManagers) {
-        auto *component = componentManager->Get(entity->m_id);
+        auto *component = componentManager->Get(entity->id);
         if (component != nullptr) {
             components.push_back(component);
         }
@@ -94,7 +94,7 @@ std::vector<JamJar::Component *> JamJar::EntityManager::getComponents(JamJar::En
 
 JamJar::ComponentManager *JamJar::EntityManager::getComponentManager(uint32_t key) {
     for (const auto &componentManager : this->m_componentManagers) {
-        if (componentManager->m_key == key) {
+        if (componentManager->key == key) {
             return componentManager.get();
         }
     }

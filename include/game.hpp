@@ -20,8 +20,8 @@ class Game : public Listener {
     void stop();
 
   protected:
-    bool m_isRunning;
-    MessageBus *m_messageBus;
+    bool isRunning;
+    MessageBus *messageBus;
     virtual void OnStart();
     virtual void OnStop();
 

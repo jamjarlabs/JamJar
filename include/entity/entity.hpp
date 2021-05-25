@@ -18,7 +18,7 @@ class Entity {
     constexpr static uint32_t MESSAGE_CREATE = JamJar::hash("jamjar_entity_create");
     constexpr static uint32_t MESSAGE_DESTROY = JamJar::hash("jamjar_entity_destroy");
 
-    unsigned int m_id;
+    unsigned int id;
 
     explicit Entity(MessageBus *messageBus);
 

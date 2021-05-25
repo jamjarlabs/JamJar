@@ -5,15 +5,14 @@
 JamJar::Standard::_2D::MotionSystem::MotionSystem(MessageBus *messageBus)
     : MapSystem(messageBus, JamJar::Standard::_2D::MotionSystem::evaluator) {}
 
-// NOLINTNEXTLINE(misc-unused-parameters)
 bool JamJar::Standard::_2D::MotionSystem::evaluator(Entity *entity,
                                                     const std::vector<JamJar::Component *> &components) {
     bool hasMotion = false;
     bool hasTransform = false;
     for (const auto &component : components) {
-        if (component->m_key == JamJar::Standard::_2D::Motion::MOTION_KEY) {
+        if (component->key == JamJar::Standard::_2D::Motion::KEY) {
             hasMotion = true;
-        } else if (component->m_key == JamJar::Standard::_2D::Transform::TRANSFORM_KEY) {
+        } else if (component->key == JamJar::Standard::_2D::Transform::KEY) {
             hasTransform = true;
         }
 
@@ -25,22 +24,21 @@ bool JamJar::Standard::_2D::MotionSystem::evaluator(Entity *entity,
 }
 
 void JamJar::Standard::_2D::MotionSystem::update(float deltaTime) {
-    for (const auto &entityPair : this->m_entities) {
+    for (const auto &entityPair : this->entities) {
         auto entity = entityPair.second;
-        auto *transform = static_cast<JamJar::Standard::_2D::Transform *>(
-            entity.Get(JamJar::Standard::_2D::Transform::TRANSFORM_KEY));
-        auto *motion =
-            static_cast<JamJar::Standard::_2D::Motion *>(entity.Get(JamJar::Standard::_2D::Motion::MOTION_KEY));
+        auto *transform =
+            static_cast<JamJar::Standard::_2D::Transform *>(entity.Get(JamJar::Standard::_2D::Transform::KEY));
+        auto *motion = static_cast<JamJar::Standard::_2D::Motion *>(entity.Get(JamJar::Standard::_2D::Motion::KEY));
 
         // v += a * dt
-        motion->m_velocity += motion->m_acceleration * deltaTime;
+        motion->velocity += motion->acceleration * deltaTime;
 
         // p += v * dt
-        transform->m_position += motion->m_velocity * deltaTime;
+        transform->position += motion->velocity * deltaTime;
 
         // v += a * dt
-        motion->m_angularVelocity += motion->m_angularAcceleration * deltaTime;
+        motion->angularVelocity += motion->angularAcceleration * deltaTime;
         // r += v * dt
-        transform->m_angle += motion->m_angularVelocity * deltaTime;
+        transform->angle += motion->angularVelocity * deltaTime;
     }
 }

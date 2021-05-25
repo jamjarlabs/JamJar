@@ -8,14 +8,11 @@
 
 JamJar::Standard::_2D::InterpolationSystem::InterpolationSystem(MessageBus *messageBus)
     : MapSystem(messageBus, JamJar::Standard::_2D::InterpolationSystem::evaluator) {
-    this->m_messageBus->Subscribe(this, JamJar::Game::MESSAGE_POST_RENDER);
+    this->messageBus->Subscribe(this, JamJar::Game::MESSAGE_POST_RENDER);
 }
 
-bool hasTransform(JamJar::Component *component) {
-    return component->m_key == JamJar::Standard::_2D::Transform::TRANSFORM_KEY;
-}
+bool hasTransform(JamJar::Component *component) { return component->key == JamJar::Standard::_2D::Transform::KEY; }
 
-// NOLINTNEXTLINE(misc-unused-parameters)
 bool JamJar::Standard::_2D::InterpolationSystem::evaluator(Entity *entity,
                                                            const std::vector<JamJar::Component *> &components) {
     return std::any_of(components.begin(), components.end(), hasTransform);
@@ -23,7 +20,7 @@ bool JamJar::Standard::_2D::InterpolationSystem::evaluator(Entity *entity,
 
 void JamJar::Standard::_2D::InterpolationSystem::OnMessage(JamJar::Message *message) {
     MapSystem::OnMessage(message);
-    switch (message->m_type) {
+    switch (message->type) {
     case JamJar::Game::MESSAGE_POST_RENDER: {
         this->interpolate();
         break;
@@ -32,11 +29,11 @@ void JamJar::Standard::_2D::InterpolationSystem::OnMessage(JamJar::Message *mess
 }
 
 void JamJar::Standard::_2D::InterpolationSystem::interpolate() {
-    for (const auto &entityPair : this->m_entities) {
+    for (const auto &entityPair : this->entities) {
         auto entity = entityPair.second;
-        auto *transform = static_cast<JamJar::Standard::_2D::Transform *>(
-            entity.Get(JamJar::Standard::_2D::Transform::TRANSFORM_KEY));
+        auto *transform =
+            static_cast<JamJar::Standard::_2D::Transform *>(entity.Get(JamJar::Standard::_2D::Transform::KEY));
 
-        transform->m_previous = transform->m_position;
+        transform->previous = transform->position;
     }
 }

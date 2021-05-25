@@ -13,7 +13,7 @@ class MapSystem : public StatefulSystem {
     Evaluator m_evaluator{};
 
   protected:
-    std::map<unsigned int, SystemEntity> m_entities{};
+    std::map<unsigned int, SystemEntity> entities{};
     void registerEntity(Entity *entity, std::vector<Component *> components) override;
     void removeEntity(unsigned int entityID) override;
 
