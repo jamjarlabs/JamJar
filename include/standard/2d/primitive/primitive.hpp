@@ -3,6 +3,7 @@
 
 #include "component/component.hpp"
 #include "geometry/vector_2d.hpp"
+#include <optional>
 #include <vector>
 
 namespace JamJar::Standard::_2D {

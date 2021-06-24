@@ -8,6 +8,7 @@
 #include "message/message_payload.hpp"
 #include "standard/2d/camera/camera.hpp"
 #include "standard/2d/transform/transform.hpp"
+#include "standard/2d/webgl2/webgl2_shader.hpp"
 #include "standard/file_texture/file_texture_response.hpp"
 #include "standard/file_texture/file_texture_system.hpp"
 #include <GLES3/gl3.h>
@@ -16,35 +17,6 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
-
-const std::string vertShader = R"(#version 300 es
-in vec2 aVertexPosition;
-in vec2 aTexturePosition;
-
-uniform mat4 uViewMatrix;
-uniform mat4 uModelMatrix;
-uniform mat4 uProjectionMatrix;
-
-out vec2 vTextureCoordinate;
-
-void main() {
-    gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aVertexPosition, 0, 1);
-    vTextureCoordinate = aTexturePosition;
-})";
-
-const std::string fragShader = R"(#version 300 es
-precision mediump float;
-
-uniform sampler2D uTexture;
-uniform vec4 uColor;
-
-in vec2 vTextureCoordinate;
-
-out vec4 outColor;
-void main() {
-    outColor = texture(uTexture, vTextureCoordinate);
-    outColor = outColor * uColor;
-})";
 
 const std::unordered_map<JamJar::TextureFilter, int> FILTERS = {
     {JamJar::TextureFilter::NEAREST, GL_NEAREST},
@@ -62,9 +34,14 @@ const std::unordered_map<JamJar::Standard::_2D::DrawMode, int> DRAW_MODES = {
     {JamJar::Standard::_2D::DrawMode::TRIANGLES, GL_TRIANGLES},
     {JamJar::Standard::_2D::DrawMode::TRIANGLE_STRIP, GL_TRIANGLE_STRIP}};
 
+const std::unordered_map<JamJar::Standard::_2D::WebGL2ShaderType, GLenum> SHADER_TYPES = {
+    {JamJar::Standard::_2D::WebGL2ShaderType::VERTEX, GL_VERTEX_SHADER},
+    {JamJar::Standard::_2D::WebGL2ShaderType::FRAGMENT, GL_FRAGMENT_SHADER}};
+
 JamJar::Standard::_2D::WebGL2System::WebGL2System(MessageBus *messageBus, EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context)
     : RenderSystem(messageBus, WebGL2System::evaluator), m_context(context) {
     this->messageBus->Subscribe(this, JamJar::Standard::FileTextureSystem::MESSAGE_RESPONSE_FILE_TEXTURE_LOAD);
+    this->messageBus->Subscribe(this, JamJar::Standard::_2D::WebGL2System::MESSAGE_LOAD_SHADER);
 }
 
 bool JamJar::Standard::_2D::WebGL2System::evaluator(Entity *entity, std::vector<JamJar::Component *> components) {
@@ -98,6 +75,11 @@ void JamJar::Standard::_2D::WebGL2System::OnMessage(JamJar::Message *message) {
         this->loadTexture(loadMessage->payload.get());
         break;
     }
+    case JamJar::Standard::_2D::WebGL2System::MESSAGE_LOAD_SHADER: {
+        auto *loadMessage =
+            static_cast<JamJar::MessagePayload<std::unique_ptr<JamJar::Standard::_2D::WebGL2Shader>> *>(message);
+        this->loadShader(std::move(loadMessage->payload));
+    }
     }
 }
 
@@ -126,44 +108,47 @@ void JamJar::Standard::_2D::WebGL2System::loadTexture(FileTextureResponse *respo
     this->textures.insert({response->request->key, texture});
 }
 
-GLuint createShader(GLenum type, std::string source) {
-    auto shader = glCreateShader(type);
-    GLchar const *files[] = {source.c_str()};
-    GLint lengths[] = {GLint(source.size())};
-    glShaderSource(shader, 1, files, lengths);
-    glCompileShader(shader);
+void JamJar::Standard::_2D::WebGL2System::loadShader(std::unique_ptr<WebGL2Shader> shader) {
+    auto glShader = glCreateShader(SHADER_TYPES.at(shader->type));
+    GLchar const *files[] = {shader->source.c_str()};
+    GLint lengths[] = {GLint(shader->source.size())};
+    glShaderSource(glShader, 1, files, lengths);
+    glCompileShader(glShader);
     GLint compileSuccess = 0;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &compileSuccess);
+    glGetShaderiv(glShader, GL_COMPILE_STATUS, &compileSuccess);
     if (compileSuccess == GL_FALSE) {
         // fail to compile shader!
-        glDeleteShader(shader);
+        glDeleteShader(glShader);
         throw std::exception();
     }
+    auto loadedShader =
+        std::make_unique<WebGL2LoadedShader>(WebGL2LoadedShader({.definition = std::move(shader), .shader = glShader}));
 
-    return shader;
+    this->shaders.insert({loadedShader->definition->name, std::move(loadedShader)});
 }
 
-GLuint createProgram(GLuint vertexShader, GLuint fragmentShader) {
-    auto program = glCreateProgram();
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
-    glLinkProgram(program);
-    GLint linkSuccess = 0;
-    glGetProgramiv(program, GL_LINK_STATUS, &linkSuccess);
-    if (linkSuccess == GL_FALSE) {
-        // fail to compile shader!
-        glDeleteProgram(program);
-        throw std::exception();
+GLuint JamJar::Standard::_2D::WebGL2System::getProgram(std::string identifier, GLuint fragment, GLuint vertex) {
+    if (this->programs.count(identifier) == 0) {
+        // No program, create it
+        auto program = glCreateProgram();
+        glAttachShader(program, vertex);
+        glAttachShader(program, fragment);
+        glLinkProgram(program);
+        GLint linkSuccess = 0;
+        glGetProgramiv(program, GL_LINK_STATUS, &linkSuccess);
+        if (linkSuccess == GL_FALSE) {
+            // fail to compile program
+            glDeleteProgram(program);
+            throw std::exception();
+        }
+        this->programs.insert({identifier, program});
+        return program;
+    } else {
+        return this->programs.at(identifier);
     }
-    return program;
 }
 
 void JamJar::Standard::_2D::WebGL2System::render(float deltaTime) {
-    auto vertexShader = createShader(GL_VERTEX_SHADER, vertShader);
-    auto fragmentShader = createShader(GL_FRAGMENT_SHADER, fragShader);
-
-    auto program = createProgram(vertexShader, fragmentShader);
-
     for (const auto &entityPair : this->entities) {
         auto cameraEntity = entityPair.second;
 
@@ -219,84 +204,46 @@ void JamJar::Standard::_2D::WebGL2System::render(float deltaTime) {
             continue;
         }
 
-        glUseProgram(program);
-
-        auto viewMatrix = Matrix4D();
-
-        auto invertedPos = transform->position;
-        invertedPos.x = -invertedPos.x;
-        invertedPos.y = -invertedPos.y;
-
-        viewMatrix.Translate(invertedPos);
-
-        auto projectionMatrix = camera->ProjectionMatrix();
-
-        // Supply camera matrices to GPU
-        auto viewLocation = glGetUniformLocation(program, "uViewMatrix");
-        auto projectionLocation = glGetUniformLocation(program, "uProjectionMatrix");
-
-        glUniformMatrix4fv(viewLocation, 1, false, viewMatrix.data.data());
-        glUniformMatrix4fv(projectionLocation, 1, false, projectionMatrix.data.data());
-
         for (auto renderable : cameraRenderables) {
-            if (this->textures.count(renderable.material.texture->image) == 0) {
+            std::string vertexShader = renderable.material.shaders->vertexShader;
+            std::string fragmentShader = renderable.material.shaders->fragmentShader;
+
+            if (this->shaders.count(fragmentShader) == 0) {
                 continue;
             }
-            auto modelLocation = glGetUniformLocation(program, "uModelMatrix");
 
-            glUniformMatrix4fv(modelLocation, 1, false, renderable.modelMatrix.data.data());
+            if (this->shaders.count(vertexShader) == 0) {
+                continue;
+            }
 
-            auto textureLocation = glGetUniformLocation(program, "uTexture");
+            auto vertShader = this->shaders.at(vertexShader).get();
+            auto fragShader = this->shaders.at(fragmentShader).get();
 
-            auto tex = this->textures[renderable.material.texture->image];
+            auto programName = vertShader->definition->name + "_" + fragShader->definition->name;
 
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, tex);
-            glUniform1i(textureLocation, 0);
+            auto program = this->getProgram(programName, fragShader->shader, vertShader->shader);
 
-            auto positionAttributeLocation = glGetAttribLocation(program, "aVertexPosition");
-            auto textureAttributeLocation = glGetAttribLocation(program, "aTexturePosition");
+            if (this->programs.count(programName) == 0) {
+            } else {
+                program = this->programs.at(programName);
+            }
 
-            std::array<GLuint, 2> buffers;
-            glGenBuffers(2, buffers.data());
+            glUseProgram(program);
 
-            auto positionBuffer = buffers[0];
-            auto textureBuffer = buffers[1];
+            auto context =
+                std::make_unique<JamJar::Standard::_2D::WebGL2ShaderContext>(JamJar::Standard::_2D::WebGL2ShaderContext(
+                    {.program = program, .camera = camera, .transform = transform}));
 
-            std::array<GLuint, 1> vaos;
-            glGenVertexArrays(1, vaos.data());
+            vertShader->definition->PerProgram(context.get());
+            fragShader->definition->PerProgram(context.get());
 
-            auto vao = vaos[0];
+            auto texture = this->textures[renderable.material.texture->image];
 
-            glBindVertexArray(vao);
+            vertShader->definition->PerTexture(context.get(), texture);
+            fragShader->definition->PerTexture(context.get(), texture);
 
-            // Position data
-            glBindBuffer(GL_ARRAY_BUFFER, positionBuffer);
-
-            glBufferData(GL_ARRAY_BUFFER, sizeof(renderable.vertices[0]) * renderable.vertices.size(),
-                         renderable.vertices.data(), GL_STATIC_DRAW);
-
-            glEnableVertexAttribArray(positionAttributeLocation);
-
-            glVertexAttribPointer(positionAttributeLocation, 2, GL_FLOAT, false, 0, 0);
-
-            // Texture data
-            glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
-
-            glBufferData(GL_ARRAY_BUFFER,
-                         sizeof(renderable.material.texture->points[0]) * renderable.material.texture->points.size(),
-                         renderable.material.texture->points.data(), GL_STATIC_DRAW);
-
-            glEnableVertexAttribArray(textureAttributeLocation);
-
-            glVertexAttribPointer(textureAttributeLocation, 2, GL_FLOAT, false, 0, 0);
-
-            std::array<float, 4> color({(float)renderable.material.color.red, (float)renderable.material.color.green,
-                                        (float)renderable.material.color.blue, (float)renderable.material.color.alpha});
-
-            // Prepare frag shader
-            auto colorLocation = glGetUniformLocation(program, "uColor");
-            glUniform4fv(colorLocation, 1, color.data());
+            vertShader->definition->PerRenderable(context.get(), renderable, texture);
+            fragShader->definition->PerRenderable(context.get(), renderable, texture);
 
             glDrawArrays(DRAW_MODES.at(renderable.drawMode), 0, renderable.vertices.size() / 2);
         }
