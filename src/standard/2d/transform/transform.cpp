@@ -18,7 +18,7 @@ JamJar::Matrix4D JamJar::Standard::_2D::Transform::InterpolatedMatrix4D(float al
                                     this->previous.y * alpha + this->position.y * (1 - alpha));
     auto mat = Matrix4D();
     mat.Translate(interpolatedPos);
-    mat.Rotate(this->angle);
+    mat.RotateZ(this->angle);
     mat.Scale(this->scale);
     return mat;
 }

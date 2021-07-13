@@ -12,8 +12,8 @@ class Matrix4D {
     explicit Matrix4D(const std::vector<float> &data);
     Matrix4D *Translate(const Vector2D &translation);
     Matrix4D *Scale(const Vector2D &scale);
-    Matrix4D *Rotate(const float &rotation);
-    Matrix4D *RotateDeg(const float &rotation);
+    Matrix4D *RotateZ(const float &rotation);
+    Matrix4D *RotateZDeg(const float &rotation);
     static Matrix4D Ortho(float left, float right, float bottom, float top, float near, float far);
 };
 }; // namespace JamJar
