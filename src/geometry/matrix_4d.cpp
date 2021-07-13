@@ -31,9 +31,30 @@ JamJar::Matrix4D *JamJar::Matrix4D::Scale(const Vector2D &scale) {
     return this;
 }
 
-JamJar::Matrix4D *JamJar::Matrix4D::Rotate(const float &rotation) { return this; }
+JamJar::Matrix4D *JamJar::Matrix4D::RotateZ(const float &rotation) {
+    float s = sinf(rotation);
+    float c = cosf(rotation);
+    float a00 = this->data[0];
+    float a01 = this->data[1];
+    float a02 = this->data[2];
+    float a03 = this->data[3];
+    float a10 = this->data[4];
+    float a11 = this->data[5];
+    float a12 = this->data[6];
+    float a13 = this->data[7];
 
-JamJar::Matrix4D *JamJar::Matrix4D::RotateDeg(const float &rotation) { return this->Rotate(rotation * (PI / 180)); }
+    this->data[0] = a00 * c + a10 * s;
+    this->data[1] = a01 * c + a11 * s;
+    this->data[2] = a02 * c + a12 * s;
+    this->data[3] = a03 * c + a13 * s;
+    this->data[4] = a10 * c - a00 * s;
+    this->data[5] = a11 * c - a01 * s;
+    this->data[6] = a12 * c - a02 * s;
+    this->data[7] = a13 * c - a03 * s;
+    return this;
+}
+
+JamJar::Matrix4D *JamJar::Matrix4D::RotateZDeg(const float &rotation) { return this->RotateZ(rotation * (PI / 180)); }
 
 JamJar::Matrix4D JamJar::Matrix4D::Ortho(float left, float right, float bottom, float top, float near, float far) {
     auto mat = JamJar::Matrix4D();

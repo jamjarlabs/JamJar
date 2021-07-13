@@ -31,7 +31,7 @@ void SimpleGame::OnStart() {
     a->Add(std::move(
         std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(-30, 0), JamJar::Vector2D(30, 30))));
     a->Add(std::move(
-        std::make_unique<JamJar::Standard::_2D::Motion>(JamJar::Vector2D(0, 0), JamJar::Vector2D(0, 0), 0.2)));
+        std::make_unique<JamJar::Standard::_2D::Motion>(JamJar::Vector2D(0, 0), JamJar::Vector2D(0, 0), -0.2)));
     a->Add(std::move(std::make_unique<JamJar::Standard::_2D::Sprite>(
         JamJar::Material(JamJar::Color(0, 1, 0, 1), JamJar::Texture(JamJar::hash("smiley"))))));
 
