@@ -63,8 +63,6 @@ set(LIB_SOURCES
     src/standard/2d/interpolation/interpolation_system.cpp
     src/standard/2d/motion/motion_system.cpp
     src/standard/2d/motion/motion.cpp
-    src/standard/2d/primitive/primitive.cpp
-    src/standard/2d/primitive/primitive_system.cpp
     src/standard/2d/render/render_system.cpp
     src/standard/2d/sprite/sprite_system.cpp
     src/standard/2d/sprite/sprite.cpp

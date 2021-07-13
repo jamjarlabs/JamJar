@@ -8,7 +8,6 @@
 #include "render/texture.hpp"
 #include "standard/2d/camera/camera.hpp"
 #include "standard/2d/motion/motion.hpp"
-#include "standard/2d/primitive/primitive.hpp"
 #include "standard/2d/sprite/sprite.hpp"
 #include "standard/2d/transform/transform.hpp"
 #include "standard/file_texture/file_texture_request.hpp"
@@ -28,13 +27,21 @@ void SimpleGame::OnStart() {
                  .properties = JamJar::TextureProperties(
                      {.minFilter = JamJar::TextureFilter::NEAREST, .magFilter = JamJar::TextureFilter::NEAREST})}))));
 
-    auto entity = new JamJar::Entity(messageBus);
-    entity->Add(std::move(
-        std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(0, 0), JamJar::Vector2D(30, 30))));
-    entity->Add(std::move(
+    auto a = new JamJar::Entity(messageBus);
+    a->Add(std::move(
+        std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(-30, 0), JamJar::Vector2D(30, 30))));
+    a->Add(std::move(
         std::make_unique<JamJar::Standard::_2D::Motion>(JamJar::Vector2D(0, 0), JamJar::Vector2D(0, 0), 0.2)));
-    entity->Add(std::move(std::make_unique<JamJar::Standard::_2D::Sprite>(
-        JamJar::Material(JamJar::Color(1, 1, 1, 1), JamJar::Texture(JamJar::hash("smiley"))))));
+    a->Add(std::move(std::make_unique<JamJar::Standard::_2D::Sprite>(
+        JamJar::Material(JamJar::Color(0, 1, 0, 1), JamJar::Texture(JamJar::hash("smiley"))))));
+
+    auto b = new JamJar::Entity(messageBus);
+    b->Add(std::move(
+        std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(30, 0), JamJar::Vector2D(30, 30))));
+    b->Add(std::move(
+        std::make_unique<JamJar::Standard::_2D::Motion>(JamJar::Vector2D(0, 0), JamJar::Vector2D(0, 0), 0.2)));
+    b->Add(std::move(std::make_unique<JamJar::Standard::_2D::Sprite>(
+        JamJar::Material(JamJar::Color(1, 0, 1, 1), JamJar::Texture(JamJar::hash("smiley"))))));
 
     auto camera = new JamJar::Entity(messageBus);
     camera->Add(std::move(std::make_unique<JamJar::Standard::_2D::Transform>()));

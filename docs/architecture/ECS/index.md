@@ -15,8 +15,8 @@ acceleration (Motion), or the player's number of lives.
 
 A system is some logic that can operate on entities and components to interpret them and modify them, for example
 the MotionSystem manages entities that have a Transform and a Motion, adjusting the values of the data stored in
-them based on physics equations, or the PrimitiveSystem which takes Primitive render shape descriptions and converts
-them into a format that the render pipeline can use to draw shapes.
+them based on physics equations, or the SpriteSystem which takes Sprite descriptions and converts them into a format
+that the render pipeline can use to draw shapes.
 
 ## Benefits
 
