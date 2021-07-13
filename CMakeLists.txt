@@ -63,12 +63,12 @@ set(LIB_SOURCES
     src/standard/2d/interpolation/interpolation_system.cpp
     src/standard/2d/motion/motion_system.cpp
     src/standard/2d/motion/motion.cpp
-    src/standard/2d/primitive/primitive.cpp
-    src/standard/2d/primitive/primitive_system.cpp
     src/standard/2d/render/render_system.cpp
     src/standard/2d/sprite/sprite_system.cpp
     src/standard/2d/sprite/sprite.cpp
+    src/standard/2d/sprite/webgl2_default_sprite_shaders.cpp
     src/standard/2d/transform/transform.cpp
+    src/standard/2d/webgl2/webgl2_shader.cpp
     src/standard/2d/webgl2/webgl2_system.cpp
     src/standard/file_texture/file_texture_system.cpp
 )

@@ -6,7 +6,6 @@
 #include "simple_game.hpp"
 #include "standard/2d/interpolation/interpolation_system.hpp"
 #include "standard/2d/motion/motion_system.hpp"
-#include "standard/2d/primitive/primitive_system.hpp"
 #include "standard/2d/sprite/sprite_system.hpp"
 #include "standard/2d/webgl2/webgl2_system.hpp"
 #include "standard/file_texture/file_texture_system.hpp"
@@ -29,7 +28,6 @@ int main(int argc, char *argv[]) {
     auto game = new SimpleGame(messageBus);
     new JamJar::Standard::_2D::WebGL2System(messageBus, context);
     new JamJar::Standard::_2D::MotionSystem(messageBus);
-    new JamJar::Standard::_2D::PrimitiveSystem(messageBus);
     new JamJar::Standard::_2D::InterpolationSystem(messageBus);
     new JamJar::Standard::_2D::SpriteSystem(messageBus);
     new JamJar::Standard::FileTextureSystem(messageBus);

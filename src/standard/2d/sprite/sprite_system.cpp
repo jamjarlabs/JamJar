@@ -6,11 +6,39 @@
 #include "standard/2d/sprite/sprite.hpp"
 #include "standard/2d/transform/transform.hpp"
 #include <array>
+#include <memory>
+
+const std::string JamJar::Standard::_2D::SpriteSystem::DEFAULT_SPRITE_VERTEX_SHADER_NAME =
+    "jamjar_default_sprite_vertex";
+const std::string JamJar::Standard::_2D::SpriteSystem::DEFAULT_SPRITE_FRAGMENT_SHADER_NAME =
+    "jamjar_default_sprite_fragment";
 
 JamJar::Standard::_2D::SpriteSystem::SpriteSystem(MessageBus *messageBus)
     : MapSystem(messageBus, JamJar::Standard::_2D::SpriteSystem::evaluator) {
     this->messageBus->Subscribe(this, JamJar::Game::MESSAGE_PRE_RENDER);
+#ifdef __EMSCRIPTEN__
+    this->loadWebgl2Shaders();
+#endif
 }
+
+#ifdef __EMSCRIPTEN__
+#include "standard/2d/sprite/webgl2_default_sprite_shaders.hpp"
+#include "standard/2d/webgl2/webgl2_system.hpp"
+void JamJar::Standard::_2D::SpriteSystem::loadWebgl2Shaders() {
+    // Load WebGL2 fragment shader
+    auto fragShader =
+        std::make_unique<WebGL2DefaultSpriteFragmentShader>(JamJar::Standard::_2D::WebGL2DefaultSpriteFragmentShader());
+    this->messageBus->Publish(
+        std::make_unique<JamJar::MessagePayload<std::unique_ptr<WebGL2DefaultSpriteFragmentShader>>>(
+            JamJar::Standard::_2D::WebGL2System::MESSAGE_LOAD_SHADER, std::move(fragShader)));
+    // Load WebGL2 vertex shader
+    auto vertShader =
+        std::make_unique<WebGL2DefaultSpriteVertexShader>(JamJar::Standard::_2D::WebGL2DefaultSpriteVertexShader());
+    this->messageBus->Publish(
+        std::make_unique<JamJar::MessagePayload<std::unique_ptr<WebGL2DefaultSpriteVertexShader>>>(
+            JamJar::Standard::_2D::WebGL2System::MESSAGE_LOAD_SHADER, std::move(vertShader)));
+}
+#endif
 
 const std::vector<float> QUAD_POINTS = {0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5};
 
