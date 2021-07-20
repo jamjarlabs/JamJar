@@ -25,15 +25,15 @@ jobs:
         sudo apt-get install clang-11 clang-tidy-11 clang-format-11 cmake -y
 
         # Install shared library dependencies
-        git clone --depth 1 --branch release-2.0.14 https://github.com/libsdl-org/SDL.git /SDL2
-        cd /SDL2
+        git clone --depth 1 --branch release-2.0.14 https://github.com/libsdl-org/SDL.git
+        cd SDL
         mkdir build
         cd build
         ../configure
         make
         sudo make install
 
-        cd "${GITHUB_WORKSPACE}"
+        cd ../..
 
         # Link tools to expected locations
         sudo ln -sf /usr/bin/clang-11 /usr/bin/clang
