@@ -10,7 +10,7 @@ option(JAMJAR_NATIVE_COMPILE_UNIT_TESTS "Compile JamJarNative unit tests" OFF)
 
 # This is a workaround for https://bugs.launchpad.net/ubuntu/+source/libsdl2-ttf/+bug/1872023
 if(DEFINED ENV{CI})
-    include_directories("/usr/include/SDL2")
+    include_directories("/usr/include/")
 endif()
 
 
