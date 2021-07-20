@@ -71,6 +71,7 @@ set(LIB_SOURCES
     src/standard/2d/webgl2/webgl2_shader.cpp
     src/standard/2d/webgl2/webgl2_system.cpp
     src/standard/file_texture/file_texture_system.cpp
+    src/standard/sdl2_input/sdl2_input_system.cpp
 )
 
 set(TEST_SOURCES

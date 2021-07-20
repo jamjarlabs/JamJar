@@ -26,11 +26,12 @@ FetchContent_MakeAvailable(JamJarNative)
 
 ### ===== core ===== ###
 
-set(CMAKE_CXX_FLAGS  "-s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2 --preload-file ${PROJECT_SOURCE_DIR}/assets@/assets")
+set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2 --preload-file ${PROJECT_SOURCE_DIR}/assets@/assets")
 
 set(EXE_SOURCES
     src/main.cpp
     src/simple_game.cpp
+    src/input_listener.cpp
 )
 
 add_executable(SimpleGame.js ${EXE_SOURCES})

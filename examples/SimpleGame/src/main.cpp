@@ -1,6 +1,7 @@
 #include "emscripten/html5.h"
 #include "entity/entity_manager.hpp"
 #include "game.hpp"
+#include "input_listener.hpp"
 #include "message/message_bus.hpp"
 #include "message/message_payload.hpp"
 #include "simple_game.hpp"
@@ -9,18 +10,26 @@
 #include "standard/2d/sprite/sprite_system.hpp"
 #include "standard/2d/webgl2/webgl2_system.hpp"
 #include "standard/file_texture/file_texture_system.hpp"
+#include "standard/sdl2_input/sdl2_input_system.hpp"
+#include <SDL2/SDL.h>
 #include <iostream>
 #include <memory>
+#include <stdlib.h>
 #include <string>
 
 int main(int argc, char *argv[]) {
+
+    SDL_Init(SDL_INIT_VIDEO);
+
+    auto window =
+        SDL_CreateWindow("game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 576, SDL_WINDOW_OPENGL);
 
     std::cout << "game start" << std::endl;
 
     // Set up canvas
     EmscriptenWebGLContextAttributes attrs;
     emscripten_webgl_init_context_attributes(&attrs);
-    auto context = emscripten_webgl_create_context("#game-canvas", &attrs);
+    auto context = emscripten_webgl_create_context("#canvas", &attrs);
     auto res = emscripten_webgl_make_context_current(context);
 
     auto messageBus = new JamJar::MessageBus();
@@ -31,6 +40,8 @@ int main(int argc, char *argv[]) {
     new JamJar::Standard::_2D::InterpolationSystem(messageBus);
     new JamJar::Standard::_2D::SpriteSystem(messageBus);
     new JamJar::Standard::FileTextureSystem(messageBus);
+    new JamJar::Standard::SDL2InputSystem(messageBus);
+    new InputListener(messageBus);
     game->Start();
 
     return 0;
