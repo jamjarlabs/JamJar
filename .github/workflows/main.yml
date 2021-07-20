@@ -37,16 +37,8 @@ jobs:
         clang-format --version
         clang-tidy --version
 
-        # Install shared library dependencies
-        git clone --depth 1 --branch release-2.0.14 https://github.com/libsdl-org/SDL.git
-        cd SDL
-        mkdir build
-        cd build
-        CC=clang CXX=clang++ ../configure
-        CC=clang CXX=clang++ make
-        CC=clang CXX=clang++ sudo make install
-
-        cd ../..
+        # Install shared dependencies
+        sudo apt-get install libsdl2-dev
 
         # Set up build
         cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . -B build
