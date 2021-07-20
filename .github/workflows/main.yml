@@ -24,6 +24,9 @@ jobs:
         # Install required tools
         sudo apt-get install clang-11 clang-tidy-11 clang-format-11 cmake -y
 
+        # Install shared library dependencies
+        sudo apt-get install libsdl2-dev
+
         # Link tools to expected locations
         sudo ln -sf /usr/bin/clang-11 /usr/bin/clang
         sudo ln -sf /usr/bin/clang-tidy-11 /usr/bin/clang-tidy
