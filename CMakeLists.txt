@@ -1,18 +1,12 @@
 cmake_minimum_required(VERSION 3.14)
 
-set (CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17)
 
 project(JamJarNative VERSION 0.0.0)
 
 option(JAMJAR_NATIVE_COMPILE_UNIT_TESTS "Compile JamJarNative unit tests" OFF)
 
 ### ===== dependencies ===== ###
-
-# This is a workaround for https://bugs.launchpad.net/ubuntu/+source/libsdl2-ttf/+bug/1872023
-if(DEFINED ENV{CI})
-    include_directories("/usr/include/")
-endif()
-
 
 include(FetchContent)
 
