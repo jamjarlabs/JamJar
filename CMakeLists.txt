@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-set(CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 17)
 
 project(JamJarNative VERSION 0.0.0)
 
@@ -156,21 +156,22 @@ foreach (SOURCE_FILE ${ALL_SOURCE_FILES})
     endforeach ()
 endforeach ()
 
-add_custom_target(lint
-    COMMENT "Running clang-tidy to lint files"
-    COMMAND clang-tidy
-    ${ALL_SOURCE_FILES}
-    -p build
-)
+# Disable clang-tidy for now until I can work out how to integrate it with emscripten libraries
+# add_custom_target(lint
+#     COMMENT "Running clang-tidy to lint files"
+#     COMMAND clang-tidy
+#     ${ALL_SOURCE_FILES}
+#     -p build
+# )
 
-add_custom_target(lint_fix
-    COMMENT "Running clang-tidy to lint files"
-    COMMAND clang-tidy
-    ${ALL_SOURCE_FILES}
-    -p build
-    -fix
-    -fix-errors
-)
+# add_custom_target(lint_fix
+#     COMMENT "Running clang-tidy to lint files"
+#     COMMAND clang-tidy
+#     ${ALL_SOURCE_FILES}
+#     -p build
+#     -fix
+#     -fix-errors
+# )
 
 ### ===== docs ===== ###
 
