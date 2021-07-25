@@ -14,6 +14,7 @@ JamJarNative is a 2D, C++ game engine that primarily targets running in the brow
 - Orthographic camera projection.
 - Sprites.
 - Image loading from filesystem (virtual or otherwise).
+- Input using SDL2 events (keyboard and mouse).
 
 ## Getting Started
 
@@ -26,6 +27,7 @@ See the [examples directory for working code examples](./examples).
 ## Dependencies
 
 - [STB](https://github.com/nothings/stb) - MIT/Public domain
+- [SDL2](https://github.com/libsdl-org/SDL) (v2.0.9) - ZLib
 
 **Dev Dependencies**
 

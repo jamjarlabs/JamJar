@@ -28,6 +28,7 @@ class WebGL2Shader {
     virtual void PerProgram(WebGL2ShaderContext *context) = 0;
     virtual void PerTexture(WebGL2ShaderContext *context, GLuint texture) = 0;
     virtual void PerRenderable(WebGL2ShaderContext *context, Renderable renderable, GLuint texture) = 0;
+    virtual ~WebGL2Shader(){};
 };
 }; // namespace JamJar::Standard::_2D
 

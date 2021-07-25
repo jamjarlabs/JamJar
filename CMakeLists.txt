@@ -39,6 +39,8 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2")
+
 set(LIB_SOURCES
     src/stb_image.cpp
     src/game.cpp
@@ -71,6 +73,7 @@ set(LIB_SOURCES
     src/standard/2d/webgl2/webgl2_shader.cpp
     src/standard/2d/webgl2/webgl2_system.cpp
     src/standard/file_texture/file_texture_system.cpp
+    src/standard/sdl2_input/sdl2_input_system.cpp
 )
 
 set(TEST_SOURCES
@@ -155,21 +158,22 @@ foreach (SOURCE_FILE ${ALL_SOURCE_FILES})
     endforeach ()
 endforeach ()
 
-add_custom_target(lint
-    COMMENT "Running clang-tidy to lint files"
-    COMMAND clang-tidy
-    ${ALL_SOURCE_FILES}
-    -p build
-)
+# Disable clang-tidy for now until I can work out how to integrate it with emscripten libraries
+# add_custom_target(lint
+#     COMMENT "Running clang-tidy to lint files"
+#     COMMAND clang-tidy
+#     ${ALL_SOURCE_FILES}
+#     -p build
+# )
 
-add_custom_target(lint_fix
-    COMMENT "Running clang-tidy to lint files"
-    COMMAND clang-tidy
-    ${ALL_SOURCE_FILES}
-    -p build
-    -fix
-    -fix-errors
-)
+# add_custom_target(lint_fix
+#     COMMENT "Running clang-tidy to lint files"
+#     COMMAND clang-tidy
+#     ${ALL_SOURCE_FILES}
+#     -p build
+#     -fix
+#     -fix-errors
+# )
 
 ### ===== docs ===== ###
 
