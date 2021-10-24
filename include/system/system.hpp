@@ -16,6 +16,7 @@ class System : public Listener {
 
     explicit System(MessageBus *messageBus);
     void OnMessage(Message *message) override;
+    virtual ~System() {}
 };
 }; // namespace JamJar
 
