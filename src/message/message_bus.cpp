@@ -1,6 +1,7 @@
 #include "message/message_bus.hpp"
 #include "message/listener.hpp"
 #include "message/message.hpp"
+#include "standard/2d/render/render_system.hpp"
 
 JamJar::MessageBus::MessageBus() {
     this->m_subscribers = std::map<uint32_t, std::vector<Listener *>>();
@@ -9,7 +10,6 @@ JamJar::MessageBus::MessageBus() {
 
 void JamJar::MessageBus::Dispatch() {
     while (!this->m_messages.empty()) {
-        m_messages.front();
         std::unique_ptr<Message> message = std::move(m_messages.front());
         m_messages.pop();
 

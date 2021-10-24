@@ -4,6 +4,7 @@
 #include "message/message.hpp"
 #include <cstdint>
 #include <memory>
+#include <vector>
 
 namespace JamJar {
 template <typename T> class MessagePayload : public Message {
