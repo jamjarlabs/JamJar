@@ -9,6 +9,7 @@
 #include "message/listener.hpp"
 #include "message/message.hpp"
 #include "message/message_bus.hpp"
+#include "render/texture.hpp"
 #include "standard/2d/render/render_system.hpp"
 #include "standard/2d/webgl2/webgl2_shader.hpp"
 #include "standard/file_texture/file_texture_response.hpp"
@@ -28,10 +29,13 @@ class WebGL2System : public RenderSystem {
   private:
     EMSCRIPTEN_WEBGL_CONTEXT_HANDLE m_context{};
     std::unordered_map<std::uint32_t, GLuint> textures;
-    std::unordered_map<std::string, std::unique_ptr<WebGL2LoadedShader>> shaders;
-    std::unordered_map<std::string, GLuint> programs;
+    GLuint m_defaultTextureRef;
+    JamJar::Texture m_defaultTexture;
+    std::unordered_map<std::string, std::unique_ptr<WebGL2LoadedShader>> m_shaders;
+    std::unordered_map<std::string, GLuint> m_programs;
     static bool evaluator(Entity *entity, std::vector<JamJar::Component *> components);
     void loadTexture(FileTextureResponse *response);
+    GLuint createTexture(const int width, const int height, JamJar::TextureProperties properties, const void *data);
     void loadShader(std::unique_ptr<WebGL2Shader> shader);
     GLuint getProgram(std::string identifier, GLuint fragment, GLuint vertex);
 

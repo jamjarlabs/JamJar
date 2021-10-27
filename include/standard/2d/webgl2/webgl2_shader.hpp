@@ -2,6 +2,7 @@
 #define STANDARD_2D_WEBGL2_WEBGL2_SHADER_HPP
 #ifdef __EMSCRIPTEN__
 
+#include "render/texture.hpp"
 #include "standard/2d/camera/camera.hpp"
 #include "standard/2d/render/renderable.hpp"
 #include "standard/2d/transform/transform.hpp"
@@ -26,8 +27,9 @@ class WebGL2Shader {
     std::string name;
     std::string source;
     virtual void PerProgram(WebGL2ShaderContext *context) = 0;
-    virtual void PerTexture(WebGL2ShaderContext *context, GLuint texture) = 0;
-    virtual void PerRenderable(WebGL2ShaderContext *context, Renderable renderable, GLuint texture) = 0;
+    virtual void PerTexture(WebGL2ShaderContext *context, JamJar::Texture *texture, GLuint textureRef) = 0;
+    virtual void PerRenderable(WebGL2ShaderContext *context, JamJar::Texture *texture, Renderable *renderable,
+                               GLuint textureRef) = 0;
     virtual ~WebGL2Shader(){};
 };
 }; // namespace JamJar::Standard::_2D

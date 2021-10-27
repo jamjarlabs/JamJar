@@ -1,8 +1,6 @@
 #include "standard/2d/sprite/sprite.hpp"
 #include "standard/2d/sprite/sprite_system.hpp"
 
-#include <utility>
-
 JamJar::Standard::_2D::Sprite::Sprite(Material material) : Component(KEY), material(std::move(material)) {
     if (!this->material.shaders.has_value()) {
         this->material.shaders.emplace(JamJar::ShaderGroup({

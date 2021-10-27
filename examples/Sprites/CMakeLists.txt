@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(SimpleGame VERSION 0.0.0)
+project(Sprites VERSION 0.0.0)
 
 ### ===== dependencies ===== ###
 
@@ -27,6 +27,7 @@ FetchContent_MakeAvailable(JamJarNative)
 ### ===== core ===== ###
 
 set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2 --preload-file ${PROJECT_SOURCE_DIR}/assets@/assets")
+SET(CMAKE_EXE_LINKER_FLAGS "-s LLD_REPORT_UNDEFINED")
 
 set(EXE_SOURCES
     src/main.cpp
@@ -34,13 +35,13 @@ set(EXE_SOURCES
     src/input_listener.cpp
 )
 
-add_executable(SimpleGame.js ${EXE_SOURCES})
+add_executable(Sprites ${EXE_SOURCES})
 
-target_include_directories(SimpleGame.js
+target_include_directories(Sprites
     PRIVATE
         src
 )
 
-target_link_libraries(SimpleGame.js PRIVATE JamJarNative)
+target_link_libraries(Sprites PRIVATE JamJarNative)
 
 configure_file(${PROJECT_SOURCE_DIR}/index.html ${PROJECT_BINARY_DIR}/index.html COPYONLY)

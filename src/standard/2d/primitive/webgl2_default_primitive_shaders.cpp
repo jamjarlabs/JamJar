@@ -1,6 +1,6 @@
 #ifdef __EMSCRIPTEN__
-#include "standard/2d/sprite/webgl2_default_sprite_shaders.hpp"
-#include "standard/2d/sprite/sprite_system.hpp"
+#include "standard/2d/primitive/webgl2_default_primitive_shaders.hpp"
+#include "standard/2d/primitive/primitive_system.hpp"
 #include <array>
 
 const std::string VERTEX_SHADER_SOURCE = R"(#version 300 es
@@ -18,11 +18,12 @@ void main() {
     vTextureCoordinate = aTexturePosition;
 })";
 
-JamJar::Standard::_2D::WebGL2DefaultSpriteVertexShader::WebGL2DefaultSpriteVertexShader()
-    : WebGL2Shader(WebGL2ShaderType::VERTEX, JamJar::Standard::_2D::SpriteSystem::DEFAULT_SPRITE_VERTEX_SHADER_NAME,
-                   VERTEX_SHADER_SOURCE) {}
+JamJar::Standard::_2D::WebGL2DefaultPrimitiveVertexShader::WebGL2DefaultPrimitiveVertexShader()
+    : WebGL2Shader(WebGL2ShaderType::VERTEX,
+                   JamJar::Standard::_2D::PrimitiveSystem::DEFAULT_PRIMITIVE_VERTEX_SHADER_NAME, VERTEX_SHADER_SOURCE) {
+}
 
-void JamJar::Standard::_2D::WebGL2DefaultSpriteVertexShader::PerProgram(WebGL2ShaderContext *context) {
+void JamJar::Standard::_2D::WebGL2DefaultPrimitiveVertexShader::PerProgram(WebGL2ShaderContext *context) {
     auto viewMatrix = Matrix4D();
 
     auto invertedPos = context->transform->position;
@@ -41,12 +42,14 @@ void JamJar::Standard::_2D::WebGL2DefaultSpriteVertexShader::PerProgram(WebGL2Sh
     glUniformMatrix4fv(projectionLocation, 1, false, projectionMatrix.data.data());
 }
 
-void JamJar::Standard::_2D::WebGL2DefaultSpriteVertexShader::PerTexture(WebGL2ShaderContext *context,
-                                                                        JamJar::Texture *texture, GLuint textureRef) {}
-
-void JamJar::Standard::_2D::WebGL2DefaultSpriteVertexShader::PerRenderable(WebGL2ShaderContext *context,
+void JamJar::Standard::_2D::WebGL2DefaultPrimitiveVertexShader::PerTexture(WebGL2ShaderContext *context,
                                                                            JamJar::Texture *texture,
-                                                                           Renderable *renderable, GLuint textureRef) {
+                                                                           GLuint textureRef) {}
+
+void JamJar::Standard::_2D::WebGL2DefaultPrimitiveVertexShader::PerRenderable(WebGL2ShaderContext *context,
+                                                                              JamJar::Texture *texture,
+                                                                              Renderable *renderable,
+                                                                              GLuint textureRef) {
     auto modelLocation = glGetUniformLocation(context->program, "uModelMatrix");
     glUniformMatrix4fv(modelLocation, 1, false, renderable->modelMatrix.data.data());
 
@@ -104,24 +107,26 @@ void main() {
     outColor = outColor * uColor;
 })";
 
-JamJar::Standard::_2D::WebGL2DefaultSpriteFragmentShader::WebGL2DefaultSpriteFragmentShader()
-    : WebGL2Shader(WebGL2ShaderType::FRAGMENT, JamJar::Standard::_2D::SpriteSystem::DEFAULT_SPRITE_FRAGMENT_SHADER_NAME,
+JamJar::Standard::_2D::WebGL2DefaultPrimitiveFragmentShader::WebGL2DefaultPrimitiveFragmentShader()
+    : WebGL2Shader(WebGL2ShaderType::FRAGMENT,
+                   JamJar::Standard::_2D::PrimitiveSystem::DEFAULT_PRIMITIVE_FRAGMENT_SHADER_NAME,
                    FRAGMENT_SHADER_SOURCE) {}
 
-void JamJar::Standard::_2D::WebGL2DefaultSpriteFragmentShader::PerProgram(WebGL2ShaderContext *context) {}
+void JamJar::Standard::_2D::WebGL2DefaultPrimitiveFragmentShader::PerProgram(WebGL2ShaderContext *context) {}
 
-void JamJar::Standard::_2D::WebGL2DefaultSpriteFragmentShader::PerTexture(WebGL2ShaderContext *context,
-                                                                          JamJar::Texture *texture, GLuint textureRef) {
+void JamJar::Standard::_2D::WebGL2DefaultPrimitiveFragmentShader::PerTexture(WebGL2ShaderContext *context,
+                                                                             JamJar::Texture *texture,
+                                                                             GLuint textureRef) {
     auto textureLocation = glGetUniformLocation(context->program, "uTexture");
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureRef);
     glUniform1i(textureLocation, 0);
 }
 
-void JamJar::Standard::_2D::WebGL2DefaultSpriteFragmentShader::PerRenderable(WebGL2ShaderContext *context,
-                                                                             JamJar::Texture *texture,
-                                                                             Renderable *renderable,
-                                                                             GLuint textureRef) {
+void JamJar::Standard::_2D::WebGL2DefaultPrimitiveFragmentShader::PerRenderable(WebGL2ShaderContext *context,
+                                                                                JamJar::Texture *texture,
+                                                                                Renderable *renderable,
+                                                                                GLuint textureRef) {
     auto colorLocation = glGetUniformLocation(context->program, "uColor");
     std::array<float, 4> color({(float)renderable->material.color.red, (float)renderable->material.color.green,
                                 (float)renderable->material.color.blue, (float)renderable->material.color.alpha});
