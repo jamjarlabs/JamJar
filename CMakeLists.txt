@@ -50,6 +50,7 @@ set(LIB_SOURCES
     src/entity/entity.cpp
     src/geometry/aabb.cpp
     src/geometry/matrix_4d.cpp
+    src/geometry/polygon.cpp
     src/geometry/shape_2d.cpp
     src/geometry/vector_2d.cpp
     src/message/message_bus.cpp
@@ -65,6 +66,9 @@ set(LIB_SOURCES
     src/standard/2d/interpolation/interpolation_system.cpp
     src/standard/2d/motion/motion_system.cpp
     src/standard/2d/motion/motion.cpp
+    src/standard/2d/primitive/primitive_system.cpp
+    src/standard/2d/primitive/primitive.cpp
+    src/standard/2d/primitive/webgl2_default_primitive_shaders.cpp
     src/standard/2d/render/render_system.cpp
     src/standard/2d/sprite/sprite_system.cpp
     src/standard/2d/sprite/sprite.cpp
@@ -110,7 +114,8 @@ if(JAMJAR_NATIVE_COMPILE_UNIT_TESTS)
     gtest_discover_tests(JamJarNativeTests)
 endif()
 
-add_subdirectory (examples/SimpleGame)
+add_subdirectory (examples/Sprites)
+add_subdirectory (examples/Primitives)
 
 ### ===== clang-format ===== ###
 

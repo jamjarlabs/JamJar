@@ -19,7 +19,6 @@ struct TextureProperties {
 
 class Texture {
   public:
-    Texture();
     explicit Texture(std::uint32_t image, std::vector<float> points);
     explicit Texture(std::uint32_t image);
     std::uint32_t image;

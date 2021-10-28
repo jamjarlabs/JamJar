@@ -18,6 +18,8 @@
 #include <string>
 #include <unordered_map>
 
+const unsigned char DEFAULT_TEXTURE[4] = {255, 255, 255, 255};
+
 const std::unordered_map<JamJar::TextureFilter, int> FILTERS = {
     {JamJar::TextureFilter::NEAREST, GL_NEAREST},
     {JamJar::TextureFilter::BILINEAR, GL_LINEAR},
@@ -39,9 +41,18 @@ const std::unordered_map<JamJar::Standard::_2D::WebGL2ShaderType, GLenum> SHADER
     {JamJar::Standard::_2D::WebGL2ShaderType::FRAGMENT, GL_FRAGMENT_SHADER}};
 
 JamJar::Standard::_2D::WebGL2System::WebGL2System(MessageBus *messageBus, EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context)
-    : RenderSystem(messageBus, WebGL2System::evaluator), m_context(context) {
+    : RenderSystem(messageBus, WebGL2System::evaluator), m_context(context), m_defaultTexture(JamJar::Texture(0)) {
     this->messageBus->Subscribe(this, JamJar::Standard::FileTextureSystem::MESSAGE_RESPONSE_FILE_TEXTURE_LOAD);
     this->messageBus->Subscribe(this, JamJar::Standard::_2D::WebGL2System::MESSAGE_LOAD_SHADER);
+
+    this->m_defaultTextureRef = this->createTexture(1, 1,
+                                                    JamJar::TextureProperties({
+                                                        .xWrap = JamJar::TextureWrap::REPEAT,
+                                                        .yWrap = JamJar::TextureWrap::REPEAT,
+                                                        .minFilter = JamJar::TextureFilter::NEAREST,
+                                                        .magFilter = JamJar::TextureFilter::NEAREST,
+                                                    }),
+                                                    DEFAULT_TEXTURE);
 }
 
 bool JamJar::Standard::_2D::WebGL2System::evaluator(Entity *entity, std::vector<JamJar::Component *> components) {
@@ -92,11 +103,17 @@ void JamJar::Standard::_2D::WebGL2System::loadTexture(FileTextureResponse *respo
 
     auto properties = response->request->properties;
 
+    GLuint texture = this->createTexture(response->width, response->height, response->request->properties,
+                                         response->data.get()->data());
+    this->textures.insert({response->request->key, texture});
+}
+
+GLuint JamJar::Standard::_2D::WebGL2System::createTexture(const int width, const int height,
+                                                          JamJar::TextureProperties properties, const void *data) {
     GLuint texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, response->width, response->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-                 response->data.get()->data());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, WRAPS.at(properties.xWrap));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, WRAPS.at(properties.yWrap));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, FILTERS.at(properties.minFilter));
@@ -105,7 +122,7 @@ void JamJar::Standard::_2D::WebGL2System::loadTexture(FileTextureResponse *respo
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     glBindTexture(GL_TEXTURE_2D, NULL);
-    this->textures.insert({response->request->key, texture});
+    return texture;
 }
 
 void JamJar::Standard::_2D::WebGL2System::loadShader(std::unique_ptr<WebGL2Shader> shader) {
@@ -124,11 +141,11 @@ void JamJar::Standard::_2D::WebGL2System::loadShader(std::unique_ptr<WebGL2Shade
     auto loadedShader =
         std::make_unique<WebGL2LoadedShader>(WebGL2LoadedShader({.definition = std::move(shader), .shader = glShader}));
 
-    this->shaders.insert({loadedShader->definition->name, std::move(loadedShader)});
+    this->m_shaders.insert({loadedShader->definition->name, std::move(loadedShader)});
 }
 
 GLuint JamJar::Standard::_2D::WebGL2System::getProgram(std::string identifier, GLuint fragment, GLuint vertex) {
-    if (this->programs.count(identifier) == 0) {
+    if (this->m_programs.count(identifier) == 0) {
         // No program, create it
         auto program = glCreateProgram();
         glAttachShader(program, vertex);
@@ -141,10 +158,10 @@ GLuint JamJar::Standard::_2D::WebGL2System::getProgram(std::string identifier, G
             glDeleteProgram(program);
             throw std::exception();
         }
-        this->programs.insert({identifier, program});
+        this->m_programs.insert({identifier, program});
         return program;
     } else {
-        return this->programs.at(identifier);
+        return this->m_programs.at(identifier);
     }
 }
 
@@ -208,25 +225,20 @@ void JamJar::Standard::_2D::WebGL2System::render(float deltaTime) {
             std::string vertexShader = renderable.material.shaders->vertexShader;
             std::string fragmentShader = renderable.material.shaders->fragmentShader;
 
-            if (this->shaders.count(fragmentShader) == 0) {
+            if (this->m_shaders.count(fragmentShader) == 0) {
                 continue;
             }
 
-            if (this->shaders.count(vertexShader) == 0) {
+            if (this->m_shaders.count(vertexShader) == 0) {
                 continue;
             }
 
-            auto vertShader = this->shaders.at(vertexShader).get();
-            auto fragShader = this->shaders.at(fragmentShader).get();
+            auto vertShader = this->m_shaders.at(vertexShader).get();
+            auto fragShader = this->m_shaders.at(fragmentShader).get();
 
             auto programName = vertShader->definition->name + "_" + fragShader->definition->name;
 
             auto program = this->getProgram(programName, fragShader->shader, vertShader->shader);
-
-            if (this->programs.count(programName) == 0) {
-            } else {
-                program = this->programs.at(programName);
-            }
 
             glUseProgram(program);
 
@@ -237,13 +249,19 @@ void JamJar::Standard::_2D::WebGL2System::render(float deltaTime) {
             vertShader->definition->PerProgram(context.get());
             fragShader->definition->PerProgram(context.get());
 
-            auto texture = this->textures[renderable.material.texture->image];
+            GLuint textureRef = this->m_defaultTextureRef;
+            JamJar::Texture texture = this->m_defaultTexture;
 
-            vertShader->definition->PerTexture(context.get(), texture);
-            fragShader->definition->PerTexture(context.get(), texture);
+            if (renderable.material.texture.has_value()) {
+                textureRef = this->textures[renderable.material.texture->image];
+                texture = *renderable.material.texture;
+            }
 
-            vertShader->definition->PerRenderable(context.get(), renderable, texture);
-            fragShader->definition->PerRenderable(context.get(), renderable, texture);
+            vertShader->definition->PerTexture(context.get(), &texture, textureRef);
+            fragShader->definition->PerTexture(context.get(), &texture, textureRef);
+
+            vertShader->definition->PerRenderable(context.get(), &texture, &renderable, textureRef);
+            fragShader->definition->PerRenderable(context.get(), &texture, &renderable, textureRef);
 
             glDrawArrays(DRAW_MODES.at(renderable.drawMode), 0, renderable.vertices.size() / 2);
         }
