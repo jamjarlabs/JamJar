@@ -3,6 +3,7 @@
 #include "message/message.hpp"
 #include "message/message_payload.hpp"
 #include "system/system.hpp"
+#include "box2d/box2d.h"
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>

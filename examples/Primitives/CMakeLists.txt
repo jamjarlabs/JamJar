@@ -5,7 +5,7 @@ project(Primitives VERSION 0.0.0)
 ### ===== dependencies ===== ###
 
 # We don't need to compile the unit tests to use the library
-SET(JAMJAR_COMPILE_UNIT_TESTS OFF CACHE BOOL "Compile JamJarNative unit tests")
+set(JAMJAR_COMPILE_UNIT_TESTS OFF CACHE BOOL "Compile JamJarNative unit tests")
 
 include(FetchContent)
 

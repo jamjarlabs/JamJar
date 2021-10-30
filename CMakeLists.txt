@@ -4,7 +4,7 @@ set (CMAKE_CXX_STANDARD 17)
 
 project(JamJarNative VERSION 0.0.0)
 
-option(JAMJAR_NATIVE_COMPILE_UNIT_TESTS "Compile JamJarNative unit tests" OFF)
+option(JAMJAR_NATIVE_COMPILE_UNIT_TESTS "Compile JamJarNative unit tests" ON)
 
 ### ===== dependencies ===== ###
 
@@ -20,6 +20,18 @@ FetchContent_MakeAvailable(stb_image)
 
 add_library(stb_image INTERFACE)
 target_include_directories(stb_image INTERFACE ${stb_image_SOURCE_DIR})
+
+set(BOX2D_BUILD_DOCS OFF CACHE BOOL "Build Box2D docs")
+set(BOX2D_BUILD_UNIT_TESTS OFF CACHE BOOL "Build Box2D unit tests")
+set(BOX2D_BUILD_TESTBED OFF CACHE BOOL "Build Box2D testbed")
+
+FetchContent_Declare(
+    box2d
+    GIT_REPOSITORY https://github.com/erincatto/Box2D.git
+    GIT_TAG v2.4.1
+)
+
+FetchContent_MakeAvailable(box2d)
 
 if(JAMJAR_NATIVE_COMPILE_UNIT_TESTS)
     FetchContent_Declare(
@@ -39,7 +51,9 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2")
+if (EMSCRIPTEN)
+    set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2")
+endif()
 
 set(LIB_SOURCES
     src/stb_image.cpp
@@ -89,6 +103,7 @@ add_library(JamJarNative
 )
 
 target_link_libraries(JamJarNative PRIVATE stb_image)
+target_link_libraries(JamJarNative PRIVATE box2d)
 
 target_include_directories(JamJarNative
     PUBLIC
@@ -116,6 +131,7 @@ endif()
 
 add_subdirectory (examples/Sprites)
 add_subdirectory (examples/Primitives)
+add_subdirectory (examples/Physics)
 
 ### ===== clang-format ===== ###
 
