@@ -46,7 +46,7 @@ jobs:
         git diff --exit-code
 
         # Build the project
-        emmake make all
+        make
 
         # Run unit tests
         ctest
