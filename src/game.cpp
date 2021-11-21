@@ -1,5 +1,4 @@
 #include "game.hpp"
-#include "box2d/box2d.h"
 #include "hash.hpp"
 #include "message/message.hpp"
 #include "message/message_payload.hpp"

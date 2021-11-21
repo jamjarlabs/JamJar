@@ -1,7 +1,4 @@
 #include "standard/2d/motion/motion.hpp"
-#include "component/component.hpp"
-#include "geometry/vector_2d.hpp"
-#include "hash.hpp"
 
 JamJar::Standard::_2D::Motion::Motion(Vector2D velocity, Vector2D acceleration, float angularVelocity,
                                       float angularAcceleration)

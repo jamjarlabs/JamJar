@@ -76,6 +76,8 @@ set(LIB_SOURCES
     src/system/stateful_system.cpp
     src/system/system_entity.cpp
     src/system/system.cpp
+    src/standard/2d/box2d/box2d_body.cpp
+    src/standard/2d/box2d/box2d_physics_system.cpp
     src/standard/2d/camera/camera.cpp
     src/standard/2d/interpolation/interpolation_system.cpp
     src/standard/2d/motion/motion_system.cpp

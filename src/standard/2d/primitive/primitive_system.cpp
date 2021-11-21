@@ -6,7 +6,6 @@
 #include "standard/2d/render/renderable.hpp"
 #include "standard/2d/transform/transform.hpp"
 #include <array>
-#include <iostream>
 #include <memory>
 
 const std::string JamJar::Standard::_2D::PrimitiveSystem::DEFAULT_PRIMITIVE_VERTEX_SHADER_NAME =

@@ -8,7 +8,7 @@
 namespace JamJar {
 class StatefulSystem : public System {
   protected:
-    virtual void registerEntity(Entity *entity, std::vector<Component *> components) = 0;
+    virtual bool registerEntity(Entity *entity, std::vector<Component *> components) = 0;
     virtual void removeEntity(unsigned int entityID) = 0;
 
   public:

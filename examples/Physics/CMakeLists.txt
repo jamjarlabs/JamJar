@@ -29,6 +29,7 @@ FetchContent_MakeAvailable(JamJarNative)
 set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2")
 
 set(EXE_SOURCES
+    src/input_listener.cpp
     src/main.cpp
     src/physics.cpp
 )
@@ -40,6 +41,7 @@ target_include_directories(Physics
         src
 )
 
+target_link_libraries(Physics PRIVATE box2d)
 target_link_libraries(Physics PRIVATE JamJarNative)
 
 configure_file(${PROJECT_SOURCE_DIR}/index.html ${PROJECT_BINARY_DIR}/index.html COPYONLY)
