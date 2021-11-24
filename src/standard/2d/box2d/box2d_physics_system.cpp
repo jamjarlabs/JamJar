@@ -85,7 +85,7 @@ bool JamJar::Standard::_2D::Box2DPhysicsSystem::registerEntity(Entity *entity, s
 
     std::vector<b2Vec2> shapePoints = std::vector<b2Vec2>();
     for (const auto &point : bodyComp->polygon.points) {
-        shapePoints.push_back(b2Vec2(point.x * transform->scale.x, point.y  * transform->scale.y));
+        shapePoints.push_back(b2Vec2(point.x * transform->scale.x, point.y * transform->scale.y));
     }
     shape.Set(shapePoints.data(), shapePoints.size());
 

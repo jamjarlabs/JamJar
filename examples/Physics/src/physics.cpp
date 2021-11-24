@@ -37,8 +37,7 @@ void Physics::OnStart() {
         std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(0, 30), JamJar::Vector2D(10, 10))));
     square->Add(std::move(std::make_unique<JamJar::Standard::_2D::Box2DBody>(
         JamJar::Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5}),
-        JamJar::Standard::_2D::Box2DBodyProperties(
-            {.density = 1.0f, .angularVelocity = 1.0f}))));
+        JamJar::Standard::_2D::Box2DBodyProperties({.density = 1.0f, .angularVelocity = 1.0f}))));
     square->Add(std::move(std::make_unique<JamJar::Standard::_2D::Primitive>(
         JamJar::Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5}),
         JamJar::Material(JamJar::Color(0, 1, 0, 1)))));

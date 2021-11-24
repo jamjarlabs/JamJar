@@ -1,12 +1,12 @@
 #include "input_listener.hpp"
-#include "message/message_payload.hpp"
-#include "standard/sdl2_input/sdl2_input_system.hpp"
 #include "entity/entity.hpp"
+#include "message/message_payload.hpp"
 #include "render/color.hpp"
 #include "render/texture.hpp"
 #include "standard/2d/box2d/box2d_body.hpp"
 #include "standard/2d/primitive/primitive.hpp"
 #include "standard/2d/transform/transform.hpp"
+#include "standard/sdl2_input/sdl2_input_system.hpp"
 #include <SDL2/SDL.h>
 #include <cmath>
 #include <memory>
@@ -47,15 +47,13 @@ void InputListener::OnMessage(JamJar::Message *message) {
                 primitiveShape.push_back(points[0]);
                 primitiveShape.push_back(points[1]);
 
-                shape->Add(std::move(
-                    std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(0, 30), JamJar::Vector2D(10, 10))));
+                shape->Add(std::move(std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(0, 30),
+                                                                                        JamJar::Vector2D(10, 10))));
                 shape->Add(std::move(std::make_unique<JamJar::Standard::_2D::Box2DBody>(
                     JamJar::Polygon(points),
-                    JamJar::Standard::_2D::Box2DBodyProperties(
-                        {.density = 1.0f, .angularVelocity = 1.0f}))));
+                    JamJar::Standard::_2D::Box2DBodyProperties({.density = 1.0f, .angularVelocity = 1.0f}))));
                 shape->Add(std::move(std::make_unique<JamJar::Standard::_2D::Primitive>(
-                    JamJar::Polygon(primitiveShape),
-                    JamJar::Material(JamJar::Color(0, 1, 0, 1)))));
+                    JamJar::Polygon(primitiveShape), JamJar::Material(JamJar::Color(0, 1, 0, 1)))));
             }
         }
         break;
