@@ -42,9 +42,27 @@ void JamJar::Standard::_2D::Box2DPhysicsSystem::update(float deltaTime) {
         }
 
         b2Body *body = bodies.at(entity.entity->id);
+
+        if (bodyComp->regenerate) {
+            world.DestroyBody(body);
+            auto fixture = body->GetFixtureList();
+            b2FixtureDef fixtureDef;
+            fixtureDef.density = fixture->GetDensity();
+            fixtureDef.friction = fixture->GetFriction();
+            fixtureDef.restitution = fixture->GetRestitution();
+            fixtureDef.restitutionThreshold = fixture->GetRestitutionThreshold();
+            fixtureDef.isSensor = fixture->IsSensor();
+            this->createFixture(body, transform, bodyComp, &fixtureDef);
+            body->DestroyFixture(fixture);
+            bodyComp->regenerate = false;
+        }
+
         auto position = body->GetPosition();
         transform->position.x = position.x;
         transform->position.y = position.y;
+
+        transform->scale.x = bodyComp->scale.x;
+        transform->scale.y = bodyComp->scale.y;
 
         transform->angle = body->GetAngle();
     }
@@ -65,6 +83,53 @@ bool JamJar::Standard::_2D::Box2DPhysicsSystem::registerEntity(Entity *entity, s
         }
     }
 
+    auto body = this->createBody(transform, bodyComp);
+
+    bodies[entity->id] = body;
+    bodyComp->SetBody(body);
+
+    return true;
+}
+
+void JamJar::Standard::_2D::Box2DPhysicsSystem::removeEntity(unsigned int entityID) {
+    MapSystem::removeEntity(entityID);
+    b2Body *body = bodies[entityID];
+    if (body != nullptr) {
+        world.DestroyBody(body);
+    }
+    bodies.erase(entityID);
+}
+
+b2Fixture *JamJar::Standard::_2D::Box2DPhysicsSystem::createFixture(b2Body *body, Transform *transform,
+                                                                    Box2DBody *bodyComp, b2FixtureDef *def) {
+    b2PolygonShape shape;
+
+    std::vector<b2Vec2> shapePoints = std::vector<b2Vec2>();
+    for (const auto &point : bodyComp->polygon.points) {
+        shapePoints.push_back(b2Vec2(point.x * transform->scale.x, point.y * transform->scale.y));
+    }
+    shape.Set(shapePoints.data(), shapePoints.size());
+    def->shape = &shape;
+    return body->CreateFixture(def);
+}
+
+b2Fixture *JamJar::Standard::_2D::Box2DPhysicsSystem::createFixture(b2Body *body, Transform *transform,
+                                                                    Box2DBody *bodyComp) {
+
+    b2FixtureDef fixtureDef;
+    fixtureDef.density = bodyComp->initializationProperties.density;
+    fixtureDef.friction = bodyComp->initializationProperties.friction;
+    fixtureDef.restitution = bodyComp->initializationProperties.restitution;
+    fixtureDef.restitutionThreshold = bodyComp->initializationProperties.restitutionThreshold;
+    fixtureDef.isSensor = bodyComp->initializationProperties.isSensor;
+
+    return this->createFixture(body, transform, bodyComp, &fixtureDef);
+}
+
+b2Body *JamJar::Standard::_2D::Box2DPhysicsSystem::createBody(Transform *transform, Box2DBody *bodyComp) {
+
+    bodyComp->scale = transform->scale;
+
     b2BodyDef bodyDef;
     bodyDef.position.Set(transform->position.x, transform->position.y);
     bodyDef.type = Box2DBody::BODY_TYPES.at(bodyComp->initializationProperties.bodyType);
@@ -83,31 +148,7 @@ bool JamJar::Standard::_2D::Box2DPhysicsSystem::registerEntity(Entity *entity, s
     b2Body *body = world.CreateBody(&bodyDef);
     b2PolygonShape shape;
 
-    std::vector<b2Vec2> shapePoints = std::vector<b2Vec2>();
-    for (const auto &point : bodyComp->polygon.points) {
-        shapePoints.push_back(b2Vec2(point.x * transform->scale.x, point.y * transform->scale.y));
-    }
-    shape.Set(shapePoints.data(), shapePoints.size());
+    this->createFixture(body, transform, bodyComp);
 
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &shape;
-    fixtureDef.density = bodyComp->initializationProperties.density;
-    fixtureDef.friction = bodyComp->initializationProperties.friction;
-    fixtureDef.restitution = bodyComp->initializationProperties.restitution;
-    fixtureDef.restitutionThreshold = bodyComp->initializationProperties.restitutionThreshold;
-    fixtureDef.isSensor = bodyComp->initializationProperties.isSensor;
-    body->CreateFixture(&fixtureDef);
-    bodies[entity->id] = body;
-    bodyComp->SetBody(body);
-
-    return true;
-}
-
-void JamJar::Standard::_2D::Box2DPhysicsSystem::removeEntity(unsigned int entityID) {
-    MapSystem::removeEntity(entityID);
-    b2Body *body = bodies[entityID];
-    if (body != nullptr) {
-        world.DestroyBody(body);
-    }
-    bodies.erase(entityID);
+    return body;
 }

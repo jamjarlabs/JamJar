@@ -37,12 +37,20 @@ class Box2DBody : public Component {
 
     JamJar::Polygon polygon;
     Box2DBodyProperties initializationProperties;
+    JamJar::Vector2D scale;
+    bool regenerate;
 
     /**
      * Do not use this method unless you know what you are doing! This function should really only be used by the
      * Box2DPhysicsSystem.
      */
     void SetBody(b2Body *body);
+
+    void SetScale(JamJar::Vector2D scale);
+
+    void SetPosition(JamJar::Vector2D position);
+
+    void SetAngle(float angle);
 
     Vector2D GetPosition() const;
 

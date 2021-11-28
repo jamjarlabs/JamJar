@@ -12,11 +12,24 @@ std::unordered_map<b2BodyType, JamJar::Standard::_2D::Box2DBodyType>
 
 JamJar::Standard::_2D::Box2DBody::Box2DBody(Polygon polygon, Box2DBodyProperties properties)
     : Component(JamJar::Standard::_2D::Box2DBody::KEY), polygon(polygon), initializationProperties(properties),
-      body(nullptr) {}
+      body(nullptr), regenerate(false) {}
 
 JamJar::Standard::_2D::Box2DBody::Box2DBody(Polygon polygon) : Box2DBody(polygon, Box2DBodyProperties()) {}
 
 void JamJar::Standard::_2D::Box2DBody::SetBody(b2Body *body) { this->body = body; }
+
+void JamJar::Standard::_2D::Box2DBody::SetScale(JamJar::Vector2D scale) {
+    this->scale = scale;
+    this->regenerate = true;
+}
+
+void JamJar::Standard::_2D::Box2DBody::SetPosition(JamJar::Vector2D position) {
+    this->body->SetTransform(b2Vec2(position.x, position.y), this->body->GetAngle());
+}
+
+void JamJar::Standard::_2D::Box2DBody::SetAngle(float angle) {
+    this->body->SetTransform(this->body->GetPosition(), angle);
+}
 
 JamJar::Vector2D JamJar::Standard::_2D::Box2DBody::GetPosition() const {
     auto pos = this->body->GetPosition();

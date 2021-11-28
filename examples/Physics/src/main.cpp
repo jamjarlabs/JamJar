@@ -1,6 +1,7 @@
 #include "emscripten/html5.h"
 #include "entity/entity_manager.hpp"
 #include "game.hpp"
+#include "geometry/vector_2d.hpp"
 #include "input_listener.hpp"
 #include "message/message_bus.hpp"
 #include "message/message_payload.hpp"

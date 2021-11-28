@@ -10,6 +10,8 @@ The `PrimitiveSystem` allows rendering `Primitive` components.
 To set up a `PrimitiveSystem`, you simply need to provide a message bus.
 
 ```c++
+#include "standard/2d/primitive/primitive_system.hpp"
+...
 new JamJar::Standard::_2D::PrimitiveSystem(messageBus);
 ```
 

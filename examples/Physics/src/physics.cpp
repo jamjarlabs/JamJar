@@ -1,6 +1,7 @@
 #include "physics.hpp"
 #include "entity/entity.hpp"
 #include "game.hpp"
+#include "geometry/polygon.hpp"
 #include "geometry/vector_2d.hpp"
 #include "hash.hpp"
 #include "message/message_payload.hpp"

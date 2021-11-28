@@ -27,7 +27,8 @@ See the [examples directory for working code examples](./examples).
 ## Dependencies
 
 - [STB](https://github.com/nothings/stb) - MIT/Public domain
-- [SDL2](https://github.com/libsdl-org/SDL) (v2.0.9) - ZLib
+- [SDL2](https://github.com/libsdl-org/SDL) - ZLib
+- [Box2D](https://github.com/erincatto/box2d) - MIT
 
 **Dev Dependencies**
 
