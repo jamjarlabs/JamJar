@@ -12,7 +12,7 @@ You can see this structure in the headers for the library, it is structured like
 - `game.hpp`
 - `message/message.hpp`
 - `geometry/vector_2d.hpp`
-- `standard/motion/motion.hpp`
+- `standard/2d/sprite/sprite.hpp`
 
 As you can see anything that is in the `standard/` directory/path is in the standard library.
 

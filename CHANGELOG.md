@@ -12,10 +12,11 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 - Modular design, choose to remove parts of the engine and replace parts.
 - Customisable render pipeline.
 - Rendering to a WebGL2 canvas.
-- Simple motion based physics.
 - Interpolation between frames.
 - Orthographic camera projection.
 - Sprite rendering.
 - Image loading from filesystem (virtual or otherwise).
+- Input using SDL2 events (keyboard and mouse).
+- Box2D based Physics system.
 
 [Unreleased]: https://github.com/jamjarlabs/JamJarNative

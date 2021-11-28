@@ -20,17 +20,18 @@ must return `true` if it should be tracked as a system entity, or `false` if it 
 An example of an evaluator looks like this:
 
 ```c++
-bool JamJar::Standard::_2D::MotionSystem::evaluator(Entity *entity, std::vector<JamJar::Component *> components) {
-    bool hasMotion = false;
+bool JamJar::Standard::_2D::SpriteSystem::evaluator(Entity *entity,
+                                                    const std::vector<JamJar::Component *> &components) {
+    bool hasSprite = false;
     bool hasTransform = false;
     for (const auto &component : components) {
-        if (component->m_key == JamJar::Standard::_2D::Motion::KEY) {
-            hasMotion = true;
-        } else if (component->m_key == JamJar::Standard::_2D::Transform::KEY) {
+        if (component->key == JamJar::Standard::_2D::Sprite::KEY) {
+            hasSprite = true;
+        }
+        if (component->key == JamJar::Standard::_2D::Transform::KEY) {
             hasTransform = true;
         }
-
-        if (hasMotion && hasTransform) {
+        if (hasSprite && hasTransform) {
             return true;
         }
     }
@@ -38,7 +39,7 @@ bool JamJar::Standard::_2D::MotionSystem::evaluator(Entity *entity, std::vector<
 }
 ```
 
-This evaluator is used in the MotionSystem to make sure that only components that have a Motion component and a
+This evaluator is used in the SpriteSystem to make sure that only components that have a Sprite component and a
 Transform component are tracked.
 
 ## System Entity

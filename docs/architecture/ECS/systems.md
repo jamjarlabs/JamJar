@@ -5,8 +5,8 @@ A system is simply a piece of logic that runs.
 ## Logic
 
 The description above is pretty vague, but this is because a system is not constrained in what it can and can't do,
-it can operate on entities and components (for example the MotionSystem, which updates position and motion data every
-update), or it can operate without any entities and components, sending and receiving messages (for example a system
+it can operate on entities and components (for example the SpriteSystem, which generates renderables from Sprites and
+Transforms), or it can operate without any entities and components, sending and receiving messages (for example a system
 that stops the game when the player is destroyed). These systems are Stateless Systems (does not track entities or
 components) and Stateful Systems (tracks entities and components).
 

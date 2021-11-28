@@ -7,7 +7,6 @@
 #include "render/color.hpp"
 #include "render/texture.hpp"
 #include "standard/2d/camera/camera.hpp"
-#include "standard/2d/motion/motion.hpp"
 #include "standard/2d/primitive/primitive.hpp"
 #include "standard/2d/transform/transform.hpp"
 #include "standard/file_texture/file_texture_request.hpp"
@@ -25,8 +24,6 @@ void Primitives::OnStart() {
     auto triangle = new JamJar::Entity(messageBus);
     triangle->Add(std::move(
         std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(30, 0), JamJar::Vector2D(30, 30))));
-    triangle->Add(std::move(
-        std::make_unique<JamJar::Standard::_2D::Motion>(JamJar::Vector2D(0, 0), JamJar::Vector2D(0, 0), -0.2)));
     triangle->Add(std::move(std::make_unique<JamJar::Standard::_2D::Primitive>(
         JamJar::Polygon({0, 0.5, 0.5, -0.5, -0.5, -0.5, 0, 0.5}), JamJar::Material(JamJar::Color(0, 1, 0, 1)))));
 
@@ -47,8 +44,6 @@ void Primitives::OnStart() {
     auto polygon = new JamJar::Entity(messageBus);
     polygon->Add(std::move(
         std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(-30, 0), JamJar::Vector2D(30, 30))));
-    polygon->Add(std::move(
-        std::make_unique<JamJar::Standard::_2D::Motion>(JamJar::Vector2D(0, 0), JamJar::Vector2D(0, 0), 0.2)));
     polygon->Add(std::move(std::make_unique<JamJar::Standard::_2D::Primitive>(
         JamJar::Polygon(points), JamJar::Material(JamJar::Color(0, 1, 1, 1)))));
 
