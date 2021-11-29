@@ -132,6 +132,7 @@ endif()
 add_subdirectory (examples/Sprites)
 add_subdirectory (examples/Primitives)
 add_subdirectory (examples/Physics)
+add_subdirectory (examples/PhysicsResizing)
 
 ### ===== clang-format ===== ###
 

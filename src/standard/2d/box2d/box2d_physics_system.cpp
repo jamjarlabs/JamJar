@@ -29,6 +29,7 @@ bool JamJar::Standard::_2D::Box2DPhysicsSystem::evaluator(Entity *entity,
 void JamJar::Standard::_2D::Box2DPhysicsSystem::OnMessage(JamJar::Message *message) { MapSystem::OnMessage(message); }
 
 void JamJar::Standard::_2D::Box2DPhysicsSystem::update(float deltaTime) {
+    MapSystem::update(deltaTime);
     world.Step(deltaTime, 6, 2);
     for (const auto &entityPair : this->entities) {
         auto entity = entityPair.second;
@@ -44,7 +45,6 @@ void JamJar::Standard::_2D::Box2DPhysicsSystem::update(float deltaTime) {
         b2Body *body = bodies.at(entity.entity->id);
 
         if (bodyComp->regenerate) {
-            world.DestroyBody(body);
             auto fixture = body->GetFixtureList();
             b2FixtureDef fixtureDef;
             fixtureDef.density = fixture->GetDensity();
