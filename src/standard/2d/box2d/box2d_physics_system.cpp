@@ -1,12 +1,25 @@
 #include "standard/2d/box2d/box2d_physics_system.hpp"
+#include "message/message_payload.hpp"
 #include "standard/2d/box2d/box2d_body.hpp"
 #include "standard/2d/transform/transform.hpp"
-#include <iostream>
 #include <unordered_map>
+
+JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DContactListener::Box2DContactListener(Box2DPhysicsSystem *system)
+    : system(system) {}
+
+void JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DContactListener::BeginContact(b2Contact *contact) {
+    this->system->beginContact(contact);
+}
+
+void JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DContactListener::EndContact(b2Contact *contact) {
+    this->system->endContact(contact);
+}
 
 JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DPhysicsSystem(MessageBus *messageBus, JamJar::Vector2D gravity)
     : MapSystem(messageBus, JamJar::Standard::_2D::Box2DPhysicsSystem::evaluator),
-      world(b2World(b2Vec2(gravity.x, gravity.y))) {}
+      world(b2World(b2Vec2(gravity.x, gravity.y))) {
+    this->world.SetContactListener(new Box2DContactListener(this));
+}
 
 bool JamJar::Standard::_2D::Box2DPhysicsSystem::evaluator(Entity *entity,
                                                           const std::vector<JamJar::Component *> &components) {
@@ -66,6 +79,22 @@ void JamJar::Standard::_2D::Box2DPhysicsSystem::update(float deltaTime) {
 
         transform->angle = body->GetAngle();
     }
+
+    for (const auto &collision : this->collisions) {
+        switch (collision.type) {
+        case Box2DCollisionType::ENTER: {
+            this->messageBus->Publish(
+                std::make_unique<JamJar::MessagePayload<Box2DCollision>>(MESSAGE_COLLISION_ENTER, collision));
+            break;
+        }
+        case Box2DCollisionType::EXIT: {
+            this->messageBus->Publish(
+                std::make_unique<JamJar::MessagePayload<Box2DCollision>>(MESSAGE_COLLISION_EXIT, collision));
+            break;
+        }
+        }
+    }
+    this->collisions.clear();
 }
 
 bool JamJar::Standard::_2D::Box2DPhysicsSystem::registerEntity(Entity *entity, std::vector<Component *> components) {
@@ -83,7 +112,7 @@ bool JamJar::Standard::_2D::Box2DPhysicsSystem::registerEntity(Entity *entity, s
         }
     }
 
-    auto body = this->createBody(transform, bodyComp);
+    auto body = this->createBody(entity, transform, bodyComp);
 
     bodies[entity->id] = body;
     bodyComp->SetBody(body);
@@ -126,11 +155,13 @@ b2Fixture *JamJar::Standard::_2D::Box2DPhysicsSystem::createFixture(b2Body *body
     return this->createFixture(body, transform, bodyComp, &fixtureDef);
 }
 
-b2Body *JamJar::Standard::_2D::Box2DPhysicsSystem::createBody(Transform *transform, Box2DBody *bodyComp) {
+b2Body *JamJar::Standard::_2D::Box2DPhysicsSystem::createBody(Entity *entity, Transform *transform,
+                                                              Box2DBody *bodyComp) {
 
     bodyComp->scale = transform->scale;
 
     b2BodyDef bodyDef;
+    bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(entity);
     bodyDef.position.Set(transform->position.x, transform->position.y);
     bodyDef.type = Box2DBody::BODY_TYPES.at(bodyComp->initializationProperties.bodyType);
     bodyDef.linearVelocity = b2Vec2(bodyComp->initializationProperties.linearVelocity.x,
@@ -151,4 +182,24 @@ b2Body *JamJar::Standard::_2D::Box2DPhysicsSystem::createBody(Transform *transfo
     this->createFixture(body, transform, bodyComp);
 
     return body;
+}
+
+JamJar::Entity *getEntityFromFixture(b2Fixture *fixture) {
+    b2Body *body = fixture->GetBody();
+    b2BodyUserData userData = body->GetUserData();
+    return (JamJar::Entity *)userData.pointer;
+}
+
+void JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DPhysicsSystem::beginContact(b2Contact *contact) {
+    auto aEntity = getEntityFromFixture(contact->GetFixtureA());
+    auto bEntity = getEntityFromFixture(contact->GetFixtureB());
+    this->collisions.push_back(Box2DCollision(
+        {.aID = aEntity->id, .bID = bEntity->id, .contact = contact, .type = Box2DCollisionType::ENTER}));
+}
+
+void JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DPhysicsSystem::endContact(b2Contact *contact) {
+    auto aEntity = getEntityFromFixture(contact->GetFixtureA());
+    auto bEntity = getEntityFromFixture(contact->GetFixtureB());
+    this->collisions.push_back(
+        Box2DCollision({.aID = aEntity->id, .bID = bEntity->id, .contact = contact, .type = Box2DCollisionType::EXIT}));
 }

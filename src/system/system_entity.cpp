@@ -9,6 +9,8 @@ JamJar::SystemEntity::SystemEntity(Entity *entity, const std::vector<JamJar::Com
     }
 }
 
+bool JamJar::SystemEntity::Has(uint32_t key) { return this->m_components.count(key) != 0; }
+
 JamJar::Component *JamJar::SystemEntity::Get(uint32_t key) { return this->m_components[key]; }
 
 void JamJar::SystemEntity::Remove(uint32_t key) {

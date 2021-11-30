@@ -129,6 +129,7 @@ if(JAMJAR_NATIVE_COMPILE_UNIT_TESTS)
     gtest_discover_tests(JamJarNativeTests)
 endif()
 
+add_subdirectory (examples/Collision)
 add_subdirectory (examples/Sprites)
 add_subdirectory (examples/Primitives)
 add_subdirectory (examples/Physics)

@@ -1,5 +1,5 @@
-#ifndef SIMPLE_GAME_HPP
-#define SIMPLE_GAME_HPP
+#ifndef PHYSICS_RESIZING_HPP
+#define PHYSICS_RESIZING_HPP
 
 #include "game.hpp"
 #include "message/message_bus.hpp"
