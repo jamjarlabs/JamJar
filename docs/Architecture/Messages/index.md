@@ -1,6 +1,6 @@
 # Messages
 
-JamJarNative extensively uses *messages* to send information between different parts of the engine. This allows for
+JamJar extensively uses *messages* to send information between different parts of the engine. This allows for
 different parts of the system to be decoupled and not directly depend on eachother. The pattern that messages use
 is broadcast and listen - a message is broadcast, and parts of the engine can *subscribe* to message types to listen
 for. This means a single message may be sent to multiple listeners, or *subscribers*.

@@ -13,20 +13,20 @@ than modifiying the `Transform`.
 
 ## Dependencies
 
-See the dependencies for [JamJarNative here](../../README.md#Dependencies).
+See the dependencies for [JamJar here](../../README.md#Dependencies).
 
 ## Running this example
 
-1. Clone down the JamJarNative project:
+1. Clone down the JamJar project:
 
 ```bash
-git clone git@github.com:jamjarlabs/JamJarNative.git
+git clone git@github.com:jamjarlabs/JamJar.git
 ```
 
 2. Navigate the cloned directory:
 
 ```bash
-cd JamJarNative
+cd JamJar
 ```
 
 3. Use `cmake` to generate the build system and pull down any dependencies:

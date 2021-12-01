@@ -3,7 +3,7 @@
 A `DrawMode` defines how a `Renderable` is drawn by a `RenderSystem`. These are roughly mapped to
 [OpenGL Primitives](https://www.khronos.org/opengl/wiki/Primitive).
 
-JamJarNative has the following supported draw modes:
+JamJar has the following supported draw modes:
 
 - `POINTS` - Each vertex is a single point.
 - `LINES` - Every two vertices is a line.

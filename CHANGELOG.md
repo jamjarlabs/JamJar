@@ -18,5 +18,6 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 - Image loading from filesystem (virtual or otherwise).
 - Input using SDL2 events (keyboard and mouse).
 - Box2D based Physics system.
+- Collision detection using Box2D.
 
-[Unreleased]: https://github.com/jamjarlabs/JamJarNative
+[Unreleased]: https://github.com/jamjarlabs/JamJar

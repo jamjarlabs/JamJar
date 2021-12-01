@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.14)
 
 set (CMAKE_CXX_STANDARD 17)
 
-project(JamJarNative VERSION 0.0.0)
+project(JamJar VERSION 0.0.0)
 
-option(JAMJAR_NATIVE_COMPILE_UNIT_TESTS "Compile JamJarNative unit tests" OFF)
+option(JAMJAR_NATIVE_COMPILE_UNIT_TESTS "Compile JamJar unit tests" OFF)
 
 ### ===== dependencies ===== ###
 
@@ -98,14 +98,14 @@ set(TEST_SOURCES
     src/game_test.cpp
 )
 
-add_library(JamJarNative
+add_library(JamJar
     ${LIB_SOURCES}
 )
 
-target_link_libraries(JamJarNative PRIVATE stb_image)
-target_link_libraries(JamJarNative PRIVATE box2d)
+target_link_libraries(JamJar PRIVATE stb_image)
+target_link_libraries(JamJar PRIVATE box2d)
 
-target_include_directories(JamJarNative
+target_include_directories(JamJar
     PUBLIC
         include
     PRIVATE
@@ -115,18 +115,18 @@ target_include_directories(JamJarNative
 if(JAMJAR_NATIVE_COMPILE_UNIT_TESTS)
     # Unit tests
     add_executable(
-        JamJarNativeTests
+        JamJarTests
         ${TEST_SOURCES}
     )
 
     target_link_libraries(
-        JamJarNativeTests
-        JamJarNative
+        JamJarTests
+        JamJar
         gtest_main
     )
 
     include(GoogleTest)
-    gtest_discover_tests(JamJarNativeTests)
+    gtest_discover_tests(JamJarTests)
 endif()
 
 add_subdirectory (examples/Collision)

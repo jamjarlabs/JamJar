@@ -20,7 +20,7 @@ Steps to reproduce the behavior:
 A clear and concise description of what you expected to happen.
 
 **Version:**
-JamJarNative version.
+JamJar version.
 
 **Additional context**
 Add any other context about the problem here.

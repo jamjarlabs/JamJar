@@ -1,6 +1,6 @@
 # ECS
 
-JamJarNative uses an *Entity Component System* (ECS) design at its core, this pattern drives much of the
+JamJar uses an *Entity Component System* (ECS) design at its core, this pattern drives much of the
 architecture of the engine.
 
 ## Overview

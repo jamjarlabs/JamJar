@@ -1,6 +1,6 @@
-# JamJarNative
+# JamJar
 
-JamJarNative is a 2D, C++ game engine that primarily targets running in the browser through web assembly.
+JamJar is a 2D, C++ game engine that primarily targets running in the browser through web assembly.
 
 ## Features
 
@@ -15,6 +15,7 @@ JamJarNative is a 2D, C++ game engine that primarily targets running in the brow
 - Image loading from filesystem (virtual or otherwise).
 - Input using SDL2 events (keyboard and mouse).
 - Box2D based Physics system.
+- Collision detection using Box2D.
 
 ## Getting Started
 
