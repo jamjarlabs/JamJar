@@ -1,6 +1,6 @@
-# JamJarNative
+# JamJar
 
-JamJarNative is a 2D, C++ game engine that primarily targets running in the browser through web assembly.
+JamJar is a 2D, C++ game engine that primarily targets running in the browser through web assembly.
 
 ## Features
 
@@ -9,12 +9,13 @@ JamJarNative is a 2D, C++ game engine that primarily targets running in the brow
 - Modular design, choose to remove parts of the engine and replace parts.
 - Customisable render pipeline.
 - Rendering to a WebGL2 canvas.
-- Simple motion based physics.
 - Interpolation between frames.
 - Orthographic camera projection.
 - Sprites.
 - Image loading from filesystem (virtual or otherwise).
 - Input using SDL2 events (keyboard and mouse).
+- Box2D based Physics system.
+- Collision detection using Box2D.
 
 ## Getting Started
 
@@ -27,7 +28,8 @@ See the [examples directory for working code examples](./examples).
 ## Dependencies
 
 - [STB](https://github.com/nothings/stb) - MIT/Public domain
-- [SDL2](https://github.com/libsdl-org/SDL) (v2.0.9) - ZLib
+- [SDL2](https://github.com/libsdl-org/SDL) - ZLib
+- [Box2D](https://github.com/erincatto/box2d) - MIT
 
 **Dev Dependencies**
 

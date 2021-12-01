@@ -1,6 +1,6 @@
 # Contributing
 
-Any contributions to the JamJarNative game engine are welcome, please review our [Code of Conduct](./CODE_OF_CONDUCT.md)
+Any contributions to the JamJar game engine are welcome, please review our [Code of Conduct](./CODE_OF_CONDUCT.md)
 before making a contribution.
 
 ## Raising an Issue
@@ -17,7 +17,7 @@ Please use the feature request template for requesting a new feature.
 
 ### Requesting Help
 
-Please use the [discussions](https://github.com/jamjarlabs/JamJarNative/discussions) to raise any requests for help or
+Please use the [discussions](https://github.com/jamjarlabs/JamJar/discussions) to raise any requests for help or
 general queries.
 
 ## Developing
@@ -67,7 +67,7 @@ This command will generate some build files in the `build/` directory, inside wh
 emmake make
 ```
 
-This will generate the `build/libJamJarNative.a` library archive which can be used when building game executables.
+This will generate the `build/libJamJar.a` library archive which can be used when building game executables.
 
 ##### Running unit tests
 

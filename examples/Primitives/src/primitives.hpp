@@ -1,5 +1,5 @@
-#ifndef SIMPLE_GAME_HPP
-#define SIMPLE_GAME_HPP
+#ifndef PRIMITIVES_HPP
+#define PRIMITIVES_HPP
 
 #include "game.hpp"
 #include "message/message_bus.hpp"

@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.14)
 
 set (CMAKE_CXX_STANDARD 17)
 
-project(JamJarNative VERSION 0.0.0)
+project(JamJar VERSION 0.0.0)
 
-option(JAMJAR_NATIVE_COMPILE_UNIT_TESTS "Compile JamJarNative unit tests" OFF)
+option(JAMJAR_NATIVE_COMPILE_UNIT_TESTS "Compile JamJar unit tests" OFF)
 
 ### ===== dependencies ===== ###
 
@@ -20,6 +20,18 @@ FetchContent_MakeAvailable(stb_image)
 
 add_library(stb_image INTERFACE)
 target_include_directories(stb_image INTERFACE ${stb_image_SOURCE_DIR})
+
+set(BOX2D_BUILD_DOCS OFF CACHE BOOL "Build Box2D docs")
+set(BOX2D_BUILD_UNIT_TESTS OFF CACHE BOOL "Build Box2D unit tests")
+set(BOX2D_BUILD_TESTBED OFF CACHE BOOL "Build Box2D testbed")
+
+FetchContent_Declare(
+    box2d
+    GIT_REPOSITORY https://github.com/erincatto/Box2D.git
+    GIT_TAG v2.4.1
+)
+
+FetchContent_MakeAvailable(box2d)
 
 if(JAMJAR_NATIVE_COMPILE_UNIT_TESTS)
     FetchContent_Declare(
@@ -39,7 +51,9 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2")
+if (EMSCRIPTEN)
+    set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2")
+endif()
 
 set(LIB_SOURCES
     src/stb_image.cpp
@@ -62,10 +76,10 @@ set(LIB_SOURCES
     src/system/stateful_system.cpp
     src/system/system_entity.cpp
     src/system/system.cpp
+    src/standard/2d/box2d/box2d_body.cpp
+    src/standard/2d/box2d/box2d_physics_system.cpp
     src/standard/2d/camera/camera.cpp
     src/standard/2d/interpolation/interpolation_system.cpp
-    src/standard/2d/motion/motion_system.cpp
-    src/standard/2d/motion/motion.cpp
     src/standard/2d/primitive/primitive_system.cpp
     src/standard/2d/primitive/primitive.cpp
     src/standard/2d/primitive/webgl2_default_primitive_shaders.cpp
@@ -84,13 +98,14 @@ set(TEST_SOURCES
     src/game_test.cpp
 )
 
-add_library(JamJarNative
+add_library(JamJar
     ${LIB_SOURCES}
 )
 
-target_link_libraries(JamJarNative PRIVATE stb_image)
+target_link_libraries(JamJar PRIVATE stb_image)
+target_link_libraries(JamJar PRIVATE box2d)
 
-target_include_directories(JamJarNative
+target_include_directories(JamJar
     PUBLIC
         include
     PRIVATE
@@ -100,22 +115,25 @@ target_include_directories(JamJarNative
 if(JAMJAR_NATIVE_COMPILE_UNIT_TESTS)
     # Unit tests
     add_executable(
-        JamJarNativeTests
+        JamJarTests
         ${TEST_SOURCES}
     )
 
     target_link_libraries(
-        JamJarNativeTests
-        JamJarNative
+        JamJarTests
+        JamJar
         gtest_main
     )
 
     include(GoogleTest)
-    gtest_discover_tests(JamJarNativeTests)
+    gtest_discover_tests(JamJarTests)
 endif()
 
+add_subdirectory (examples/Collision)
 add_subdirectory (examples/Sprites)
 add_subdirectory (examples/Primitives)
+add_subdirectory (examples/Physics)
+add_subdirectory (examples/PhysicsResizing)
 
 ### ===== clang-format ===== ###
 

@@ -13,6 +13,7 @@ class SystemEntity {
   public:
     Entity *entity;
     explicit SystemEntity(Entity *entity, const std::vector<JamJar::Component *> &components);
+    bool Has(uint32_t key);
     JamJar::Component *Get(uint32_t key);
     void Remove(uint32_t key);
     void Add(std::unique_ptr<JamJar::Component> component);

@@ -14,7 +14,7 @@ class MapSystem : public StatefulSystem {
 
   protected:
     std::map<unsigned int, SystemEntity> entities{};
-    void registerEntity(Entity *entity, std::vector<Component *> components) override;
+    bool registerEntity(Entity *entity, std::vector<Component *> components) override;
     void removeEntity(unsigned int entityID) override;
 
   public:
