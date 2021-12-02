@@ -10,6 +10,7 @@
 #include "standard/2d/webgl2/webgl2_system.hpp"
 #include "standard/file_texture/file_texture_system.hpp"
 #include "standard/sdl2_input/sdl2_input_system.hpp"
+#include "window.hpp"
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <memory>
@@ -18,18 +19,8 @@
 
 int main(int argc, char *argv[]) {
 
-    SDL_Init(SDL_INIT_VIDEO);
-
-    auto window =
-        SDL_CreateWindow("game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1024, 576, SDL_WINDOW_OPENGL);
-
-    std::cout << "game start" << std::endl;
-
-    // Set up canvas
-    EmscriptenWebGLContextAttributes attrs;
-    emscripten_webgl_init_context_attributes(&attrs);
-    auto context = emscripten_webgl_create_context("#canvas", &attrs);
-    auto res = emscripten_webgl_make_context_current(context);
+    auto window = JamJar::GetWindow("Sprites");
+    auto context = JamJar::GetCanvasContext();
 
     auto messageBus = new JamJar::MessageBus();
     new JamJar::EntityManager(messageBus);

@@ -58,6 +58,7 @@ endif()
 set(LIB_SOURCES
     src/stb_image.cpp
     src/game.cpp
+    src/window.cpp
     src/component/component_manager.cpp
     src/component/component.cpp
     src/entity/entity_manager.cpp
