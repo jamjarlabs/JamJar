@@ -1,3 +1,7 @@
+[![Build](https://github.com/jamjarlabs/JamJar/workflows/build/badge.svg)](https://github.com/jamjarlabs/JamJar/actions)
+[![Documentation Status](https://readthedocs.org/projects/jamjar/badge/?version=latest)](https://engine.jamjarlabs.com/en/latest/?badge=latest)
+[![MIT License](https://img.shields.io/:license-mit-blue.svg)](https://choosealicense.com/licenses/mit/)
+
 # JamJar
 
 JamJar is a 2D, C++ game engine that primarily targets running in the browser through web assembly.
@@ -16,10 +20,15 @@ JamJar is a 2D, C++ game engine that primarily targets running in the browser th
 - Input using SDL2 events (keyboard and mouse).
 - Box2D based Physics system.
 - Collision detection using Box2D.
+- Window management system.
 
 ## Getting Started
 
 // TODO: add this guide
+
+## Documentation
+
+See the [documentation for guides and architecture details](https://engine.jamjarlabs.com/en/latest/).
 
 ## Examples
 
