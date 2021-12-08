@@ -40,8 +40,10 @@ const std::unordered_map<JamJar::Standard::_2D::WebGL2ShaderType, GLenum> SHADER
     {JamJar::Standard::_2D::WebGL2ShaderType::VERTEX, GL_VERTEX_SHADER},
     {JamJar::Standard::_2D::WebGL2ShaderType::FRAGMENT, GL_FRAGMENT_SHADER}};
 
-JamJar::Standard::_2D::WebGL2System::WebGL2System(MessageBus *messageBus, EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context)
-    : RenderSystem(messageBus, WebGL2System::evaluator), m_context(context), m_defaultTexture(JamJar::Texture(0)) {
+JamJar::Standard::_2D::WebGL2System::WebGL2System(MessageBus *messageBus, SDL_Window *window,
+                                                  EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context)
+    : RenderSystem(messageBus, WebGL2System::evaluator), window(window), m_context(context),
+      m_defaultTexture(JamJar::Texture(0)) {
     this->messageBus->Subscribe(this, JamJar::Standard::FileTextureSystem::MESSAGE_RESPONSE_FILE_TEXTURE_LOAD);
     this->messageBus->Subscribe(this, JamJar::Standard::_2D::WebGL2System::MESSAGE_LOAD_SHADER);
 
@@ -174,14 +176,16 @@ void JamJar::Standard::_2D::WebGL2System::render(float deltaTime) {
         auto transform =
             static_cast<JamJar::Standard::_2D::Transform *>(cameraEntity.Get(JamJar::Standard::_2D::Transform::KEY));
 
-        float canvasWidth = 1024;
-        float canvasHeight = 576;
+        int canvasWidth;
+        int canvasHeight;
+
+        SDL_GetWindowSize(this->window, &canvasWidth, &canvasHeight);
 
         // realWidth and realHeight are the width and height of the viewport
         // relative to the canvas with and height, rather than the normalised
         // scale of viewportScale
-        auto realWidth = canvasWidth * camera->viewportScale.x;
-        auto realHeight = canvasHeight * camera->viewportScale.y;
+        auto realWidth = (float)canvasWidth * camera->viewportScale.x;
+        auto realHeight = (float)canvasHeight * camera->viewportScale.y;
 
         // realPosition is the center position of the camera viewport in relation to
         // the canvas converted from the -1 to +1 coordinates of the viewportPosition

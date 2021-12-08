@@ -17,4 +17,4 @@ You can see this structure in the headers for the library, it is structured like
 As you can see anything that is in the `standard/` directory/path is in the standard library.
 
 [Entity Component System]:./ECS/index.md
-[Messages]:./messages/index.md
+[Messages]:./Messages/index.md

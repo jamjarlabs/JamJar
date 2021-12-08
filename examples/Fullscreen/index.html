@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Physics Resizing</title>
+        <title>Fullscreen</title>
         <style>
             html,
             body {
@@ -19,6 +19,7 @@
                 display: flex;
                 margin: auto;
                 width: 100%;
+                height: 100%;
                 flex-direction: column;
                 justify-content: center;
                 flex-grow: 1;
@@ -34,7 +35,7 @@
         <meta name="HandheldFriendly" content="true" />
     </head>
     <body>
-        <h1>Physics Resizing</h1>
+        <h1>Fullscreen</h1>
         <div id="canvas-wrapper">
             <canvas id="canvas" oncontextmenu="return false;"></canvas>
         </div>
@@ -42,6 +43,6 @@
             Module = {};
             Module['canvas'] = document.getElementById("canvas");
         </script>
-        <script src="./PhysicsResizing"></script>
+        <script src="./Fullscreen"></script>
     </body>
 </html>

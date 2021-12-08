@@ -58,6 +58,7 @@ endif()
 set(LIB_SOURCES
     src/stb_image.cpp
     src/game.cpp
+    src/window.cpp
     src/component/component_manager.cpp
     src/component/component.cpp
     src/entity/entity_manager.cpp
@@ -92,6 +93,7 @@ set(LIB_SOURCES
     src/standard/2d/webgl2/webgl2_system.cpp
     src/standard/file_texture/file_texture_system.cpp
     src/standard/sdl2_input/sdl2_input_system.cpp
+    src/standard/window/window_system.cpp
 )
 
 set(TEST_SOURCES
@@ -130,6 +132,7 @@ if(JAMJAR_NATIVE_COMPILE_UNIT_TESTS)
 endif()
 
 add_subdirectory (examples/Collision)
+add_subdirectory (examples/Fullscreen)
 add_subdirectory (examples/Sprites)
 add_subdirectory (examples/Primitives)
 add_subdirectory (examples/Physics)

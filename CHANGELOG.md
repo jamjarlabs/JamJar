@@ -7,6 +7,7 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
 ### Added
+
 - Entity-Component-System design.
 - Messaging through a centralised message bus.
 - Modular design, choose to remove parts of the engine and replace parts.
@@ -19,5 +20,7 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 - Input using SDL2 events (keyboard and mouse).
 - Box2D based Physics system.
 - Collision detection using Box2D.
+- Window management system.
+- Fullscreen control.
 
 [Unreleased]: https://github.com/jamjarlabs/JamJar

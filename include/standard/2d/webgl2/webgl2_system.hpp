@@ -15,6 +15,7 @@
 #include "standard/file_texture/file_texture_response.hpp"
 #include "system/evaluator.hpp"
 #include <GLES3/gl3.h>
+#include <SDL2/SDL.h>
 #include <cstdint>
 #include <string>
 #include <unordered_map>
@@ -27,6 +28,7 @@ struct WebGL2LoadedShader {
 
 class WebGL2System : public RenderSystem {
   private:
+    SDL_Window *window;
     EMSCRIPTEN_WEBGL_CONTEXT_HANDLE m_context{};
     std::unordered_map<std::uint32_t, GLuint> textures;
     GLuint m_defaultTextureRef;
@@ -44,7 +46,7 @@ class WebGL2System : public RenderSystem {
 
   public:
     constexpr static uint32_t MESSAGE_LOAD_SHADER = hash("jamjar_2d_webgl2_load_shader");
-    explicit WebGL2System(MessageBus *messageBus, EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context);
+    explicit WebGL2System(MessageBus *messageBus, SDL_Window *window, EMSCRIPTEN_WEBGL_CONTEXT_HANDLE context);
     void OnMessage(JamJar::Message *message) override;
 };
 }; // namespace JamJar::Standard::_2D
