@@ -21,5 +21,6 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 - Box2D based Physics system.
 - Collision detection using Box2D.
 - Window management system.
+- Fullscreen control.
 
 [Unreleased]: https://github.com/jamjarlabs/JamJar

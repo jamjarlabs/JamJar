@@ -37,5 +37,5 @@ the entity with any stateful systems.
 When a component is removed the entity manager will remove the component from any component managers (destroying the
 component and its data) before re-registering the entity with any stateful systems.
 
-[Stateful Systems]:../ECS/stateful_systems.md
+[Stateful Systems]:../stateful_systems.md
 [Component Manager]:./component_manager.md

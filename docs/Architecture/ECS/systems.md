@@ -31,6 +31,6 @@ they simply send and receive messages.
 
 See the [Stateful Systems] page for details.
 
-[Listeners]:../messages/listeners.md
-[Message Bus]:../messages/message_bus.md
+[Listeners]:../Messages/listeners.md
+[Message Bus]:../Messages/message_bus.md
 [Stateful Systems]:./stateful_systems.md

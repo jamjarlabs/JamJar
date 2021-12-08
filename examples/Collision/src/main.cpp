@@ -12,6 +12,7 @@
 #include "standard/2d/webgl2/webgl2_system.hpp"
 #include "standard/file_texture/file_texture_system.hpp"
 #include "standard/sdl2_input/sdl2_input_system.hpp"
+#include "standard/window/window_system.hpp"
 #include "window.hpp"
 #include <SDL2/SDL.h>
 #include <iostream>
@@ -21,17 +22,18 @@
 
 int main(int argc, char *argv[]) {
 
-    auto window = JamJar::GetWindow("Sprites");
+    auto window = JamJar::GetWindow("Collision");
     auto context = JamJar::GetCanvasContext();
 
     auto messageBus = new JamJar::MessageBus();
     new JamJar::EntityManager(messageBus);
     auto game = new Collision(messageBus);
-    new JamJar::Standard::_2D::WebGL2System(messageBus, context);
+    new JamJar::Standard::_2D::WebGL2System(messageBus, window, context);
     new JamJar::Standard::_2D::InterpolationSystem(messageBus);
     new JamJar::Standard::_2D::PrimitiveSystem(messageBus);
     new JamJar::Standard::_2D::Box2DPhysicsSystem(messageBus, JamJar::Vector2D(0, -10.0f));
     new JamJar::Standard::SDL2InputSystem(messageBus);
+    new JamJar::Standard::WindowSystem(messageBus, window, "canvas-wrapper");
     new DestroySystem(messageBus);
     game->Start();
 

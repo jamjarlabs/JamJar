@@ -21,6 +21,7 @@ JamJar is a 2D, C++ game engine that primarily targets running in the browser th
 - Box2D based Physics system.
 - Collision detection using Box2D.
 - Window management system.
+- Fullscreen control.
 
 ## Getting Started
 
