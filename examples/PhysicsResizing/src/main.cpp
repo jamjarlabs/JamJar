@@ -24,11 +24,7 @@ int main(int argc, char *argv[]) {
     auto window = JamJar::GetWindow("PhysicsResizing");
     auto context = JamJar::GetCanvasContext();
 
-    // Set up canvas
-    EmscriptenWebGLContextAttributes attrs;
-    emscripten_webgl_init_context_attributes(&attrs);
-    auto context = emscripten_webgl_create_context("#canvas", &attrs);
-    auto res = emscripten_webgl_make_context_current(context);
+    std::cout << "game start" << std::endl;
 
     auto messageBus = new JamJar::MessageBus();
     new JamJar::EntityManager(messageBus);
