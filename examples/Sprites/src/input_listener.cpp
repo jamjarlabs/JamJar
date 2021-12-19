@@ -6,7 +6,8 @@
 
 InputListener::InputListener(JamJar::MessageBus *messageBus) : JamJar::System(messageBus) {
     this->messageBus->Subscribe(this, JamJar::Standard::SDL2InputSystem::MESSAGE_KEYBOARD_EVENT);
-    this->messageBus->Subscribe(this, JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_CLICK_EVENT);
+    this->messageBus->Subscribe(this, JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_BUTTON_UP_EVENT);
+    this->messageBus->Subscribe(this, JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_BUTTON_DOWN_EVENT);
     this->messageBus->Subscribe(this, JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_MOTION_EVENT);
     this->messageBus->Subscribe(this, JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_WHEEL_EVENT);
 }
@@ -24,25 +25,34 @@ void InputListener::OnMessage(JamJar::Message *message) {
         }
         break;
     }
-    case JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_CLICK_EVENT: {
+    case JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_BUTTON_DOWN_EVENT: {
         auto *eventMessage = static_cast<JamJar::MessagePayload<SDL_Event> *>(message);
         auto event = eventMessage->payload;
-        auto action = "down";
-        if (event.type == SDL_MOUSEBUTTONUP) {
-            action = "up";
-        }
         if (event.button.button == SDL_BUTTON_LEFT) {
-            std::cout << "listener got left mouse button " << action << std::endl;
+            std::cout << "listener got left mouse button down" << std::endl;
         } else if (event.button.button == SDL_BUTTON_RIGHT) {
-            std::cout << "listener got right mouse button " << action << std::endl;
+            std::cout << "listener got right mouse button down" << std::endl;
         } else {
-            std::cout << "listener got a different mouse button " << action << std::endl;
+            std::cout << "listener got a different mouse button down" << std::endl;
+        }
+        break;
+    }
+    case JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_BUTTON_UP_EVENT: {
+        auto *eventMessage = static_cast<JamJar::MessagePayload<SDL_Event> *>(message);
+        auto event = eventMessage->payload;
+        if (event.button.button == SDL_BUTTON_LEFT) {
+            std::cout << "listener got left mouse button up" << std::endl;
+        } else if (event.button.button == SDL_BUTTON_RIGHT) {
+            std::cout << "listener got right mouse button up" << std::endl;
+        } else {
+            std::cout << "listener got a different mouse button up" << std::endl;
         }
         break;
     }
     case JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_MOTION_EVENT: {
         auto *eventMessage = static_cast<JamJar::MessagePayload<SDL_Event> *>(message);
         auto event = eventMessage->payload;
+        std::cout << "mouse pos, x: " << event.motion.x << ", y:" << event.motion.y << std::endl;
         // std::cout << "mouse move, x: " << event.motion.x << ", y:" << event.motion.y << std::endl;
         break;
     }

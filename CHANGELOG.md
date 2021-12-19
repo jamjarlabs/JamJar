@@ -18,6 +18,7 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 - Sprite rendering.
 - Image loading from filesystem (virtual or otherwise).
 - Input using SDL2 events (keyboard and mouse).
+- Utility methods around translating input events to useful world information.
 - Box2D based Physics system.
 - Collision detection using Box2D.
 - Window management system.
