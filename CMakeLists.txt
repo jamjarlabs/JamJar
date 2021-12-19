@@ -133,6 +133,7 @@ endif()
 
 add_subdirectory (examples/Collision)
 add_subdirectory (examples/Fullscreen)
+add_subdirectory (examples/MouseInput)
 add_subdirectory (examples/Sprites)
 add_subdirectory (examples/Primitives)
 add_subdirectory (examples/Physics)

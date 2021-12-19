@@ -8,7 +8,7 @@ The `Box2DPhysicsSystem` manages Box2D and acts as a bridge between Box2D and Ja
 
 ## Setting up the Box2D Physics System
 
-To set up a `Box2DPhysicsSystem`, you need to provide a message bus alongside a `Vector2D` representing the gravity
+To set up a `Box2DPhysicsSystem` you need to provide a message bus alongside a `Vector2D` representing the gravity
 to apply to Box2D objects.
 
 ```c++

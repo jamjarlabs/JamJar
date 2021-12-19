@@ -1,14 +1,14 @@
-#ifndef INPUT_LISTENER_HPP
-#define INPUT_LISTENER_HPP
+#ifndef INPUT_CONTROLLER_HPP
+#define INPUT_CONTROLLER_HPP
 
 #include "message/message.hpp"
 #include "message/message_bus.hpp"
 #include "system/map_system.hpp"
 #include <SDL2/SDL.h>
 
-class InputListener : public JamJar::MapSystem {
+class InputController : public JamJar::MapSystem {
   public:
-    explicit InputListener(JamJar::MessageBus *messageBus, SDL_Window *window);
+    explicit InputController(JamJar::MessageBus *messageBus, SDL_Window *window);
     void OnMessage(JamJar::Message *message) override;
 
   private:

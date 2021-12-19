@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(Sprites VERSION 0.0.0)
+project(MouseInput VERSION 0.0.0)
 
 ### ===== dependencies ===== ###
 
@@ -26,22 +26,22 @@ FetchContent_MakeAvailable(JamJar)
 
 ### ===== core ===== ###
 
-set(CMAKE_CXX_FLAGS  "-s NO_DISABLE_EXCEPTION_CATCHING -s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2 --preload-file ${PROJECT_SOURCE_DIR}/assets@/assets")
+set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2 --preload-file ${PROJECT_SOURCE_DIR}/assets@/assets")
 SET(CMAKE_EXE_LINKER_FLAGS "-s LLD_REPORT_UNDEFINED")
 
 set(EXE_SOURCES
     src/main.cpp
-    src/simple_game.cpp
-    src/input_listener.cpp
+    src/mouse_input.cpp
+    src/input_controller.cpp
 )
 
-add_executable(Sprites ${EXE_SOURCES})
+add_executable(MouseInput ${EXE_SOURCES})
 
-target_include_directories(Sprites
+target_include_directories(MouseInput
     PRIVATE
         src
 )
 
-target_link_libraries(Sprites PRIVATE JamJar)
+target_link_libraries(MouseInput PRIVATE JamJar)
 
 configure_file(${PROJECT_SOURCE_DIR}/index.html ${PROJECT_BINARY_DIR}/index.html COPYONLY)
