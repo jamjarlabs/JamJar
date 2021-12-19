@@ -26,7 +26,7 @@ FetchContent_MakeAvailable(JamJar)
 
 ### ===== core ===== ###
 
-set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2 --preload-file ${PROJECT_SOURCE_DIR}/assets@/assets")
+set(CMAKE_CXX_FLAGS  "-s NO_DISABLE_EXCEPTION_CATCHING -s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2 --preload-file ${PROJECT_SOURCE_DIR}/assets@/assets")
 SET(CMAKE_EXE_LINKER_FLAGS "-s LLD_REPORT_UNDEFINED")
 
 set(EXE_SOURCES

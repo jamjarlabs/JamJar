@@ -5,7 +5,6 @@
 #include "message/message_bus.hpp"
 #include "system/map_system.hpp"
 #include <SDL2/SDL.h>
-#include <random>
 
 class InputController : public JamJar::MapSystem {
   public:
