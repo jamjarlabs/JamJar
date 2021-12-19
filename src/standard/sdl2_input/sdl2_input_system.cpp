@@ -49,13 +49,20 @@ void JamJar::Standard::SDL2InputSystem::update(float deltaTime) {
             this->messageBus->Publish(std::move(msg));
             break;
         }
-        case SDL_MOUSEWHEEL:
-        case SDL_MOUSEMOTION: {
+        case SDL_MOUSEWHEEL: {
             int x, y;
             SDL_GetMouseState(&x, &y);
             auto msg = std::make_unique<JamJar::MessagePayload<SDL2MouseEvent>>(
                 MOUSE_MESSAGES.at(event.type),
                 SDL2MouseEvent(MOUSE_TYPES.at(event.type), Vector2D(static_cast<float>(x), static_cast<float>(y)),
+                               event));
+            this->messageBus->Publish(std::move(msg));
+        }
+        case SDL_MOUSEMOTION: {
+            auto msg = std::make_unique<JamJar::MessagePayload<SDL2MouseEvent>>(
+                MOUSE_MESSAGES.at(event.type),
+                SDL2MouseEvent(MOUSE_TYPES.at(event.type),
+                               Vector2D(static_cast<float>(event.motion.x), static_cast<float>(event.motion.y)),
                                event));
             this->messageBus->Publish(std::move(msg));
             break;

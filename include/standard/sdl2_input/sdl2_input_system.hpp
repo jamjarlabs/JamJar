@@ -45,7 +45,7 @@ enum SDL2KeyEventType { KEY_DOWN = 0, KEY_UP };
 class SDL2KeyEvent {
   public:
     explicit SDL2KeyEvent(SDL2KeyEventType type, SDL_Event event, const char *key, bool repeat);
-    virtual ~SDL2KeyEvent() {}
+    virtual ~SDL2KeyEvent() { delete[] key; }
 
     SDL2KeyEventType type;
     SDL_Event event;
