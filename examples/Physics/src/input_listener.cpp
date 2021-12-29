@@ -41,10 +41,8 @@ void InputListener::OnMessage(JamJar::Message *message) {
         }
 
         auto cameraEntity = this->entities.begin()->second;
-        auto transform =
-            static_cast<JamJar::Standard::_2D::Transform *>(cameraEntity.Get(JamJar::Standard::_2D::Transform::KEY));
-        auto camera =
-            static_cast<JamJar::Standard::_2D::Camera *>(cameraEntity.Get(JamJar::Standard::_2D::Camera::KEY));
+        auto transform = cameraEntity.Get<JamJar::Standard::_2D::Transform>();
+        auto camera = cameraEntity.Get<JamJar::Standard::_2D::Camera>();
 
         auto worldPos = JamJar::Standard::_2D::MousePositionToWorldPosition(event.position, transform->position, camera,
                                                                             this->window);
@@ -68,12 +66,12 @@ void InputListener::OnMessage(JamJar::Message *message) {
         primitiveShape.push_back(points[0]);
         primitiveShape.push_back(points[1]);
 
-        shape->Add(std::move(std::make_unique<JamJar::Standard::_2D::Transform>(worldPos, JamJar::Vector2D(10, 10))));
-        shape->Add(std::move(std::make_unique<JamJar::Standard::_2D::Box2DBody>(
+        shape->Add(new JamJar::Standard::_2D::Transform(worldPos, JamJar::Vector2D(10, 10)));
+        shape->Add(new JamJar::Standard::_2D::Box2DBody(
             JamJar::Polygon(points),
-            JamJar::Standard::_2D::Box2DBodyProperties({.density = 1.0f, .angularVelocity = 1.0f}))));
-        shape->Add(std::move(std::make_unique<JamJar::Standard::_2D::Primitive>(
-            JamJar::Polygon(primitiveShape), JamJar::Material(JamJar::Color(0, 1, 0, 1)))));
+            JamJar::Standard::_2D::Box2DBodyProperties({.density = 1.0f, .angularVelocity = 1.0f})));
+        shape->Add(new JamJar::Standard::_2D::Primitive(JamJar::Polygon(primitiveShape),
+                                                        JamJar::Material(JamJar::Color(0, 1, 0, 1))));
         break;
     }
     }

@@ -9,7 +9,7 @@ A component is identified by an unsigned 32-bit integer, which should be largely
 identifiers a compile time hashing function is used, for example:
 
 ```c++
-constexpr static uint32_t TRANSFORM_KEY = JamJar::hash("jamjar_transform");
+constexpr static uint32_t KEY = JamJar::hash("jamjar_transform");
 ```
 
 This tries to create a pseudo unique identifier for the Transform component, however hash collisions could occur - this
@@ -24,6 +24,12 @@ about color, texture, and shape.
 
 The component is the single source of truth for this data, and multiple systems may read and write to the same
 component - this is a strengh of ECS, shared data can be read and modified by multiple systems.
+
+## Memory
+
+When adding a new component using one of the `Add` methods on the `Entity` or `SystemEntity` these methods take a raw
+pointer to the component, then converts them to a unique pointer which JamJar manages. This means that the developer
+does not need to manage Component memory.
 
 ## Where are Components Stored?
 

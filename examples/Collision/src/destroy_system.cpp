@@ -77,15 +77,14 @@ void DestroySystem::update(float deltaTime) {
 
     if (this->lastCreateTime > TIME_BETWEEN_BOXES) {
         auto box = new JamJar::Entity(messageBus);
-        box->Add(std::move(
-            std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(-50, 50), JamJar::Vector2D(10, 10))));
-        box->Add(std::move(std::make_unique<JamJar::Standard::_2D::Box2DBody>(
+        box->Add(new JamJar::Standard::_2D::Transform(JamJar::Vector2D(-50, 50), JamJar::Vector2D(10, 10)));
+        box->Add(new JamJar::Standard::_2D::Box2DBody(
             JamJar::Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5}),
-            JamJar::Standard::_2D::Box2DBodyProperties({.density = 1.0f, .angularVelocity = -1.0f}))));
-        box->Add(std::move(std::make_unique<JamJar::Standard::_2D::Primitive>(
+            JamJar::Standard::_2D::Box2DBodyProperties({.density = 1.0f, .angularVelocity = -1.0f})));
+        box->Add(new JamJar::Standard::_2D::Primitive(
             JamJar::Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5}),
-            JamJar::Material(JamJar::Color(0, 1, 0, 1)))));
-        box->Add(std::move(std::make_unique<Box>()));
+            JamJar::Material(JamJar::Color(0, 1, 0, 1))));
+        box->Add(new Box());
         this->lastCreateTime = 0;
     }
 }

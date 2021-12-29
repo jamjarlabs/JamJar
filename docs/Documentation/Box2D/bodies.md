@@ -14,11 +14,10 @@ A Box2D body can be set up by attaching `Box2DBody` and `Transform` components t
 #include "geometry/polygon.hpp"
 ...
 auto body = new JamJar::Entity(messageBus);
-body->Add(std::move(
-    std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(0, 30), JamJar::Vector2D(10, 10))));
-body->Add(std::move(std::make_unique<JamJar::Standard::_2D::Box2DBody>(
+body->Add(new JamJar::Standard::_2D::Transform(JamJar::Vector2D(0, 30), JamJar::Vector2D(10, 10)));
+body->Add(new JamJar::Standard::_2D::Box2DBody(
     JamJar::Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5}),
-    JamJar::Standard::_2D::Box2DBodyProperties({.density = 1.0f, .angularVelocity = 1.0f}))));
+    JamJar::Standard::_2D::Box2DBodyProperties({.density = 1.0f, .angularVelocity = 1.0f})));
 ```
 
 This creates a body at position `x: 0, y: 30` with a scale of `x: 10, y: 10`, the shape of the body uses the coordinates

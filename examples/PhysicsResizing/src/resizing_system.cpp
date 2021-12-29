@@ -20,9 +20,8 @@ void ResizingSystem::update(float deltaTime) {
     MapSystem::update(deltaTime);
     for (const auto &entityPair : this->entities) {
         auto entity = entityPair.second;
-        auto *bodyComp =
-            static_cast<JamJar::Standard::_2D::Box2DBody *>(entity.Get(JamJar::Standard::_2D::Box2DBody::KEY));
-        auto *resizable = static_cast<Resizable *>(entity.Get(Resizable::KEY));
+        auto bodyComp = entity.Get<JamJar::Standard::_2D::Box2DBody>();
+        auto resizable = entity.Get<Resizable>();
 
         auto scale = bodyComp->scale;
 

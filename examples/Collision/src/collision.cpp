@@ -19,34 +19,39 @@
 #include <memory>
 #include <random>
 
+using JamJar::Color;
+using JamJar::Entity;
+using JamJar::Material;
+using JamJar::Polygon;
+using JamJar::Vector2D;
+using JamJar::Standard::_2D::Box2DBody;
+using JamJar::Standard::_2D::Box2DBodyProperties;
+using JamJar::Standard::_2D::Box2DBodyType;
+using JamJar::Standard::_2D::Camera;
+using JamJar::Standard::_2D::Primitive;
+using JamJar::Standard::_2D::Transform;
+
 const float PI = 3.14159265358979323846;
 
 Collision::Collision(JamJar::MessageBus *messageBus) : Game(messageBus) {}
 
 void Collision::OnStart() {
 
-    auto ramp = new JamJar::Entity(messageBus);
-    ramp->Add(std::move(
-        std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(-10, 0), JamJar::Vector2D(130, 80))));
-    ramp->Add(std::move(std::make_unique<JamJar::Standard::_2D::Box2DBody>(
-        JamJar::Polygon({-0.5, 0.5, 0.5, -0.5, -0.5, -0.5}),
-        JamJar::Standard::_2D::Box2DBodyProperties({.bodyType = JamJar::Standard::_2D::Box2DBodyType::STATIC}))));
-    ramp->Add(std::move(std::make_unique<JamJar::Standard::_2D::Primitive>(
-        JamJar::Polygon({-0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5}), JamJar::Material(JamJar::Color(1, 1, 1, 1)))));
+    auto ramp = new Entity(messageBus);
+    ramp->Add(new Transform(Vector2D(-10, 0), JamJar::Vector2D(130, 80)));
+    ramp->Add(new Box2DBody(Polygon({-0.5, 0.5, 0.5, -0.5, -0.5, -0.5}),
+                            Box2DBodyProperties({.bodyType = Box2DBodyType::STATIC})));
+    ramp->Add(new Primitive(Polygon({-0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5}), Material(Color(1, 1, 1, 1))));
 
-    auto destroyer = new JamJar::Entity(messageBus);
-    destroyer->Add(std::move(
-        std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(60, 0), JamJar::Vector2D(10, 80))));
-    destroyer->Add(std::move(std::make_unique<JamJar::Standard::_2D::Box2DBody>(
-        JamJar::Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5}),
-        JamJar::Standard::_2D::Box2DBodyProperties(
-            {.bodyType = JamJar::Standard::_2D::Box2DBodyType::STATIC, .isSensor = true}))));
-    destroyer->Add(std::move(std::make_unique<JamJar::Standard::_2D::Primitive>(
-        JamJar::Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5}),
-        JamJar::Material(JamJar::Color(1, 0, 0, 1)))));
-    destroyer->Add(std::move(std::make_unique<Destructor>()));
+    auto destroyer = new Entity(messageBus);
+    destroyer->Add(new Transform(Vector2D(60, 0), Vector2D(10, 80)));
+    destroyer->Add(new Box2DBody(Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5}),
+                                 Box2DBodyProperties({.bodyType = Box2DBodyType::STATIC, .isSensor = true})));
+    destroyer->Add(
+        new Primitive(Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5}), Material(Color(1, 0, 0, 1))));
+    destroyer->Add(new Destructor());
 
-    auto camera = new JamJar::Entity(messageBus);
-    camera->Add(std::move(std::make_unique<JamJar::Standard::_2D::Transform>()));
-    camera->Add(std::move(std::make_unique<JamJar::Standard::_2D::Camera>(JamJar::Color(0, 0, 0))));
+    auto camera = new Entity(messageBus);
+    camera->Add(new Transform());
+    camera->Add(new Camera(Color(0, 0, 0)));
 }

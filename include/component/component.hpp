@@ -8,6 +8,7 @@ class Component {
   public:
     explicit Component(uint32_t key);
 
+    constexpr static uint32_t KEY = hash("jamjar_base_component");
     constexpr static uint32_t MESSAGE_ADD = hash("jamjar_component_add");
     constexpr static uint32_t MESSAGE_REMOVE = hash("jamjar_component_remove");
 

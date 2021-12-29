@@ -31,8 +31,7 @@ void JamJar::Standard::_2D::InterpolationSystem::OnMessage(JamJar::Message *mess
 void JamJar::Standard::_2D::InterpolationSystem::interpolate() {
     for (const auto &entityPair : this->entities) {
         auto entity = entityPair.second;
-        auto *transform =
-            static_cast<JamJar::Standard::_2D::Transform *>(entity.Get(JamJar::Standard::_2D::Transform::KEY));
+        auto transform = entity.Get<JamJar::Standard::_2D::Transform>();
 
         transform->previous = transform->position;
     }

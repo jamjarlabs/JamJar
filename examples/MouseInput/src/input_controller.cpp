@@ -33,18 +33,16 @@ void InputController::OnMessage(JamJar::Message *message) {
         }
 
         auto cameraEntity = this->entities.begin()->second;
-        auto transform =
-            static_cast<JamJar::Standard::_2D::Transform *>(cameraEntity.Get(JamJar::Standard::_2D::Transform::KEY));
-        auto camera =
-            static_cast<JamJar::Standard::_2D::Camera *>(cameraEntity.Get(JamJar::Standard::_2D::Camera::KEY));
+        auto transform = cameraEntity.Get<JamJar::Standard::_2D::Transform>();
+        auto camera = cameraEntity.Get<JamJar::Standard::_2D::Camera>();
 
         auto worldPos = JamJar::Standard::_2D::MousePositionToWorldPosition(event.position, transform->position, camera,
                                                                             this->window);
 
         auto smiley = new JamJar::Entity(messageBus);
-        smiley->Add(std::move(std::make_unique<JamJar::Standard::_2D::Transform>(worldPos, JamJar::Vector2D(5, 5))));
-        smiley->Add(std::move(std::make_unique<JamJar::Standard::_2D::Sprite>(
-            JamJar::Material(JamJar::Color(0, 1, 1, 1), JamJar::Texture(JamJar::hash("smiley"))))));
+        smiley->Add(new JamJar::Standard::_2D::Transform(worldPos, JamJar::Vector2D(5, 5)));
+        smiley->Add(new JamJar::Standard::_2D::Sprite(
+            JamJar::Material(JamJar::Color(0, 1, 1, 1), JamJar::Texture(JamJar::hash("smiley")))));
         break;
     }
     }

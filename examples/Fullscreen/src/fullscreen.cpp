@@ -26,12 +26,11 @@ void Fullscreen::OnStart() {
                      {.minFilter = JamJar::TextureFilter::NEAREST, .magFilter = JamJar::TextureFilter::NEAREST})}))));
 
     auto a = new JamJar::Entity(messageBus);
-    a->Add(std::move(
-        std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(0, 0), JamJar::Vector2D(160, 90))));
-    a->Add(std::move(std::make_unique<JamJar::Standard::_2D::Sprite>(
-        JamJar::Material(JamJar::Color(0, 1, 1, 1), JamJar::Texture(JamJar::hash("smiley"))))));
+    a->Add(new JamJar::Standard::_2D::Transform(JamJar::Vector2D(0, 0), JamJar::Vector2D(160, 90)));
+    a->Add(new JamJar::Standard::_2D::Sprite(
+        JamJar::Material(JamJar::Color(0, 1, 1, 1), JamJar::Texture(JamJar::hash("smiley")))));
 
     auto camera = new JamJar::Entity(messageBus);
-    camera->Add(std::move(std::make_unique<JamJar::Standard::_2D::Transform>()));
-    camera->Add(std::move(std::make_unique<JamJar::Standard::_2D::Camera>(JamJar::Color(0, 0, 0))));
+    camera->Add(new JamJar::Standard::_2D::Transform());
+    camera->Add(new JamJar::Standard::_2D::Camera(JamJar::Color(0, 0, 0)));
 }

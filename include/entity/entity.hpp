@@ -22,7 +22,7 @@ class Entity {
 
     explicit Entity(MessageBus *messageBus);
 
-    void Add(std::unique_ptr<Component> component);
+    void Add(Component *component);
     void Remove(uint32_t key);
     void Destroy();
 };
