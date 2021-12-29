@@ -46,10 +46,8 @@ void JamJar::Standard::_2D::Box2DPhysicsSystem::update(float deltaTime) {
     world.Step(deltaTime, 6, 2);
     for (const auto &entityPair : this->entities) {
         auto entity = entityPair.second;
-        auto *transform =
-            static_cast<JamJar::Standard::_2D::Transform *>(entity.Get(JamJar::Standard::_2D::Transform::KEY));
-        auto *bodyComp =
-            static_cast<JamJar::Standard::_2D::Box2DBody *>(entity.Get(JamJar::Standard::_2D::Box2DBody::KEY));
+        auto transform = entity.Get<JamJar::Standard::_2D::Transform>();
+        auto bodyComp = entity.Get<JamJar::Standard::_2D::Box2DBody>();
 
         if (bodies.count(entity.entity->id) == 0) {
             continue;

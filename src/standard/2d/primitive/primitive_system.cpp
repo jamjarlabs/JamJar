@@ -73,10 +73,8 @@ void JamJar::Standard::_2D::PrimitiveSystem::preRender(float alpha) {
     std::vector<Renderable> renderables;
     for (const auto &entityPair : this->entities) {
         auto entity = entityPair.second;
-        auto *transform =
-            static_cast<JamJar::Standard::_2D::Transform *>(entity.Get(JamJar::Standard::_2D::Transform::KEY));
-        auto *primitive =
-            static_cast<JamJar::Standard::_2D::Primitive *>(entity.Get(JamJar::Standard::_2D::Primitive::KEY));
+        auto transform = entity.Get<JamJar::Standard::_2D::Transform>();
+        auto primitive = entity.Get<JamJar::Standard::_2D::Primitive>();
 
         renderables.push_back({.vertices = primitive->polygon.PointsAsFloats(),
                                .modelMatrix = transform->InterpolatedMatrix4D(alpha),

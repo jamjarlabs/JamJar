@@ -14,9 +14,10 @@ JamJar::Entity::Entity(MessageBus *messageBus) : m_messageBus(messageBus), id(++
     this->m_messageBus->Publish(std::move(msg));
 }
 
-void JamJar::Entity::Add(std::unique_ptr<Component> component) {
+void JamJar::Entity::Add(Component *component) {
     // Publish a message with the current entity and the component being added
-    auto pair = std::make_unique<JamJar::AddComponentPayloadPair>(this, std::move(component));
+    std::unique_ptr<Component> componentPointer(component);
+    auto pair = std::make_unique<JamJar::AddComponentPayloadPair>(this, std::move(componentPointer));
     auto msg = std::make_unique<JamJar::MessagePayload<std::unique_ptr<JamJar::AddComponentPayloadPair>>>(
         JamJar::Component::MESSAGE_ADD, std::move(pair));
     this->m_messageBus->Publish(std::move(msg));

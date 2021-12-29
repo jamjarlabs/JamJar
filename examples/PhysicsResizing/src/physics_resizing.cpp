@@ -19,17 +19,16 @@ PhysicsResizing::PhysicsResizing(JamJar::MessageBus *messageBus) : Game(messageB
 void PhysicsResizing::OnStart() {
 
     auto resizable = new JamJar::Entity(messageBus);
-    resizable->Add(std::move(
-        std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(0, 0), JamJar::Vector2D(20, 20))));
-    resizable->Add(std::move(std::make_unique<JamJar::Standard::_2D::Box2DBody>(
+    resizable->Add(new JamJar::Standard::_2D::Transform(JamJar::Vector2D(0, 0), JamJar::Vector2D(20, 20)));
+    resizable->Add(new JamJar::Standard::_2D::Box2DBody(
         JamJar::Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5}),
-        JamJar::Standard::_2D::Box2DBodyProperties({.density = 1.0f, .angularVelocity = 1.0f}))));
-    resizable->Add(std::move(std::make_unique<JamJar::Standard::_2D::Primitive>(
-        JamJar::Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5}),
-        JamJar::Material(JamJar::Color(0, 1, 1, 1)))));
-    resizable->Add(std::move(std::make_unique<Resizable>(10, 50)));
+        JamJar::Standard::_2D::Box2DBodyProperties({.density = 1.0f, .angularVelocity = 1.0f})));
+    resizable->Add(
+        new JamJar::Standard::_2D::Primitive(JamJar::Polygon({-0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5}),
+                                             JamJar::Material(JamJar::Color(0, 1, 1, 1))));
+    resizable->Add(new Resizable(10, 50));
 
     auto camera = new JamJar::Entity(messageBus);
-    camera->Add(std::move(std::make_unique<JamJar::Standard::_2D::Transform>()));
-    camera->Add(std::move(std::make_unique<JamJar::Standard::_2D::Camera>(JamJar::Color(0, 0, 0))));
+    camera->Add(new JamJar::Standard::_2D::Transform());
+    camera->Add(new JamJar::Standard::_2D::Camera(JamJar::Color(0, 0, 0)));
 }

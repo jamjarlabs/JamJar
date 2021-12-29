@@ -22,10 +22,9 @@ Primitives::Primitives(JamJar::MessageBus *messageBus) : Game(messageBus) {}
 void Primitives::OnStart() {
 
     auto triangle = new JamJar::Entity(messageBus);
-    triangle->Add(std::move(
-        std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(30, 0), JamJar::Vector2D(30, 30))));
-    triangle->Add(std::move(std::make_unique<JamJar::Standard::_2D::Primitive>(
-        JamJar::Polygon({0, 0.5, 0.5, -0.5, -0.5, -0.5, 0, 0.5}), JamJar::Material(JamJar::Color(0, 1, 0, 1)))));
+    triangle->Add(new JamJar::Standard::_2D::Transform(JamJar::Vector2D(30, 0), JamJar::Vector2D(30, 30)));
+    triangle->Add(new JamJar::Standard::_2D::Primitive(JamJar::Polygon({0, 0.5, 0.5, -0.5, -0.5, -0.5, 0, 0.5}),
+                                                       JamJar::Material(JamJar::Color(0, 1, 0, 1))));
 
     std::random_device rd;
     std::mt19937 rng(rd());
@@ -42,12 +41,11 @@ void Primitives::OnStart() {
     points.push_back(points[1]);
 
     auto polygon = new JamJar::Entity(messageBus);
-    polygon->Add(std::move(
-        std::make_unique<JamJar::Standard::_2D::Transform>(JamJar::Vector2D(-30, 0), JamJar::Vector2D(30, 30))));
-    polygon->Add(std::move(std::make_unique<JamJar::Standard::_2D::Primitive>(
-        JamJar::Polygon(points), JamJar::Material(JamJar::Color(0, 1, 1, 1)))));
+    polygon->Add(new JamJar::Standard::_2D::Transform(JamJar::Vector2D(-30, 0), JamJar::Vector2D(30, 30)));
+    polygon->Add(
+        new JamJar::Standard::_2D::Primitive(JamJar::Polygon(points), JamJar::Material(JamJar::Color(0, 1, 1, 1))));
 
     auto camera = new JamJar::Entity(messageBus);
-    camera->Add(std::move(std::make_unique<JamJar::Standard::_2D::Transform>()));
-    camera->Add(std::move(std::make_unique<JamJar::Standard::_2D::Camera>(JamJar::Color(0, 0, 0))));
+    camera->Add(new JamJar::Standard::_2D::Transform());
+    camera->Add(new JamJar::Standard::_2D::Camera(JamJar::Color(0, 0, 0)));
 }

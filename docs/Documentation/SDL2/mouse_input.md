@@ -109,10 +109,8 @@ void YourSystem::OnMessage(JamJar::Message *message) {
         // Get the first camera that is registered, assume that it is the one that is clicked (this holds true if
         // you only have one camera, if you have multiple more complex logic is required)
         auto cameraEntity = this->entities.begin()->second;
-        auto transform =
-            static_cast<JamJar::Standard::_2D::Transform *>(cameraEntity.Get(JamJar::Standard::_2D::Transform::KEY));
-        auto camera =
-            static_cast<JamJar::Standard::_2D::Camera *>(cameraEntity.Get(JamJar::Standard::_2D::Camera::KEY));
+        auto transform = cameraEntity.Get<JamJar::Standard::_2D::Transform>();
+        auto camera = cameraEntity.Get<JamJar::Standard::_2D::Camera>();
 
         // In this instance the SDL2_Window is stored in the YourSystem object as a member variable, allowing it to
         // be accessed. The SDL2_Window is not normally stored in a System and this needs to be set up by providing it

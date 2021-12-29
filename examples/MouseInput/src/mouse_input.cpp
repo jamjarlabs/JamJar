@@ -23,6 +23,6 @@ void MouseInput::OnStart() {
                      {.minFilter = JamJar::TextureFilter::NEAREST, .magFilter = JamJar::TextureFilter::NEAREST})}))));
 
     auto camera = new JamJar::Entity(messageBus);
-    camera->Add(std::move(std::make_unique<JamJar::Standard::_2D::Transform>()));
-    camera->Add(std::move(std::make_unique<JamJar::Standard::_2D::Camera>(JamJar::Color(0, 0, 0))));
+    camera->Add(new JamJar::Standard::_2D::Transform());
+    camera->Add(new JamJar::Standard::_2D::Camera(JamJar::Color(0, 0, 0)));
 }

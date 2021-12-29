@@ -75,9 +75,8 @@ void JamJar::Standard::_2D::SpriteSystem::preRender(float alpha) {
     std::vector<Renderable> renderables;
     for (const auto &entityPair : this->entities) {
         auto entity = entityPair.second;
-        auto *transform =
-            static_cast<JamJar::Standard::_2D::Transform *>(entity.Get(JamJar::Standard::_2D::Transform::KEY));
-        auto *sprite = static_cast<JamJar::Standard::_2D::Sprite *>(entity.Get(JamJar::Standard::_2D::Sprite::KEY));
+        auto transform = entity.Get<JamJar::Standard::_2D::Transform>();
+        auto sprite = entity.Get<JamJar::Standard::_2D::Sprite>();
 
         auto quad = AABB(Vector2D(1, 1));
         quad.dimensions += transform->scale;

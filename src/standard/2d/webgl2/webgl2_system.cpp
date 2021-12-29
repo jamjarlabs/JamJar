@@ -171,10 +171,8 @@ void JamJar::Standard::_2D::WebGL2System::render(float deltaTime) {
     for (const auto &entityPair : this->entities) {
         auto cameraEntity = entityPair.second;
 
-        auto camera =
-            static_cast<JamJar::Standard::_2D::Camera *>(cameraEntity.Get(JamJar::Standard::_2D::Camera::KEY));
-        auto transform =
-            static_cast<JamJar::Standard::_2D::Transform *>(cameraEntity.Get(JamJar::Standard::_2D::Transform::KEY));
+        auto camera = cameraEntity.Get<JamJar::Standard::_2D::Camera>();
+        auto transform = cameraEntity.Get<JamJar::Standard::_2D::Transform>();
 
         int canvasWidth;
         int canvasHeight;

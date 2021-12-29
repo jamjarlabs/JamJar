@@ -14,9 +14,13 @@ class SystemEntity {
     Entity *entity;
     explicit SystemEntity(Entity *entity, const std::vector<JamJar::Component *> &components);
     bool Has(uint32_t key);
-    JamJar::Component *Get(uint32_t key);
+
+    template <class T, typename = std::enable_if_t<std::is_base_of_v<JamJar::Component, T>>> T *Get() {
+        return static_cast<T *>(this->m_components[T::KEY]);
+    };
+
     void Remove(uint32_t key);
-    void Add(std::unique_ptr<JamJar::Component> component);
+    void Add(JamJar::Component *component);
     void Destroy() const;
 };
 }; // namespace JamJar
