@@ -73,6 +73,7 @@ set(LIB_SOURCES
     src/render/color.cpp
     src/render/material.cpp
     src/render/texture.cpp
+    src/system/bucket_map_system.cpp
     src/system/bucket_system.cpp
     src/system/map_system.cpp
     src/system/stateful_system.cpp

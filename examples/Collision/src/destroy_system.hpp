@@ -5,10 +5,10 @@
 #include "entity/entity.hpp"
 #include "message/message.hpp"
 #include "message/message_bus.hpp"
-#include "system/map_system.hpp"
+#include "system/bucket_map_system.hpp"
 #include <vector>
 
-class DestroySystem : public JamJar::MapSystem {
+class DestroySystem : public JamJar::BucketMapSystem {
   public:
     explicit DestroySystem(JamJar::MessageBus *messageBus);
     void OnMessage(JamJar::Message *message) override;
@@ -17,7 +17,9 @@ class DestroySystem : public JamJar::MapSystem {
     void update(float deltaTime) override;
 
   private:
-    static bool evaluator(JamJar::Entity *entity, const std::vector<JamJar::Component *> &components);
+    constexpr static uint32_t BOX_BUCKET = JamJar::hash("box");
+    constexpr static uint32_t DESTRUCTOR_BUCKET = JamJar::hash("destructor");
+    static std::optional<uint32_t> evaluator(JamJar::Entity *entity, const std::vector<JamJar::Component *> &components);
     float lastCreateTime;
 };
 

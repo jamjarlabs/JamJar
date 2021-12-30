@@ -84,7 +84,7 @@ auto a = this->entities.at(entityID);
 
 #### Evaluator
 
-The `MapSystem` uses the same evaluator as the VectorSystem.
+The MapSystem uses the same evaluator as the VectorSystem.
 
 ### Bucket System
 
@@ -129,3 +129,26 @@ std::optional<uint32_t> CustomSystem::evaluator(JamJar::Entity *entity, const st
 ```
 
 This evaluator tracks entities that have either a Camera or a Player component, splitting them into two buckets.
+
+### Bucket Map System
+
+The BucketMapSystem stores the system entities in a [`std::map`](https://www.cplusplus.com/reference/map/map/) of
+[`std::map`](https://www.cplusplus.com/reference/map/map/) - with the outer map keys being any arbitrary `uint32_t`
+that the developer can choose, for example keeping track of entities with a camera and player entities in two separate
+buckets, and the inner map keys being entity IDs.
+
+#### Accessing Entities
+
+Bucket system entities can be accessed by using the bucket key to look up the bucket, then the entities in the bucket
+can be accessed using the inner [`std::map`](https://www.cplusplus.com/reference/map/map/) which is mapped to entity
+IDs.
+
+```c++
+auto projectiles = this->entities.at(PROJECTILE_BUCKET);
+
+auto collisionProjectile = projectiles.at(collision.aID);
+```
+
+#### Evaluator
+
+The BucketMapSystem uses the same evaluator as the BucketSystem.
