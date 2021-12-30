@@ -73,6 +73,7 @@ set(LIB_SOURCES
     src/render/color.cpp
     src/render/material.cpp
     src/render/texture.cpp
+    src/system/bucket_system.cpp
     src/system/map_system.cpp
     src/system/stateful_system.cpp
     src/system/system_entity.cpp
@@ -134,10 +135,11 @@ endif()
 add_subdirectory (examples/Collision)
 add_subdirectory (examples/Fullscreen)
 add_subdirectory (examples/MouseInput)
-add_subdirectory (examples/Sprites)
-add_subdirectory (examples/Primitives)
 add_subdirectory (examples/Physics)
 add_subdirectory (examples/PhysicsResizing)
+add_subdirectory (examples/Primitives)
+add_subdirectory (examples/Rotator)
+add_subdirectory (examples/Sprites)
 
 ### ===== clang-format ===== ###
 

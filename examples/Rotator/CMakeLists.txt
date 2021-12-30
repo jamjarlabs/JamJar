@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 set (CMAKE_CXX_STANDARD 17)
 
-project(Primitives VERSION 0.0.0)
+project(Rotator VERSION 0.0.0)
 
 ### ===== dependencies ===== ###
 
@@ -28,20 +28,23 @@ FetchContent_MakeAvailable(JamJar)
 
 ### ===== core ===== ###
 
-set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2")
+set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2 -s NO_DISABLE_EXCEPTION_CATCHING")
+SET(CMAKE_EXE_LINKER_FLAGS "-s LLD_REPORT_UNDEFINED")
 
 set(EXE_SOURCES
     src/main.cpp
-    src/primitives.cpp
+    src/rotator.cpp
+    src/input_controller.cpp
+    src/player.cpp
 )
 
-add_executable(Primitives ${EXE_SOURCES})
+add_executable(Rotator ${EXE_SOURCES})
 
-target_include_directories(Primitives
+target_include_directories(Rotator
     PRIVATE
         src
 )
 
-target_link_libraries(Primitives PRIVATE JamJar)
+target_link_libraries(Rotator PRIVATE JamJar)
 
 configure_file(${PROJECT_SOURCE_DIR}/index.html ${PROJECT_BINARY_DIR}/index.html COPYONLY)
