@@ -10,7 +10,8 @@
 
 const float PI = 3.14159265358979323846;
 
-std::optional<uint32_t> InputController::evaluator(JamJar::Entity *entity, const std::vector<JamJar::Component *> &components) {
+std::optional<uint32_t> InputController::evaluator(JamJar::Entity *entity,
+                                                   const std::vector<JamJar::Component *> &components) {
     for (const auto &component : components) {
         if (component->key == JamJar::Standard::_2D::Camera::KEY) {
             return std::optional<uint32_t>(InputController::CAMERA_BUCKET);
@@ -45,11 +46,11 @@ void InputController::OnMessage(JamJar::Message *message) {
         auto camera = cameraEntity.Get<JamJar::Standard::_2D::Camera>();
 
         auto worldPos = JamJar::Standard::_2D::MousePositionToWorldPosition(event.position, transform->position, camera,
-                                                                             this->window);
+                                                                            this->window);
 
         auto players = this->entities.at(PLAYER_BUCKET);
 
-        for (auto& player : players) {
+        for (auto &player : players) {
             auto transform = player.Get<JamJar::Standard::_2D::Transform>();
             transform->angle = InputController::getOrientationBetweenPoints(transform->position, worldPos);
         }

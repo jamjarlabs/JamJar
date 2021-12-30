@@ -4,12 +4,12 @@
 #include "geometry/polygon.hpp"
 #include "geometry/vector_2d.hpp"
 #include "message/message_payload.hpp"
+#include "player.hpp"
 #include "standard/2d/camera/camera.hpp"
 #include "standard/2d/primitive/primitive.hpp"
 #include "standard/2d/transform/transform.hpp"
 #include "standard/file_texture/file_texture_request.hpp"
 #include "standard/file_texture/file_texture_system.hpp"
-#include "player.hpp"
 #include <memory>
 
 using JamJar::Color;

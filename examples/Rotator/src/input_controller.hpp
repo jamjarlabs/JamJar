@@ -1,11 +1,11 @@
 #ifndef INPUT_CONTROLLER_HPP
 #define INPUT_CONTROLLER_HPP
 
+#include "geometry/vector_2d.hpp"
 #include "hash.hpp"
 #include "message/message.hpp"
 #include "message/message_bus.hpp"
 #include "system/bucket_system.hpp"
-#include "geometry/vector_2d.hpp"
 #include <SDL2/SDL.h>
 
 class InputController : public JamJar::BucketSystem {
@@ -17,7 +17,8 @@ class InputController : public JamJar::BucketSystem {
     constexpr static uint32_t CAMERA_BUCKET = JamJar::hash("camera");
     constexpr static uint32_t PLAYER_BUCKET = JamJar::hash("player");
     SDL_Window *window;
-    static std::optional<uint32_t> evaluator(JamJar::Entity *entity, const std::vector<JamJar::Component *> &components);
+    static std::optional<uint32_t> evaluator(JamJar::Entity *entity,
+                                             const std::vector<JamJar::Component *> &components);
 
     static float getOrientationBetweenPoints(JamJar::Vector2D start, JamJar::Vector2D end);
 };
