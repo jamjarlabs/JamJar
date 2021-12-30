@@ -14,7 +14,8 @@
 
 const float TIME_BETWEEN_BOXES = 3;
 
-std::optional<uint32_t> DestroySystem::evaluator(JamJar::Entity *entity, const std::vector<JamJar::Component *> &components) {
+std::optional<uint32_t> DestroySystem::evaluator(JamJar::Entity *entity,
+                                                 const std::vector<JamJar::Component *> &components) {
     bool hasBox2dBody = false;
     bool hasBox = false;
     bool hasDestructor = false;

@@ -76,6 +76,7 @@ set(LIB_SOURCES
     src/system/bucket_map_system.cpp
     src/system/bucket_system.cpp
     src/system/map_system.cpp
+    src/system/single_entity_system.cpp
     src/system/stateful_system.cpp
     src/system/system_entity.cpp
     src/system/system.cpp

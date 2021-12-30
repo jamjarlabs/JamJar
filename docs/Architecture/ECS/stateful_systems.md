@@ -86,6 +86,41 @@ auto a = this->entities.at(entityID);
 
 The MapSystem uses the same evaluator as the VectorSystem.
 
+### Single Entity System
+
+The SingleEntitySystem tracks only a single entity using the
+[`std::optional`](https://en.cppreference.com/w/cpp/utility/optional) structure, this could be useful for camera
+operations when a game has a single camera to manipulate.
+
+The SingleEntitySystem will track a single entity, and will be initially set to no value for the optional entity, if
+an entity is created that matches it will assign that entity to the optional value, if another entity is registered
+that matches it will override the initial value (unless the `exceptionOnOverwrite` flag is passed, in this case a
+`SingleEntitySystemOverwriteException` will be raised). If the entity no longer matches then the optional will be
+set back to no value.
+
+#### Accessing Entities
+
+The system's single entity can be accessed by using the `entity`
+[`std::optional`](https://en.cppreference.com/w/cpp/utility/optional).
+
+To check if there is a value set:
+
+```c++
+if (this->entity.has_value()) {
+    ...
+}
+```
+
+To access the value:
+
+```c++
+auto camera = this->entity.value();
+```
+
+#### Evaluator
+
+The SingleEntitySystem uses the same evaluator as the VectorSystem.
+
 ### Bucket System
 
 The BucketSystem stores the system entities in a [`std::map`](https://www.cplusplus.com/reference/map/map/) of

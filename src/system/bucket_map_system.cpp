@@ -20,7 +20,8 @@ bool JamJar::BucketMapSystem::registerEntity(Entity *entity, std::vector<Compone
     }
 
     if (this->entities.count(result.value()) == 0) {
-        this->entities.insert({result.value(), std::map<unsigned int, SystemEntity>{{entity->id, JamJar::SystemEntity(entity, components)}}});
+        this->entities.insert({result.value(), std::map<unsigned int, SystemEntity>{
+                                                   {entity->id, JamJar::SystemEntity(entity, components)}}});
     } else {
         this->entities[result.value()].insert({entity->id, JamJar::SystemEntity(entity, components)});
     }

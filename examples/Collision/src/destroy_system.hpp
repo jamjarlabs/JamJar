@@ -19,7 +19,8 @@ class DestroySystem : public JamJar::BucketMapSystem {
   private:
     constexpr static uint32_t BOX_BUCKET = JamJar::hash("box");
     constexpr static uint32_t DESTRUCTOR_BUCKET = JamJar::hash("destructor");
-    static std::optional<uint32_t> evaluator(JamJar::Entity *entity, const std::vector<JamJar::Component *> &components);
+    static std::optional<uint32_t> evaluator(JamJar::Entity *entity,
+                                             const std::vector<JamJar::Component *> &components);
     float lastCreateTime;
 };
 
