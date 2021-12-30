@@ -17,22 +17,22 @@ bool InputController::evaluator(JamJar::Entity *entity, const std::vector<JamJar
 }
 
 InputController::InputController(JamJar::MessageBus *messageBus, SDL_Window *window)
-    : JamJar::MapSystem(messageBus, InputController::evaluator), window(window) {
+    : JamJar::SingleEntitySystem(messageBus, InputController::evaluator), window(window) {
     this->messageBus->Subscribe(this, JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_BUTTON_DOWN_EVENT);
 }
 
 void InputController::OnMessage(JamJar::Message *message) {
-    MapSystem::OnMessage(message);
+    SingleEntitySystem::OnMessage(message);
     switch (message->type) {
     case JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_BUTTON_DOWN_EVENT: {
         auto *eventMessage = static_cast<JamJar::MessagePayload<JamJar::Standard::SDL2MouseEvent> *>(message);
         auto event = eventMessage->payload;
 
-        if (this->entities.size() <= 0) {
+        if (!this->entity.has_value()) {
             break;
         }
 
-        auto cameraEntity = this->entities.begin()->second;
+        auto cameraEntity = this->entity.value();
         auto transform = cameraEntity.Get<JamJar::Standard::_2D::Transform>();
         auto camera = cameraEntity.Get<JamJar::Standard::_2D::Camera>();
 

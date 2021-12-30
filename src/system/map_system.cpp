@@ -2,14 +2,13 @@
 #include "component/component.hpp"
 #include "entity/entity.hpp"
 #include "message/message_bus.hpp"
-#include "system/evaluator.hpp"
 #include "system/system.hpp"
 
 JamJar::MapSystem::MapSystem(MessageBus *messageBus, Evaluator evaluator)
-    : StatefulSystem(messageBus), m_evaluator(std::move(evaluator)) {}
+    : StatefulSystem(messageBus), evaluator(std::move(evaluator)) {}
 
 bool JamJar::MapSystem::registerEntity(Entity *entity, std::vector<Component *> components) {
-    if (!this->m_evaluator(entity, components)) {
+    if (!this->evaluator(entity, components)) {
         this->removeEntity(entity->id);
         return false;
     }

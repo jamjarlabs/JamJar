@@ -4,16 +4,15 @@
 #include "message/message_bus.hpp"
 #include "message/message_payload.hpp"
 #include "standard/2d/render/renderable.hpp"
-#include "system/evaluator.hpp"
 
 JamJar::Standard::_2D::RenderSystem::RenderSystem(MessageBus *messageBus, Evaluator evaluator)
-    : MapSystem(messageBus, std::move(evaluator)) {
+    : VectorSystem(messageBus, std::move(evaluator)) {
     this->messageBus->Subscribe(this, JamJar::Game::MESSAGE_RENDER);
     this->messageBus->Subscribe(this, JamJar::Standard::_2D::RenderSystem::MESSAGE_LOAD_RENDERABLES);
 }
 
 void JamJar::Standard::_2D::RenderSystem::OnMessage(JamJar::Message *message) {
-    MapSystem::OnMessage(message);
+    VectorSystem::OnMessage(message);
     switch (message->type) {
     case JamJar::Standard::_2D::RenderSystem::MESSAGE_LOAD_RENDERABLES: {
         auto *loadMessage = static_cast<JamJar::MessagePayload<std::vector<Renderable>> *>(message);

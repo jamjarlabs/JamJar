@@ -168,11 +168,9 @@ GLuint JamJar::Standard::_2D::WebGL2System::getProgram(std::string identifier, G
 }
 
 void JamJar::Standard::_2D::WebGL2System::render(float deltaTime) {
-    for (const auto &entityPair : this->entities) {
-        auto cameraEntity = entityPair.second;
-
-        auto camera = cameraEntity.Get<JamJar::Standard::_2D::Camera>();
-        auto transform = cameraEntity.Get<JamJar::Standard::_2D::Transform>();
+    for (auto &entity : this->entities) {
+        auto camera = entity.Get<JamJar::Standard::_2D::Camera>();
+        auto transform = entity.Get<JamJar::Standard::_2D::Transform>();
 
         int canvasWidth;
         int canvasHeight;

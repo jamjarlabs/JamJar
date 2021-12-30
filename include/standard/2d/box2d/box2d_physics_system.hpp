@@ -7,8 +7,7 @@
 #include "message/message_bus.hpp"
 #include "standard/2d/box2d/box2d_body.hpp"
 #include "standard/2d/transform/transform.hpp"
-#include "system/evaluator.hpp"
-#include "system/map_system.hpp"
+#include "system/vector_system.hpp"
 #include <map>
 
 namespace JamJar::Standard::_2D {
@@ -20,7 +19,7 @@ struct Box2DCollision {
     b2Contact *contact;
     Box2DCollisionType type;
 };
-class Box2DPhysicsSystem : public MapSystem {
+class Box2DPhysicsSystem : public VectorSystem {
   public:
     constexpr static uint32_t MESSAGE_COLLISION_ENTER = hash("jamjar_box2d_collision_enter");
     constexpr static uint32_t MESSAGE_COLLISION_EXIT = hash("jamjar_box2d_collision_exit");

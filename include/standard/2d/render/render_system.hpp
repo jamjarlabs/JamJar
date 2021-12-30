@@ -5,10 +5,10 @@
 #include "message/message.hpp"
 #include "message/message_bus.hpp"
 #include "standard/2d/render/renderable.hpp"
-#include "system/map_system.hpp"
+#include "system/vector_system.hpp"
 
 namespace JamJar::Standard::_2D {
-class RenderSystem : public MapSystem {
+class RenderSystem : public VectorSystem {
   public:
     constexpr static uint32_t MESSAGE_LOAD_RENDERABLES = hash("jamjar_load_renderables");
     explicit RenderSystem(MessageBus *messageBus, Evaluator evaluator);

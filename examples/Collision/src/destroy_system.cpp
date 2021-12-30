@@ -14,65 +14,82 @@
 
 const float TIME_BETWEEN_BOXES = 3;
 
-bool DestroySystem::evaluator(JamJar::Entity *entity, const std::vector<JamJar::Component *> &components) {
+std::optional<uint32_t> DestroySystem::evaluator(JamJar::Entity *entity,
+                                                 const std::vector<JamJar::Component *> &components) {
     bool hasBox2dBody = false;
-    bool hasBoxOrDestructor = false;
+    bool hasBox = false;
+    bool hasDestructor = false;
     for (const auto &component : components) {
         if (component->key == JamJar::Standard::_2D::Box2DBody::KEY) {
             hasBox2dBody = true;
             continue;
         }
         if (component->key == Box::KEY) {
-            hasBoxOrDestructor = true;
+            hasBox = true;
             continue;
         }
         if (component->key == Destructor::KEY) {
-            hasBoxOrDestructor = true;
+            hasDestructor = true;
             continue;
         }
     }
-    return hasBox2dBody && hasBoxOrDestructor;
+
+    if (hasBox2dBody) {
+        if (hasBox) {
+            return BOX_BUCKET;
+        }
+
+        if (hasDestructor) {
+            return DESTRUCTOR_BUCKET;
+        }
+    }
+
+    return std::optional<uint32_t>(std::nullopt);
 }
 
 DestroySystem::DestroySystem(JamJar::MessageBus *messageBus)
-    : JamJar::MapSystem(messageBus, DestroySystem::evaluator), lastCreateTime(0) {
+    : JamJar::BucketMapSystem(messageBus, DestroySystem::evaluator), lastCreateTime(0) {
     this->messageBus->Subscribe(this, JamJar::Standard::_2D::Box2DPhysicsSystem::MESSAGE_COLLISION_ENTER);
 }
 
 void DestroySystem::OnMessage(JamJar::Message *message) {
-    MapSystem::OnMessage(message);
+    BucketMapSystem::OnMessage(message);
     switch (message->type) {
     case JamJar::Standard::_2D::Box2DPhysicsSystem::MESSAGE_COLLISION_ENTER: {
         auto *collisionMessage = static_cast<JamJar::MessagePayload<JamJar::Standard::_2D::Box2DCollision> *>(message);
         auto collision = collisionMessage->payload;
-        if (this->entities.count(collision.aID) == 0 || this->entities.count(collision.bID) == 0) {
+
+        if (this->entities.count(BOX_BUCKET) == 0 || this->entities.count(DESTRUCTOR_BUCKET) == 0) {
             break;
         }
 
-        auto a = this->entities.at(collision.aID);
-        auto b = this->entities.at(collision.bID);
+        auto boxes = this->entities.at(BOX_BUCKET);
+        auto destructors = this->entities.at(DESTRUCTOR_BUCKET);
 
-        if (a.Has(Box::KEY)) {
-            if (b.Has(Destructor::KEY)) {
+        if (boxes.count(collision.aID) > 0) {
+            // A is a Box
+            if (destructors.count(collision.bID) > 0) {
+                // B is a destructor
+                auto a = boxes.at(collision.aID);
                 a.Destroy();
                 break;
             }
-        }
-
-        if (b.Has(Box::KEY)) {
-            if (a.Has(Destructor::KEY)) {
+        } else if (destructors.count(collision.aID) > 0) {
+            // A is a destructor
+            if (boxes.count(collision.bID) > 0) {
+                // B is a box
+                auto b = boxes.at(collision.bID);
                 b.Destroy();
                 break;
             }
         }
-
         break;
     }
     }
 }
 
 void DestroySystem::update(float deltaTime) {
-    MapSystem::update(deltaTime);
+    BucketMapSystem::update(deltaTime);
     this->lastCreateTime += deltaTime;
 
     if (this->lastCreateTime > TIME_BETWEEN_BOXES) {

@@ -14,12 +14,11 @@ bool ResizingSystem::evaluator(JamJar::Entity *entity, const std::vector<JamJar:
 }
 
 ResizingSystem::ResizingSystem(JamJar::MessageBus *messageBus)
-    : JamJar::MapSystem(messageBus, ResizingSystem::evaluator) {}
+    : JamJar::VectorSystem(messageBus, ResizingSystem::evaluator) {}
 
 void ResizingSystem::update(float deltaTime) {
-    MapSystem::update(deltaTime);
-    for (const auto &entityPair : this->entities) {
-        auto entity = entityPair.second;
+    VectorSystem::update(deltaTime);
+    for (auto &entity : this->entities) {
         auto bodyComp = entity.Get<JamJar::Standard::_2D::Box2DBody>();
         auto resizable = entity.Get<Resizable>();
 

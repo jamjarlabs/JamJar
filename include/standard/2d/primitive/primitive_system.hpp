@@ -3,13 +3,11 @@
 
 #include "component/component.hpp"
 #include "entity/entity.hpp"
-#include "message/message_bus.hpp"
-#include "system/evaluator.hpp"
-#include "system/map_system.hpp"
+#include "system/vector_system.hpp"
 #include <string>
 
 namespace JamJar::Standard::_2D {
-class PrimitiveSystem : public MapSystem {
+class PrimitiveSystem : public VectorSystem {
   public:
     explicit PrimitiveSystem(MessageBus *messageBus);
     void OnMessage(Message *message) override;

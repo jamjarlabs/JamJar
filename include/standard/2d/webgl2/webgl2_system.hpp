@@ -13,7 +13,6 @@
 #include "standard/2d/render/render_system.hpp"
 #include "standard/2d/webgl2/webgl2_shader.hpp"
 #include "standard/file_texture/file_texture_response.hpp"
-#include "system/evaluator.hpp"
 #include <GLES3/gl3.h>
 #include <SDL2/SDL.h>
 #include <cstdint>
