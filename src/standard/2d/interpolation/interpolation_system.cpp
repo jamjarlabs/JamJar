@@ -7,7 +7,7 @@
 #include "standard/2d/transform/transform.hpp"
 
 JamJar::Standard::_2D::InterpolationSystem::InterpolationSystem(MessageBus *messageBus)
-    : MapSystem(messageBus, JamJar::Standard::_2D::InterpolationSystem::evaluator) {
+    : VectorSystem(messageBus, JamJar::Standard::_2D::InterpolationSystem::evaluator) {
     this->messageBus->Subscribe(this, JamJar::Game::MESSAGE_POST_RENDER);
 }
 
@@ -19,7 +19,7 @@ bool JamJar::Standard::_2D::InterpolationSystem::evaluator(Entity *entity,
 }
 
 void JamJar::Standard::_2D::InterpolationSystem::OnMessage(JamJar::Message *message) {
-    MapSystem::OnMessage(message);
+    VectorSystem::OnMessage(message);
     switch (message->type) {
     case JamJar::Game::MESSAGE_POST_RENDER: {
         this->interpolate();
@@ -29,8 +29,7 @@ void JamJar::Standard::_2D::InterpolationSystem::OnMessage(JamJar::Message *mess
 }
 
 void JamJar::Standard::_2D::InterpolationSystem::interpolate() {
-    for (const auto &entityPair : this->entities) {
-        auto entity = entityPair.second;
+    for (auto &entity : this->entities) {
         auto transform = entity.Get<JamJar::Standard::_2D::Transform>();
 
         transform->previous = transform->position;

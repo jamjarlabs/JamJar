@@ -14,7 +14,7 @@ const std::string JamJar::Standard::_2D::PrimitiveSystem::DEFAULT_PRIMITIVE_FRAG
     "jamjar_default_primitive_fragment";
 
 JamJar::Standard::_2D::PrimitiveSystem::PrimitiveSystem(MessageBus *messageBus)
-    : MapSystem(messageBus, JamJar::Standard::_2D::PrimitiveSystem::evaluator) {
+    : VectorSystem(messageBus, JamJar::Standard::_2D::PrimitiveSystem::evaluator) {
     this->messageBus->Subscribe(this, JamJar::Game::MESSAGE_PRE_RENDER);
 #ifdef __EMSCRIPTEN__
     this->loadWebgl2Shaders();
@@ -59,7 +59,7 @@ bool JamJar::Standard::_2D::PrimitiveSystem::evaluator(Entity *entity,
 }
 
 void JamJar::Standard::_2D::PrimitiveSystem::OnMessage(JamJar::Message *message) {
-    MapSystem::OnMessage(message);
+    VectorSystem::OnMessage(message);
     switch (message->type) {
     case JamJar::Game::MESSAGE_PRE_RENDER: {
         auto *renderMessage = static_cast<JamJar::MessagePayload<float> *>(message);
@@ -71,8 +71,7 @@ void JamJar::Standard::_2D::PrimitiveSystem::OnMessage(JamJar::Message *message)
 
 void JamJar::Standard::_2D::PrimitiveSystem::preRender(float alpha) {
     std::vector<Renderable> renderables;
-    for (const auto &entityPair : this->entities) {
-        auto entity = entityPair.second;
+    for (auto &entity : this->entities) {
         auto transform = entity.Get<JamJar::Standard::_2D::Transform>();
         auto primitive = entity.Get<JamJar::Standard::_2D::Primitive>();
 

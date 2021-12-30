@@ -2,7 +2,6 @@
 #include "component/component.hpp"
 #include "entity/entity.hpp"
 #include "message/message_bus.hpp"
-#include "system/evaluator.hpp"
 #include "system/system.hpp"
 
 JamJar::BucketSystem::BucketSystem(MessageBus *messageBus, Evaluator evaluator)

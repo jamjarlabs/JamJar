@@ -21,27 +21,29 @@ while also allowing easy access to the entity itself.
 
 JamJar provides a couple of standard stateful system implementations that you can use.
 
-### Map System
+### Vector System
 
-MapSystem - stores the system entities in a [`std::map`](https://www.cplusplus.com/reference/map/map/) that maps an
-entity ID to a system entity.
+The VectorSystem stores the system entities in a [`std::vector`](https://www.cplusplus.com/reference/vector/vector/).
 
 #### Accessing Entities
 
-Map system entities can be accessed by using the `entities` [`std::map`](https://www.cplusplus.com/reference/map/map/),
-with the key being the ID of the entity.
+Vector system entities can be accessed by using the `entities`
+[`std::vector`](https://www.cplusplus.com/reference/vector/vector/).
+
 
 ```c++
-auto a = this->entities.at(entityID);
+for (auto &entity : this->entities) {
+    ...
+}
 ```
 
 #### Evaluator
 
-A map system must include an evaluator, this is a function that filters which entities and components the
-map system should track. The evaluator takes as arguments an entity and a vector of all of its components, and
+A vector system must include an evaluator, this is a function that filters which entities and components the
+vector system should track. The evaluator takes as arguments an entity and a vector of all of its components, and
 must return `true` if it should be tracked as a system entity, or `false` if it should not be tracked.
 
-An example of a map system evaluator looks like this:
+An example of a vector system evaluator looks like this:
 
 ```c++
 bool JamJar::Standard::_2D::SpriteSystem::evaluator(Entity *entity,
@@ -66,9 +68,27 @@ bool JamJar::Standard::_2D::SpriteSystem::evaluator(Entity *entity,
 This evaluator is used in the SpriteSystem to make sure that only components that have a Sprite component and a
 Transform component are tracked.
 
+### Map System
+
+The MapSystem stores the system entities in a [`std::map`](https://www.cplusplus.com/reference/map/map/) that maps an
+entity ID to a system entity.
+
+#### Accessing Entities
+
+Map system entities can be accessed by using the `entities` [`std::map`](https://www.cplusplus.com/reference/map/map/),
+with the key being the ID of the entity.
+
+```c++
+auto a = this->entities.at(entityID);
+```
+
+#### Evaluator
+
+The `MapSystem` uses the same evaluator as the VectorSystem.
+
 ### Bucket System
 
-BucketSystem - stores the system entities in a [`std::map`](https://www.cplusplus.com/reference/map/map/) of
+The BucketSystem stores the system entities in a [`std::map`](https://www.cplusplus.com/reference/map/map/) of
 [`std::vector`](https://www.cplusplus.com/reference/vector/vector/) - with the map keys being any arbitrary `uint32_t`
 that the developer can choose, for example keeping track of entities with a camera and player entities in two separate
 buckets.

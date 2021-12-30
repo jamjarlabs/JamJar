@@ -16,7 +16,7 @@ void JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DContactListener::EndContact
 }
 
 JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DPhysicsSystem(MessageBus *messageBus, JamJar::Vector2D gravity)
-    : MapSystem(messageBus, JamJar::Standard::_2D::Box2DPhysicsSystem::evaluator),
+    : VectorSystem(messageBus, JamJar::Standard::_2D::Box2DPhysicsSystem::evaluator),
       world(b2World(b2Vec2(gravity.x, gravity.y))) {
     this->world.SetContactListener(new Box2DContactListener(this));
 }
@@ -39,13 +39,14 @@ bool JamJar::Standard::_2D::Box2DPhysicsSystem::evaluator(Entity *entity,
     return false;
 }
 
-void JamJar::Standard::_2D::Box2DPhysicsSystem::OnMessage(JamJar::Message *message) { MapSystem::OnMessage(message); }
+void JamJar::Standard::_2D::Box2DPhysicsSystem::OnMessage(JamJar::Message *message) {
+    VectorSystem::OnMessage(message);
+}
 
 void JamJar::Standard::_2D::Box2DPhysicsSystem::update(float deltaTime) {
-    MapSystem::update(deltaTime);
+    VectorSystem::update(deltaTime);
     world.Step(deltaTime, 6, 2);
-    for (const auto &entityPair : this->entities) {
-        auto entity = entityPair.second;
+    for (auto &entity : this->entities) {
         auto transform = entity.Get<JamJar::Standard::_2D::Transform>();
         auto bodyComp = entity.Get<JamJar::Standard::_2D::Box2DBody>();
 
@@ -96,7 +97,7 @@ void JamJar::Standard::_2D::Box2DPhysicsSystem::update(float deltaTime) {
 }
 
 bool JamJar::Standard::_2D::Box2DPhysicsSystem::registerEntity(Entity *entity, std::vector<Component *> components) {
-    if (!MapSystem::registerEntity(entity, components)) {
+    if (!VectorSystem::registerEntity(entity, components)) {
         return false;
     }
 
@@ -119,7 +120,7 @@ bool JamJar::Standard::_2D::Box2DPhysicsSystem::registerEntity(Entity *entity, s
 }
 
 void JamJar::Standard::_2D::Box2DPhysicsSystem::removeEntity(unsigned int entityID) {
-    MapSystem::removeEntity(entityID);
+    VectorSystem::removeEntity(entityID);
     b2Body *body = bodies[entityID];
     if (body != nullptr) {
         world.DestroyBody(body);

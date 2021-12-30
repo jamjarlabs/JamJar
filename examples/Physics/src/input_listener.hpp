@@ -3,10 +3,10 @@
 
 #include "message/message.hpp"
 #include "message/message_bus.hpp"
-#include "system/map_system.hpp"
+#include "system/vector_system.hpp"
 #include <SDL2/SDL.h>
 
-class InputListener : public JamJar::MapSystem {
+class InputListener : public JamJar::VectorSystem {
   public:
     explicit InputListener(JamJar::MessageBus *messageBus, SDL_Window *window);
     void OnMessage(JamJar::Message *message) override;
