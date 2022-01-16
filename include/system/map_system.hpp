@@ -5,8 +5,8 @@
 #include "entity/entity.hpp"
 #include "system/stateful_system.hpp"
 #include "system/system_entity.hpp"
-#include <map>
 #include <functional>
+#include <map>
 
 namespace JamJar {
 class MapSystem : public StatefulSystem {

@@ -5,10 +5,10 @@
 #include "entity/entity.hpp"
 #include "system/stateful_system.hpp"
 #include "system/system_entity.hpp"
+#include <functional>
 #include <map>
 #include <optional>
 #include <vector>
-#include <functional>
 
 namespace JamJar {
 class BucketMapSystem : public StatefulSystem {

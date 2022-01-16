@@ -43,13 +43,9 @@ void JamJar::Vector2D::operator*=(float scaler) {
     this->y *= scaler;
 }
 
-float JamJar::Vector2D::Dot(const Vector2D &other) const {
-    return this->x * other.x + this->y * other.y;
-}
+float JamJar::Vector2D::Dot(const Vector2D &other) const { return this->x * other.x + this->y * other.y; }
 
-float JamJar::Vector2D::Magnitude() const {
-    return sqrtf(this->x * this->x + this->y * this->y);
-}
+float JamJar::Vector2D::Magnitude() const { return sqrtf(this->x * this->x + this->y * this->y); }
 
 JamJar::Vector2D JamJar::Vector2D::Rotate(const Vector2D &center, float angle) const {
     Vector2D copy = *this;
@@ -71,7 +67,7 @@ JamJar::Vector2D JamJar::Vector2D::Normalize() const {
     return *copy.NormalizeInPlace();
 }
 
-JamJar::Vector2D* JamJar::Vector2D::RotateInPlace(const Vector2D &center, float angle) {
+JamJar::Vector2D *JamJar::Vector2D::RotateInPlace(const Vector2D &center, float angle) {
     float s = sinf(angle);
     float c = cosf(angle);
 
@@ -84,17 +80,17 @@ JamJar::Vector2D* JamJar::Vector2D::RotateInPlace(const Vector2D &center, float 
     return this;
 }
 
-JamJar::Vector2D* JamJar::Vector2D::RotateDegInPlace(const Vector2D &center, float angle) {
+JamJar::Vector2D *JamJar::Vector2D::RotateDegInPlace(const Vector2D &center, float angle) {
     return this->RotateInPlace(center, angle * (M_PI / 180.0f));
 }
 
-JamJar::Vector2D* JamJar::Vector2D::InvertInPlace() {
+JamJar::Vector2D *JamJar::Vector2D::InvertInPlace() {
     this->x = -this->x;
     this->y = -this->y;
     return this;
 }
 
-JamJar::Vector2D* JamJar::Vector2D::NormalizeInPlace() {
+JamJar::Vector2D *JamJar::Vector2D::NormalizeInPlace() {
     float magnitude = this->Magnitude();
     if (magnitude > 0) {
         magnitude = 1.0f / magnitude;

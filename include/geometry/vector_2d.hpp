@@ -26,10 +26,10 @@ class Vector2D {
     Vector2D Invert() const;
     Vector2D Normalize() const;
 
-    Vector2D* RotateInPlace(const Vector2D &center, float angle);
-    Vector2D* RotateDegInPlace(const Vector2D &center, float angle);
-    Vector2D* InvertInPlace();
-    Vector2D* NormalizeInPlace();
+    Vector2D *RotateInPlace(const Vector2D &center, float angle);
+    Vector2D *RotateDegInPlace(const Vector2D &center, float angle);
+    Vector2D *InvertInPlace();
+    Vector2D *NormalizeInPlace();
 };
 }; // namespace JamJar
 
