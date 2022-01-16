@@ -32,7 +32,7 @@ jobs:
         clang --version
         clang-format --version
         clang-tidy --version
-    - name: Lint, beautify and build
+    - name: Lint, beautify, and build
       env:
         CC: emcc
         CXX: em++
@@ -50,8 +50,9 @@ jobs:
         # Build the project
         make
 
-        # Run unit tests
-        ctest
+        # Clean up build
+        cd ..
+        rm -rf build/
     - name: Test
       env:
         CC: /usr/bin/clang
@@ -61,6 +62,9 @@ jobs:
         # Set up build
         cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . -B build
         cd build
+
+        # Build unit tests
+        make JamJarTests
 
         # Run unit tests
         ctest
