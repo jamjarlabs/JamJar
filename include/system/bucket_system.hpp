@@ -8,6 +8,7 @@
 #include <map>
 #include <optional>
 #include <vector>
+#include <functional>
 
 namespace JamJar {
 class BucketSystem : public StatefulSystem {
