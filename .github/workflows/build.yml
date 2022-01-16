@@ -12,9 +12,9 @@ jobs:
     - name: Check out code into the CI directory
       uses: actions/checkout@v1
     - name: Setup Emscripten
-      uses: mymindstorm/setup-emsdk@v9
+      uses: mymindstorm/setup-emsdk@11
       with:
-        version: 2.0.20
+        version: 2.0.34
     - name: Install build dependencies
       run: |
 
