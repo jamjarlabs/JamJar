@@ -8,6 +8,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-20.04
+    container: registry.access.redhat.com/ubi8/ubi-minimal:8.5-218
     steps:
     - name: Check out code into the CI directory
       uses: actions/checkout@v1
@@ -17,15 +18,18 @@ jobs:
         version: 2.0.34
     - name: Install build dependencies
       run: |
-
         # Install required tools
-        sudo apt-get update
-        sudo apt-get install clang-11 clang-tidy-11 clang-format-11 cmake libsdl2-dev -y
+        dnf update
+        dnf install clang clang-tools-extra cmake libsdl2-dev git -y
 
-        # Link tools to expected locations
-        sudo ln -sf /usr/bin/clang-11 /usr/bin/clang
-        sudo ln -sf /usr/bin/clang-tidy-11 /usr/bin/clang-tidy
-        sudo ln -sf /usr/bin/clang-format-11 /usr/bin/clang-format
+        # Install SDL2
+        git clone https://github.com/libsdl-org/SDL
+        cd SDL
+        mkdir build
+        cd build
+        ../configure
+        make
+        make install
 
         # Print versions for debugging
         cmake --version
