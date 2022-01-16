@@ -15,10 +15,7 @@ jobs:
       uses: mymindstorm/setup-emsdk@v9
       with:
         emscripten-version: '2.0.20'
-    - name: Lint, test and build
-      env:
-        CC: emcc
-        CXX: em++
+    - name: Install build dependencies
       run: |
 
         # Install required tools
@@ -35,6 +32,11 @@ jobs:
         clang --version
         clang-format --version
         clang-tidy --version
+    - name: Lint, beautify and build
+      env:
+        CC: emcc
+        CXX: em++
+      run: |
 
         # Set up build
         emcmake cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . -B build
@@ -47,6 +49,18 @@ jobs:
 
         # Build the project
         make
+
+        # Run unit tests
+        ctest
+    - name: Test
+      env:
+        CC: /usr/bin/clang
+        CXX: /usr/bin/clang++
+      run: |
+
+        # Set up build
+        cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . -B build
+        cd build
 
         # Run unit tests
         ctest
