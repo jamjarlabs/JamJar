@@ -14,11 +14,12 @@ jobs:
     - name: Setup Emscripten
       uses: mymindstorm/setup-emsdk@v9
       with:
-        emscripten-version: '2.0.20'
+        version: 2.0.20
     - name: Install build dependencies
       run: |
 
         # Install required tools
+        sudo apt-get update
         sudo apt-get install clang-11 clang-tidy-11 clang-format-11 cmake libsdl2-dev -y
 
         # Link tools to expected locations
