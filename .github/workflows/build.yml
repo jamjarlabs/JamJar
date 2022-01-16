@@ -19,7 +19,7 @@ jobs:
       run: |
 
         # Install required tools
-        sudo apt-get install clang-11 clang-tidy-11 clang-format-11 cmake -y
+        sudo apt-get install clang-11 clang-tidy-11 clang-format-11 cmake libsdl2-dev -y
 
         # Link tools to expected locations
         sudo ln -sf /usr/bin/clang-11 /usr/bin/clang
