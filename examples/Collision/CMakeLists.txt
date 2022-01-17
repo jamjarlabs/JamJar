@@ -28,7 +28,8 @@ FetchContent_MakeAvailable(JamJar)
 
 ### ===== core ===== ###
 
-set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2")
+set(CMAKE_CXX_FLAGS  "-s USE_SDL=2")
+SET(CMAKE_EXE_LINKER_FLAGS "-s LLD_REPORT_UNDEFINED -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2")
 
 set(EXE_SOURCES
     src/box.cpp

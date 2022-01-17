@@ -33,7 +33,7 @@ The project has the following dependencies:
 - `clang` == `11.1.X`
 - `clang-tidy` == `11.1.X`
 - `clang-format` == `11.1.X`
-- `emscripten` == `2.0.X`
+- `emscripten` == `3.1.X`
 
 Later minor and patch versions of these dependencies should still work, the CI build just uses the versions above.
 
