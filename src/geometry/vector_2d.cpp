@@ -47,6 +47,12 @@ float JamJar::Vector2D::Dot(const Vector2D &other) const { return this->x * othe
 
 float JamJar::Vector2D::Magnitude() const { return sqrtf(this->x * this->x + this->y * this->y); }
 
+float JamJar::Vector2D::Distance(const Vector2D &other) const {
+    float x = this->x - other.x;
+    float y = this->y - other.y;
+    return std::abs(sqrtf(x * x + y * y));
+}
+
 JamJar::Vector2D JamJar::Vector2D::Rotate(const Vector2D &center, float angle) const {
     Vector2D copy = *this;
     return *copy.RotateInPlace(center, angle);

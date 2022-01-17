@@ -71,7 +71,20 @@ This will generate the `build/libJamJar.a` library archive which can be used whe
 
 ##### Running unit tests
 
-Run the unit tests by running the following in the `build/` directory:
+The unit tests run locally, not in the browser after compiling with emscripten. This means that they need to be built
+either with GCC or clang, you can do that by removing the `build/` directory, then running this command:
+
+```bash
+cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . -B build
+```
+
+This command will generate the build files for GCC/Clang in the `build/` directory, inside which you can run;
+
+```bash
+make JamJarTests
+```
+
+Then you can run the unit tests by running the following in the `build/` directory:
 
 ```bash
 ctest

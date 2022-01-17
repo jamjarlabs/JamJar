@@ -20,6 +20,7 @@ class Vector2D {
 
     float Dot(const Vector2D &other) const;
     float Magnitude() const;
+    float Distance(const Vector2D &other) const;
 
     Vector2D Rotate(const Vector2D &center, float angle) const;
     Vector2D RotateDeg(const Vector2D &center, float angle) const;
