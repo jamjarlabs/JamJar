@@ -8,33 +8,15 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-20.04
+    container: jamjarlabs/jamjar-build-image:v0.1.0
     steps:
     - name: Check out code into the CI directory
       uses: actions/checkout@v1
-    - name: Setup Emscripten
-      uses: mymindstorm/setup-emsdk@v9
-      with:
-        emscripten-version: '2.0.20'
-    - name: Lint, test and build
+    - name: Lint, beautify, and build
       env:
         CC: emcc
         CXX: em++
       run: |
-
-        # Install required tools
-        sudo apt-get install clang-11 clang-tidy-11 clang-format-11 cmake -y
-
-        # Link tools to expected locations
-        sudo ln -sf /usr/bin/clang-11 /usr/bin/clang
-        sudo ln -sf /usr/bin/clang-tidy-11 /usr/bin/clang-tidy
-        sudo ln -sf /usr/bin/clang-format-11 /usr/bin/clang-format
-
-        # Print versions for debugging
-        cmake --version
-        em++ --version
-        clang --version
-        clang-format --version
-        clang-tidy --version
 
         # Set up build
         emcmake cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . -B build
@@ -47,6 +29,22 @@ jobs:
 
         # Build the project
         make
+
+        # Clean up build
+        cd ..
+        rm -rf build/
+    - name: Test
+      env:
+        CC: gcc
+        CXX: g++
+      run: |
+
+        # Set up build
+        cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . -B build
+        cd build
+
+        # Build unit tests
+        make JamJarTests
 
         # Run unit tests
         ctest

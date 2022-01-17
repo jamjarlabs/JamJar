@@ -4,7 +4,7 @@ set (CMAKE_CXX_STANDARD 17)
 
 project(JamJar VERSION 0.0.0)
 
-option(JAMJAR_NATIVE_COMPILE_UNIT_TESTS "Compile JamJar unit tests" OFF)
+option(JAMJAR_NATIVE_COMPILE_UNIT_TESTS "Compile JamJar unit tests" ON)
 
 ### ===== dependencies ===== ###
 
@@ -35,15 +35,12 @@ FetchContent_MakeAvailable(box2d)
 
 if(JAMJAR_NATIVE_COMPILE_UNIT_TESTS)
     FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
+        Catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG        v3.0.0-preview3
     )
 
-    # For Windows: Prevent overriding the parent project's compiler/linker settings
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    FetchContent_MakeAvailable(googletest)
-
-    enable_testing()
+    FetchContent_MakeAvailable(Catch2)
 endif()
 
 ### ===== core ===== ###
@@ -52,7 +49,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 if (EMSCRIPTEN)
-    set(CMAKE_CXX_FLAGS  "-s USE_SDL=2 -s MAX_WEBGL_VERSION=2 -s MIN_WEBGL_VERSION=2")
+    set(CMAKE_CXX_FLAGS  "-s USE_SDL=2")
 endif()
 
 set(LIB_SOURCES
@@ -101,7 +98,7 @@ set(LIB_SOURCES
 )
 
 set(TEST_SOURCES
-    src/game_test.cpp
+    src/geometry/vector_2d.test.cpp
 )
 
 add_library(JamJar
@@ -128,11 +125,12 @@ if(JAMJAR_NATIVE_COMPILE_UNIT_TESTS)
     target_link_libraries(
         JamJarTests
         JamJar
-        gtest_main
+        Catch2::Catch2WithMain
     )
 
-    include(GoogleTest)
-    gtest_discover_tests(JamJarTests)
+    enable_testing()
+    add_test(NAME JamJarTests COMMAND JamJarTests)
+
 endif()
 
 add_subdirectory (examples/Collision)
