@@ -55,11 +55,7 @@ else()
     # nice with clang, so the SDL2 path needs to be manually included, see here:
     # https://bugs.launchpad.net/ubuntu/+source/libsdl2-ttf/+bug/1872023
     if(DEFINED ENV{CI})
-        set(CMAKE_CXX_FLAGS  "-I/usr/include/SDL2
-                              -I${CMAKE_SOURCE_DIR}/build/_deps/stb_image-src
-                              -I${CMAKE_SOURCE_DIR}/build/_deps/box2d-src/include
-                              -I${CMAKE_SOURCE_DIR}/build/_deps/catch2-src/src
-                              -I${CMAKE_SOURCE_DIR}/include")
+        set(CMAKE_CXX_FLAGS "-I/usr/include/SDL2 -I${CMAKE_SOURCE_DIR}/build/_deps/stb_image-src -I${CMAKE_SOURCE_DIR}/build/_deps/box2d-src/include -I${CMAKE_SOURCE_DIR}/build/_deps/catch2-src/src -I${CMAKE_SOURCE_DIR}/include")
     endif()
 endif()
 
