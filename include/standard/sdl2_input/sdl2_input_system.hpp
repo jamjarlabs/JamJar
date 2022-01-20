@@ -8,6 +8,7 @@
 #include "system/system.hpp"
 #include <SDL2/SDL.h>
 #include <optional>
+#include <string>
 
 namespace JamJar::Standard {
 class SDL2InputSystem : public System {
@@ -29,10 +30,10 @@ enum SDL2MouseButton { LEFT = 0, MIDDLE, RIGHT, X1, X2 };
 
 class SDL2MouseEvent {
   public:
-    explicit SDL2MouseEvent(SDL2MouseEventType type, SDL2MouseButton button, JamJar::Vector2D position,
+    explicit SDL2MouseEvent(SDL2MouseEventType type, SDL2MouseButton button, const JamJar::Vector2D &position,
                             SDL_Event event);
-    explicit SDL2MouseEvent(SDL2MouseEventType type, JamJar::Vector2D position, SDL_Event event);
-    virtual ~SDL2MouseEvent() {}
+    explicit SDL2MouseEvent(SDL2MouseEventType type, const JamJar::Vector2D &position, SDL_Event event);
+    virtual ~SDL2MouseEvent() = default;
 
     SDL2MouseEventType type;
     std::optional<SDL2MouseButton> button;
@@ -44,12 +45,11 @@ enum SDL2KeyEventType { KEY_DOWN = 0, KEY_UP };
 
 class SDL2KeyEvent {
   public:
-    explicit SDL2KeyEvent(SDL2KeyEventType type, SDL_Event event, const char *key, bool repeat);
-    virtual ~SDL2KeyEvent() { delete[] key; }
+    explicit SDL2KeyEvent(SDL2KeyEventType type, SDL_Event event, std::string key, bool repeat);
 
     SDL2KeyEventType type;
     SDL_Event event;
-    const char *key;
+    std::string key;
     bool repeat;
 };
 

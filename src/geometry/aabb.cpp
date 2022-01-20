@@ -1,7 +1,7 @@
 #include "geometry/aabb.hpp"
 
-JamJar::AABB::AABB(Vector2D dimensions, Vector2D center) : dimensions(dimensions), center(center) {}
-JamJar::AABB::AABB(Vector2D dimensions) : AABB(dimensions, Vector2D(0, 0)) {}
+JamJar::AABB::AABB(const Vector2D &dimensions, const Vector2D &center) : dimensions(dimensions), center(center) {}
+JamJar::AABB::AABB(const Vector2D &dimensions) : AABB(dimensions, Vector2D(0, 0)) {}
 
 JamJar::Vector2D JamJar::AABB::Center() { return this->center; }
 

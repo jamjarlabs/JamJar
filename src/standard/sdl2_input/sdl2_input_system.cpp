@@ -1,7 +1,7 @@
 #include "standard/sdl2_input/sdl2_input_system.hpp"
 #include "message/message_payload.hpp"
-#include <iostream>
 #include <unordered_map>
+#include <utility>
 
 const std::unordered_map<Uint32, uint32_t> MOUSE_MESSAGES = {
     {SDL_MOUSEBUTTONDOWN, JamJar::Standard::SDL2InputSystem::MESSAGE_MOUSE_BUTTON_DOWN_EVENT},
@@ -25,18 +25,16 @@ const std::unordered_map<Uint8, JamJar::Standard::SDL2MouseButton> MOUSE_BUTTONS
 JamJar::Standard::SDL2InputSystem::SDL2InputSystem(MessageBus *messageBus) : System(messageBus) {}
 
 void JamJar::Standard::SDL2InputSystem::update(float deltaTime) {
-    bool polling = true;
-    while (polling) {
+    while (true) {
         SDL_Event event;
         if (SDL_PollEvent(&event) == 0) {
-            polling = false;
             break;
         }
         switch (event.type) {
         case SDL_KEYDOWN: {
             auto msg = std::make_unique<JamJar::MessagePayload<SDL2KeyEvent>>(
                 JamJar::Standard::SDL2InputSystem::MESSAGE_KEY_DOWN_EVENT,
-                SDL2KeyEvent(SDL2KeyEventType::KEY_DOWN, event, SDL_GetKeyName(event.key.keysym.sym),
+                SDL2KeyEvent(SDL2KeyEventType::KEY_DOWN, event, std::string(SDL_GetKeyName(event.key.keysym.sym)),
                              event.key.repeat == 1));
             this->messageBus->Publish(std::move(msg));
             break;
@@ -44,7 +42,7 @@ void JamJar::Standard::SDL2InputSystem::update(float deltaTime) {
         case SDL_KEYUP: {
             auto msg = std::make_unique<JamJar::MessagePayload<SDL2KeyEvent>>(
                 JamJar::Standard::SDL2InputSystem::MESSAGE_KEY_UP_EVENT,
-                SDL2KeyEvent(SDL2KeyEventType::KEY_UP, event, SDL_GetKeyName(event.key.keysym.sym),
+                SDL2KeyEvent(SDL2KeyEventType::KEY_UP, event, std::string(SDL_GetKeyName(event.key.keysym.sym)),
                              event.key.repeat == 1));
             this->messageBus->Publish(std::move(msg));
             break;
@@ -83,14 +81,14 @@ void JamJar::Standard::SDL2InputSystem::update(float deltaTime) {
 }
 
 JamJar::Standard::SDL2MouseEvent::SDL2MouseEvent(JamJar::Standard::SDL2MouseEventType type,
-                                                 JamJar::Standard::SDL2MouseButton button, JamJar::Vector2D position,
-                                                 SDL_Event event)
+                                                 JamJar::Standard::SDL2MouseButton button,
+                                                 const JamJar::Vector2D &position, SDL_Event event)
     : type(type), button(button), position(position), event(event) {}
 
-JamJar::Standard::SDL2MouseEvent::SDL2MouseEvent(JamJar::Standard::SDL2MouseEventType type, JamJar::Vector2D position,
-                                                 SDL_Event event)
+JamJar::Standard::SDL2MouseEvent::SDL2MouseEvent(JamJar::Standard::SDL2MouseEventType type,
+                                                 const JamJar::Vector2D &position, SDL_Event event)
     : type(type), button(std::nullopt), position(position), event(event) {}
 
-JamJar::Standard::SDL2KeyEvent::SDL2KeyEvent(JamJar::Standard::SDL2KeyEventType type, SDL_Event event, const char *key,
+JamJar::Standard::SDL2KeyEvent::SDL2KeyEvent(JamJar::Standard::SDL2KeyEventType type, SDL_Event event, std::string key,
                                              bool repeat)
-    : type(type), event(event), key(key), repeat(repeat) {}
+    : type(type), event(event), key(std::move(key)), repeat(repeat) {}

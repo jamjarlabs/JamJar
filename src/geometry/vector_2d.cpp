@@ -1,4 +1,5 @@
 #include "geometry/vector_2d.hpp"
+#include "numbers.hpp"
 #include <cmath>
 
 JamJar::Vector2D::Vector2D() : Vector2D(0, 0) {}
@@ -87,7 +88,7 @@ JamJar::Vector2D *JamJar::Vector2D::RotateInPlace(const Vector2D &center, float 
 }
 
 JamJar::Vector2D *JamJar::Vector2D::RotateDegInPlace(const Vector2D &center, float angle) {
-    return this->RotateInPlace(center, angle * (M_PI / 180.0f));
+    return this->RotateInPlace(center, angle * (JamJar::PI / 180.0f));
 }
 
 JamJar::Vector2D *JamJar::Vector2D::InvertInPlace() {

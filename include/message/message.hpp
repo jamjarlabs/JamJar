@@ -8,7 +8,7 @@ class Message {
   public:
     explicit Message(uint32_t type) : type(type) {}
     uint32_t type{};
-    virtual ~Message() {}
+    virtual ~Message() = default;
 };
 }; // namespace JamJar
 

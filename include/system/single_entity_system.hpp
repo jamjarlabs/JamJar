@@ -11,7 +11,7 @@
 namespace JamJar {
 
 struct SingleEntitySystemOverwriteException : public std::exception {
-    const char *what() const throw() {
+    [[nodiscard]] const char *what() const noexcept override {
         return "Overwrite attempted of single entity system with exceptionOnOverwrite=true";
     }
 };

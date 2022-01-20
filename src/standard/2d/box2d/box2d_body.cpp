@@ -1,4 +1,5 @@
 #include "standard/2d/box2d/box2d_body.hpp"
+#include <utility>
 
 std::unordered_map<JamJar::Standard::_2D::Box2DBodyType, b2BodyType> JamJar::Standard::_2D::Box2DBody::BODY_TYPES = {
     {Box2DBodyType::STATIC, b2_staticBody},
@@ -11,19 +12,19 @@ std::unordered_map<b2BodyType, JamJar::Standard::_2D::Box2DBodyType>
                                                             {b2_dynamicBody, Box2DBodyType::DYNAMIC}};
 
 JamJar::Standard::_2D::Box2DBody::Box2DBody(Polygon polygon, Box2DBodyProperties properties)
-    : Component(JamJar::Standard::_2D::Box2DBody::KEY), polygon(polygon), initializationProperties(properties),
-      body(nullptr), regenerate(false) {}
+    : Component(JamJar::Standard::_2D::Box2DBody::KEY), polygon(std::move(polygon)),
+      initializationProperties(std::move(properties)), body(nullptr), regenerate(false) {}
 
-JamJar::Standard::_2D::Box2DBody::Box2DBody(Polygon polygon) : Box2DBody(polygon, Box2DBodyProperties()) {}
+JamJar::Standard::_2D::Box2DBody::Box2DBody(Polygon polygon) : Box2DBody(std::move(polygon), Box2DBodyProperties()) {}
 
 void JamJar::Standard::_2D::Box2DBody::SetBody(b2Body *body) { this->body = body; }
 
-void JamJar::Standard::_2D::Box2DBody::SetScale(JamJar::Vector2D scale) {
+void JamJar::Standard::_2D::Box2DBody::SetScale(const JamJar::Vector2D &scale) {
     this->scale = scale;
     this->regenerate = true;
 }
 
-void JamJar::Standard::_2D::Box2DBody::SetPosition(JamJar::Vector2D position) {
+void JamJar::Standard::_2D::Box2DBody::SetPosition(const JamJar::Vector2D &position) {
     this->body->SetTransform(b2Vec2(position.x, position.y), this->body->GetAngle());
 }
 
@@ -38,7 +39,7 @@ JamJar::Vector2D JamJar::Standard::_2D::Box2DBody::GetPosition() const {
 
 float JamJar::Standard::_2D::Box2DBody::GetAngle() const { return this->body->GetAngle(); }
 
-void JamJar::Standard::_2D::Box2DBody::SetLinearVelocity(JamJar::Vector2D v) {
+void JamJar::Standard::_2D::Box2DBody::SetLinearVelocity(const JamJar::Vector2D &v) {
     this->body->SetLinearVelocity(b2Vec2(v.x, v.y));
 }
 
@@ -51,21 +52,21 @@ void JamJar::Standard::_2D::Box2DBody::SetAngularVelocity(float omega) { this->b
 
 float JamJar::Standard::_2D::Box2DBody::GetAngularVelocity() const { return this->body->GetAngularVelocity(); }
 
-void JamJar::Standard::_2D::Box2DBody::ApplyForce(Vector2D force, Vector2D point, bool wake) {
+void JamJar::Standard::_2D::Box2DBody::ApplyForce(const Vector2D &force, const Vector2D &point, bool wake) {
     this->body->ApplyForce(b2Vec2(force.x, force.y), b2Vec2(point.x, point.y), wake);
 }
 
-void JamJar::Standard::_2D::Box2DBody::ApplyForceToCenter(Vector2D force, bool wake) {
+void JamJar::Standard::_2D::Box2DBody::ApplyForceToCenter(const Vector2D &force, bool wake) {
     this->body->ApplyForceToCenter(b2Vec2(force.x, force.y), wake);
 }
 
 void JamJar::Standard::_2D::Box2DBody::ApplyTorque(float torque, bool wake) { this->body->ApplyTorque(torque, wake); }
 
-void JamJar::Standard::_2D::Box2DBody::ApplyLinearImpulse(Vector2D impulse, Vector2D point, bool wake) {
+void JamJar::Standard::_2D::Box2DBody::ApplyLinearImpulse(const Vector2D &impulse, const Vector2D &point, bool wake) {
     this->body->ApplyLinearImpulse(b2Vec2(impulse.x, impulse.y), b2Vec2(point.y, point.y), wake);
 }
 
-void JamJar::Standard::_2D::Box2DBody::ApplyLinearImpulseToCenter(Vector2D impulse, bool wake) {
+void JamJar::Standard::_2D::Box2DBody::ApplyLinearImpulseToCenter(const Vector2D &impulse, bool wake) {
     this->body->ApplyLinearImpulseToCenter(b2Vec2(impulse.x, impulse.y), wake);
 }
 

@@ -20,16 +20,17 @@ const float DEFAULT_VIEWPORT_SCALE_Y = 1;
 const float ORTHOGRAPHIC_NEAR = 0;
 const float ORTHOGRAPHIC_FAR = 100;
 
-JamJar::Standard::_2D::Camera::Camera(Color backgroundColor, Vector2D viewportPosition, Vector2D viewportScale,
-                                      Vector2D virtualScale)
+JamJar::Standard::_2D::Camera::Camera(Color backgroundColor, const Vector2D &viewportPosition,
+                                      const Vector2D &viewportScale, const Vector2D &virtualScale)
     : Component(JamJar::Standard::_2D::Camera::KEY), backgroundColor(backgroundColor),
       viewportPosition(viewportPosition), viewportScale(viewportScale), virtualScale(virtualScale) {}
 
-JamJar::Standard::_2D::Camera::Camera(Color backgroundColor, Vector2D viewportPosition, Vector2D viewportScale)
+JamJar::Standard::_2D::Camera::Camera(Color backgroundColor, const Vector2D &viewportPosition,
+                                      const Vector2D &viewportScale)
     : Camera(backgroundColor, viewportPosition, viewportScale,
              Vector2D(DEFAULT_VIRTUAL_WIDTH, DEFAULT_VIRTUAL_HEIGHT)) {}
 
-JamJar::Standard::_2D::Camera::Camera(Color backgroundColor, Vector2D viewportPosition)
+JamJar::Standard::_2D::Camera::Camera(Color backgroundColor, const Vector2D &viewportPosition)
     : Camera(backgroundColor, viewportPosition, Vector2D(DEFAULT_VIEWPORT_SCALE_X, DEFAULT_VIEWPORT_SCALE_Y)) {}
 
 JamJar::Standard::_2D::Camera::Camera(Color backgroundColor)
