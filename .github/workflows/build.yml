@@ -35,8 +35,8 @@ jobs:
         rm -rf build/
     - name: Test
       env:
-        CC: gcc
-        CXX: g++
+        CC: clang
+        CXX: clang
       run: |
 
         # Set up build
