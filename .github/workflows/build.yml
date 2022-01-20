@@ -14,8 +14,8 @@ jobs:
       uses: actions/checkout@v1
     - name: Lint, beautify, and test
       env:
-        CC: clang
-        CXX: clang
+        CC: /usr/bin/clang
+        CXX: /usr/bin/clang
       run: |
 
         # These stages use clang-tidy, clang-format, and Catch2 which require compiling using clang rather than
