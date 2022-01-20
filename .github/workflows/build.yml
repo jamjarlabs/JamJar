@@ -12,7 +12,34 @@ jobs:
     steps:
     - name: Check out code into the CI directory
       uses: actions/checkout@v1
-    - name: Lint, beautify, and build
+    - name: Lint, beautify, and test
+      env:
+        CC: clang
+        CXX: clang
+      run: |
+
+        # These stages use clang-tidy, clang-format, and Catch2 which require compiling using clang rather than
+        # emscripten
+
+        # Set up build
+        cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . -B build
+        cd build
+
+        # Lint and beautify, fail if there is a difference after beautification
+        make lint
+        make beautify
+        git diff --exit-code
+
+        # Build unit tests
+        make JamJarTests
+
+        # Run unit tests
+        ctest
+
+        # Clean up build
+        cd ..
+        rm -rf build/
+    - name: Build
       env:
         CC: emcc
         CXX: em++
@@ -22,29 +49,5 @@ jobs:
         emcmake cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . -B build
         cd build
 
-        # Lint and beautify, fail if there is a difference after beautification
-        make lint
-        make beautify
-        git diff --exit-code
-
         # Build the project
         make
-
-        # Clean up build
-        cd ..
-        rm -rf build/
-    - name: Test
-      env:
-        CC: clang
-        CXX: clang
-      run: |
-
-        # Set up build
-        cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . -B build
-        cd build
-
-        # Build unit tests
-        make JamJarTests
-
-        # Run unit tests
-        ctest
