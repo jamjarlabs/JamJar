@@ -14,8 +14,8 @@ jobs:
       uses: actions/checkout@v1
     - name: Lint, beautify, and test
       env:
-        CC: /usr/bin/clang
-        CXX: /usr/bin/clang
+        CC: gcc # Using gcc/g++ for now due to this issue: https://bugs.launchpad.net/ubuntu/+source/libsdl2-ttf/+bug/1872023
+        CXX: g++
       run: |
 
         # These stages use clang-tidy, clang-format, and Catch2 which require compiling using clang rather than
