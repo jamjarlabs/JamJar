@@ -188,7 +188,6 @@ foreach (SOURCE_FILE ${ALL_SOURCE_FILES})
     endforeach ()
 endforeach ()
 
-# Disable clang-tidy for now until I can work out how to integrate it with emscripten libraries
 add_custom_target(lint
     COMMENT "Running clang-tidy to lint files"
     COMMAND clang-tidy
