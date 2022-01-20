@@ -199,12 +199,28 @@ foreach (SOURCE_FILE ${ALL_SOURCE_FILES})
     endforeach ()
 endforeach ()
 
-add_custom_target(lint
-    COMMENT "Running clang-tidy to lint files"
-    COMMAND clang-tidy
-    ${ALL_SOURCE_FILES}
-    -p build
-)
+if(DEFINED ENV{CI})
+    add_custom_target(lint
+        COMMENT "Running clang-tidy to lint files"
+        COMMAND clang-tidy
+        ${ALL_SOURCE_FILES}
+        -p build
+        --
+        -I/usr/include/SDL2
+        -I${CMAKE_SOURCE_DIR}/build/_deps/stb_image-src
+        -I${CMAKE_SOURCE_DIR}/build/_deps/box2d-src/include
+        -I${CMAKE_SOURCE_DIR}/build/_deps/catch2-src/src
+        -I${CMAKE_SOURCE_DIR}/include
+        -std=c++17
+    )
+else()
+    add_custom_target(lint
+        COMMENT "Running clang-tidy to lint files"
+        COMMAND clang-tidy
+        ${ALL_SOURCE_FILES}
+        -p build
+    )
+endif()
 
 add_custom_target(lint_fix
     COMMENT "Running clang-tidy to lint files"
