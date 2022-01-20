@@ -1,4 +1,5 @@
 #include "geometry/vector_2d.hpp"
+#include "numbers.hpp"
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <cmath>
@@ -122,7 +123,7 @@ TEST_CASE("Vector2D rotate", "[Vector2D]") {
     SECTION("Rotate 90 degrees from diagonal") {
         auto vec = Vector2D(10, 10);
         auto center = Vector2D(0, 0);
-        auto angle = M_PI / 2;
+        auto angle = JamJar::PI / 2;
         auto result = vec.Rotate(center, angle);
         REQUIRE(result.x == Approx(-10));
         REQUIRE(result.y == Approx(10));
@@ -131,7 +132,7 @@ TEST_CASE("Vector2D rotate", "[Vector2D]") {
     SECTION("Rotate 90 degrees from vertical") {
         auto vec = Vector2D(0, 10);
         auto center = Vector2D(0, 0);
-        auto angle = M_PI / 2;
+        auto angle = JamJar::PI / 2;
         auto result = vec.Rotate(center, angle);
         REQUIRE(result.x == Approx(-10));
         REQUIRE(result.y == ApproxZero());
@@ -140,7 +141,7 @@ TEST_CASE("Vector2D rotate", "[Vector2D]") {
     SECTION("Rotate 180 degrees from vertical") {
         auto vec = Vector2D(0, 10);
         auto center = Vector2D(0, 0);
-        auto angle = M_PI;
+        auto angle = JamJar::PI;
         auto result = vec.Rotate(center, angle);
         REQUIRE(result.x == ApproxZero());
         REQUIRE(result.y == Approx(-10));
@@ -149,7 +150,7 @@ TEST_CASE("Vector2D rotate", "[Vector2D]") {
     SECTION("Rotate -45 degrees from horizontal") {
         auto vec = Vector2D(0, 10);
         auto center = Vector2D(0, 0);
-        auto angle = -M_PI / 4;
+        auto angle = -JamJar::PI / 4;
         auto result = vec.Rotate(center, angle);
         REQUIRE(result.x == Approx(7.071));
         REQUIRE(result.y == Approx(7.071));
@@ -160,7 +161,7 @@ TEST_CASE("Vector2D rotate in place", "[Vector2D]") {
     SECTION("Rotate 90 degrees from diagonal") {
         auto vec = Vector2D(10, 10);
         auto center = Vector2D(0, 0);
-        auto angle = M_PI / 2;
+        auto angle = JamJar::PI / 2;
         vec.RotateInPlace(center, angle);
         REQUIRE(vec.x == Approx(-10));
         REQUIRE(vec.y == Approx(10));

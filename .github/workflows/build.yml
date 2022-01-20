@@ -23,7 +23,7 @@ jobs:
         cd build
 
         # Lint and beautify, fail if there is a difference after beautification
-        # make lint - disabled until linting is fixed
+        make lint
         make beautify
         git diff --exit-code
 

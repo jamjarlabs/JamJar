@@ -10,9 +10,9 @@ class Transform : public Component {
   public:
     constexpr static uint32_t KEY = JamJar::hash("jamjar_2d_transform");
     Transform();
-    explicit Transform(Vector2D position);
-    explicit Transform(Vector2D position, Vector2D scale);
-    explicit Transform(Vector2D position, Vector2D scale, float angle);
+    explicit Transform(const Vector2D &position);
+    explicit Transform(const Vector2D &position, const Vector2D &scale);
+    explicit Transform(const Vector2D &position, const Vector2D &scale, float angle);
     Vector2D previous;
     Vector2D position;
     Vector2D scale;

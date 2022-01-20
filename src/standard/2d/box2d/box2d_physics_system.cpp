@@ -2,6 +2,7 @@
 #include "message/message_payload.hpp"
 #include "standard/2d/box2d/box2d_body.hpp"
 #include "standard/2d/transform/transform.hpp"
+#include <cassert>
 #include <unordered_map>
 
 JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DContactListener::Box2DContactListener(Box2DPhysicsSystem *system)
@@ -15,7 +16,7 @@ void JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DContactListener::EndContact
     this->system->endContact(contact);
 }
 
-JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DPhysicsSystem(MessageBus *messageBus, JamJar::Vector2D gravity)
+JamJar::Standard::_2D::Box2DPhysicsSystem::Box2DPhysicsSystem(MessageBus *messageBus, const JamJar::Vector2D &gravity)
     : VectorSystem(messageBus, JamJar::Standard::_2D::Box2DPhysicsSystem::evaluator),
       world(b2World(b2Vec2(gravity.x, gravity.y))) {
     this->world.SetContactListener(new Box2DContactListener(this));
@@ -111,6 +112,9 @@ bool JamJar::Standard::_2D::Box2DPhysicsSystem::registerEntity(Entity *entity, s
         }
     }
 
+    assert(bodyComp != nullptr);
+    assert(transform != nullptr);
+
     auto body = this->createBody(entity, transform, bodyComp);
 
     bodies[entity->id] = body;
@@ -134,7 +138,7 @@ b2Fixture *JamJar::Standard::_2D::Box2DPhysicsSystem::createFixture(b2Body *body
 
     std::vector<b2Vec2> shapePoints = std::vector<b2Vec2>();
     for (const auto &point : bodyComp->polygon.points) {
-        shapePoints.push_back(b2Vec2(point.x * transform->scale.x, point.y * transform->scale.y));
+        shapePoints.emplace_back(point.x * transform->scale.x, point.y * transform->scale.y);
     }
     shape.Set(shapePoints.data(), shapePoints.size());
     def->shape = &shape;

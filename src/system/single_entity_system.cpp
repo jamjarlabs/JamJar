@@ -4,12 +4,13 @@
 #include "message/message_bus.hpp"
 #include "system/system.hpp"
 #include <stdexcept>
+#include <utility>
 
 JamJar::SingleEntitySystem::SingleEntitySystem(MessageBus *messageBus, Evaluator evaluator, bool exceptionOnOverwrite)
     : StatefulSystem(messageBus), evaluator(std::move(evaluator)), exceptionOnOverwrite(exceptionOnOverwrite) {}
 
 JamJar::SingleEntitySystem::SingleEntitySystem(MessageBus *messageBus, Evaluator evaluator)
-    : SingleEntitySystem(messageBus, evaluator, false) {}
+    : SingleEntitySystem(messageBus, std::move(evaluator), false) {}
 
 bool JamJar::SingleEntitySystem::registerEntity(Entity *entity, std::vector<Component *> components) {
     if (!this->evaluator(entity, components)) {

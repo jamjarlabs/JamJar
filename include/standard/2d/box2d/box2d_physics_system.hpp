@@ -23,7 +23,7 @@ class Box2DPhysicsSystem : public VectorSystem {
   public:
     constexpr static uint32_t MESSAGE_COLLISION_ENTER = hash("jamjar_box2d_collision_enter");
     constexpr static uint32_t MESSAGE_COLLISION_EXIT = hash("jamjar_box2d_collision_exit");
-    explicit Box2DPhysicsSystem(MessageBus *messageBus, JamJar::Vector2D gravity);
+    explicit Box2DPhysicsSystem(MessageBus *messageBus, const JamJar::Vector2D &gravity);
     void OnMessage(Message *message) override;
 
   protected:
@@ -44,8 +44,8 @@ class Box2DPhysicsSystem : public VectorSystem {
     class Box2DContactListener : public b2ContactListener {
       public:
         explicit Box2DContactListener(Box2DPhysicsSystem *system);
-        void BeginContact(b2Contact *contact);
-        void EndContact(b2Contact *contact);
+        void BeginContact(b2Contact *contact) override;
+        void EndContact(b2Contact *contact) override;
 
       private:
         Box2DPhysicsSystem *system;

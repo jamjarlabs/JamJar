@@ -11,8 +11,8 @@ class AABB : Shape2D {
     Vector2D dimensions;
     Vector2D center;
 
-    explicit AABB(Vector2D dimensions);
-    explicit AABB(Vector2D dimensions, Vector2D center);
+    explicit AABB(const Vector2D &dimensions);
+    explicit AABB(const Vector2D &dimensions, const Vector2D &center);
 
     Vector2D Center() override;
     Vector2D FarthestPointInDir(Vector2D direction) override;

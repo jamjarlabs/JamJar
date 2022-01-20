@@ -46,75 +46,75 @@ class Box2DBody : public Component {
      */
     void SetBody(b2Body *body);
 
-    void SetScale(JamJar::Vector2D scale);
+    void SetScale(const JamJar::Vector2D &scale);
 
-    void SetPosition(JamJar::Vector2D position);
+    void SetPosition(const JamJar::Vector2D &position);
 
     void SetAngle(float angle);
 
-    Vector2D GetPosition() const;
+    [[nodiscard]] Vector2D GetPosition() const;
 
-    float GetAngle() const;
+    [[nodiscard]] float GetAngle() const;
 
-    void SetLinearVelocity(Vector2D v);
+    void SetLinearVelocity(const Vector2D &v);
 
-    Vector2D GetLinearVelocity() const;
+    [[nodiscard]] Vector2D GetLinearVelocity() const;
 
     void SetAngularVelocity(float omega);
 
-    float GetAngularVelocity() const;
+    [[nodiscard]] float GetAngularVelocity() const;
 
-    void ApplyForce(Vector2D force, Vector2D point, bool wake);
+    void ApplyForce(const Vector2D &force, const Vector2D &point, bool wake);
 
-    void ApplyForceToCenter(Vector2D force, bool wake);
+    void ApplyForceToCenter(const Vector2D &force, bool wake);
 
     void ApplyTorque(float torque, bool wake);
 
-    void ApplyLinearImpulse(Vector2D impulse, Vector2D point, bool wake);
+    void ApplyLinearImpulse(const Vector2D &impulse, const Vector2D &point, bool wake);
 
-    void ApplyLinearImpulseToCenter(Vector2D impulse, bool wake);
+    void ApplyLinearImpulseToCenter(const Vector2D &impulse, bool wake);
 
     void ApplyAngularImpulse(float impulse, bool wake);
 
-    float GetMass() const;
+    [[nodiscard]] float GetMass() const;
 
-    float GetInertia() const;
+    [[nodiscard]] float GetInertia() const;
 
-    float GetLinearDamping() const;
+    [[nodiscard]] float GetLinearDamping() const;
 
     void SetLinearDamping(float linearDamping);
 
-    float GetAngularDamping() const;
+    [[nodiscard]] float GetAngularDamping() const;
 
     void SetAngularDamping(float angularDamping);
 
-    float GetGravityScale() const;
+    [[nodiscard]] float GetGravityScale() const;
 
     void SetGravityScale(float scale);
 
     void SetType(Box2DBodyType type);
 
-    Box2DBodyType GetType() const;
+    [[nodiscard]] Box2DBodyType GetType() const;
 
     void SetBullet(bool flag);
 
-    bool IsBullet() const;
+    [[nodiscard]] bool IsBullet() const;
 
     void SetSleepingAllowed(bool flag);
 
-    bool IsSleepingAllowed() const;
+    [[nodiscard]] bool IsSleepingAllowed() const;
 
     void SetAwake(bool flag);
 
-    bool IsAwake() const;
+    [[nodiscard]] bool IsAwake() const;
 
     void SetEnabled(bool flag);
 
-    bool IsEnabled() const;
+    [[nodiscard]] bool IsEnabled() const;
 
     void SetFixedRotation(bool flag);
 
-    bool IsFixedRotation() const;
+    [[nodiscard]] bool IsFixedRotation() const;
 
   private:
     b2Body *body;

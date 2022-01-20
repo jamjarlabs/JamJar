@@ -3,14 +3,14 @@
 JamJar::Polygon::Polygon(const std::vector<Vector2D> &points) : points(points) {}
 JamJar::Polygon::Polygon(const std::vector<float> &points) : points() {
     for (int i = 0; i < points.size(); i += 2) {
-        this->points.push_back(Vector2D(points[i], points[i + 1]));
+        this->points.emplace_back(points[i], points[i + 1]);
     }
 }
 
 JamJar::Vector2D JamJar::Polygon::Center() {
     float xSum = 0;
     float ySum = 0;
-    for (const auto point : this->points) {
+    for (const auto &point : this->points) {
         xSum += point.x;
         ySum += point.y;
     }
@@ -28,7 +28,7 @@ JamJar::Vector2D JamJar::Polygon::FarthestPointInDir(Vector2D direction) {
     float farthestDistance = -1.0f;
     auto farthestPoint = this->points[0];
 
-    for (const auto point : this->points) {
+    for (const auto &point : this->points) {
         float distance = point.x * direction.x + point.y * direction.y;
 
         if (distance > farthestDistance) {
@@ -46,7 +46,7 @@ bool JamJar::Polygon::PointInside(Vector2D point) { return false; }
 
 std::vector<float> JamJar::Polygon::PointsAsFloats() {
     std::vector<float> floats;
-    for (const auto vector : this->points) {
+    for (const auto &vector : this->points) {
         floats.push_back(vector.x);
         floats.push_back(vector.y);
     }

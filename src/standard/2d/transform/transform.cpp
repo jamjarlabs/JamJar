@@ -3,13 +3,14 @@
 #include "geometry/vector_2d.hpp"
 #include "hash.hpp"
 
-JamJar::Standard::_2D::Transform::Transform(Vector2D position, Vector2D scale, float angle)
+JamJar::Standard::_2D::Transform::Transform(const Vector2D &position, const Vector2D &scale, float angle)
     : Component(JamJar::Standard::_2D::Transform::KEY), position(position), scale(scale), angle(angle),
       previous(position) {}
 
-JamJar::Standard::_2D::Transform::Transform(Vector2D position, Vector2D scale) : Transform(position, scale, 0) {}
+JamJar::Standard::_2D::Transform::Transform(const Vector2D &position, const Vector2D &scale)
+    : Transform(position, scale, 0) {}
 
-JamJar::Standard::_2D::Transform::Transform(Vector2D position) : Transform(position, Vector2D(1, 1)) {}
+JamJar::Standard::_2D::Transform::Transform(const Vector2D &position) : Transform(position, Vector2D(1, 1)) {}
 
 JamJar::Standard::_2D::Transform::Transform() : Transform(Vector2D()) {}
 

@@ -18,7 +18,7 @@ bool JamJar::VectorSystem::registerEntity(Entity *entity, std::vector<Component 
         return false;
     }
 
-    this->entities.push_back(JamJar::SystemEntity(entity, components));
+    this->entities.emplace_back(entity, components);
     return true;
 }
 
