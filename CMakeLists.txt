@@ -188,12 +188,26 @@ foreach (SOURCE_FILE ${ALL_SOURCE_FILES})
     endforeach ()
 endforeach ()
 
-add_custom_target(lint
-    COMMENT "Running clang-tidy to lint files"
-    COMMAND clang-tidy
-    ${ALL_SOURCE_FILES}
-    -p build
-)
+# This is a bit of a hacky workaround, the CI runner is Ubuntu based, and the SDL2 library in Ubuntu doesn't play nice
+# with clang, so the SDL2 path needs to be manually included, see here:
+# https://bugs.launchpad.net/ubuntu/+source/libsdl2-ttf/+bug/1872023
+if(DEFINED ENV{CI})
+    add_custom_target(lint
+        COMMENT "Running clang-tidy to lint files"
+        COMMAND clang-tidy
+        ${ALL_SOURCE_FILES}
+        -p build
+        --
+        -I/usr/include/SDL2
+    )
+else()
+    add_custom_target(lint
+        COMMENT "Running clang-tidy to lint files"
+        COMMAND clang-tidy
+        ${ALL_SOURCE_FILES}
+        -p build
+    )
+endif()
 
 add_custom_target(lint_fix
     COMMENT "Running clang-tidy to lint files"
