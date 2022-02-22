@@ -29,7 +29,7 @@ duplicated effort that would be great.
 
 The project has the following dependencies:
 
-- `cmake` == `3.16.X`
+- `cmake` == `3.22.X`
 - `clang` == `11.1.X`
 - `clang-tidy` == `11.1.X`
 - `clang-format` == `11.1.X`
