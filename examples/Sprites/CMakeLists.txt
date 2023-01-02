@@ -33,7 +33,7 @@ SET(CMAKE_EXE_LINKER_FLAGS "-s LLD_REPORT_UNDEFINED -s MAX_WEBGL_VERSION=2 -s MI
 
 set(EXE_SOURCES
     src/main.cpp
-    src/simple_game.cpp
+    src/sprites.cpp
     src/input_listener.cpp
 )
 

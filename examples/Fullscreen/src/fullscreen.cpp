@@ -16,13 +16,13 @@
 using JamJar::Color;
 using JamJar::Entity;
 using JamJar::Material;
-using JamJar::MessagePayload;
 using JamJar::Texture;
 using JamJar::TextureFilter;
 using JamJar::TextureProperties;
 using JamJar::Vector2D;
 using JamJar::Standard::FileTextureRequest;
 using JamJar::Standard::FileTextureSystem;
+using JamJar::Standard::LoadTexture;
 using JamJar::Standard::_2D::Camera;
 using JamJar::Standard::_2D::Sprite;
 using JamJar::Standard::_2D::Transform;
@@ -30,13 +30,11 @@ using JamJar::Standard::_2D::Transform;
 Fullscreen::Fullscreen(JamJar::MessageBus *messageBus) : Game(messageBus) {}
 
 void Fullscreen::OnStart() {
-    this->messageBus->Publish(new MessagePayload<std::unique_ptr<FileTextureRequest>>(
-        FileTextureSystem::MESSAGE_REQUEST_FILE_TEXTURE_LOAD,
-        std::unique_ptr<FileTextureRequest>(new FileTextureRequest(
-            {.key = JamJar::hash("smiley"),
-             .path = "/assets/texture.png",
-             .properties =
-                 TextureProperties({.minFilter = TextureFilter::NEAREST, .magFilter = TextureFilter::NEAREST})}))));
+    LoadTexture(this->messageBus,
+                new FileTextureRequest({.key = JamJar::hash("smiley"),
+                                        .path = "/assets/texture.png",
+                                        .properties = TextureProperties({.minFilter = TextureFilter::NEAREST,
+                                                                         .magFilter = TextureFilter::NEAREST})}));
 
     auto a = new Entity(messageBus);
     a->Add(new Transform(Vector2D(0, 0), Vector2D(160, 90)));

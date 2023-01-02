@@ -58,3 +58,8 @@ void JamJar::Standard::FileTextureSystem::loadTexture(std::unique_ptr<FileTextur
         JamJar::Standard::FileTextureSystem::MESSAGE_RESPONSE_FILE_TEXTURE_LOAD, std::move(response));
     this->messageBus->Publish(std::move(msg));
 }
+
+void JamJar::Standard::LoadTexture(MessageBus *const messageBus, FileTextureRequest *request) {
+    messageBus->Publish(new MessagePayload<std::unique_ptr<FileTextureRequest>>(
+        FileTextureSystem::MESSAGE_REQUEST_FILE_TEXTURE_LOAD, std::unique_ptr<FileTextureRequest>(request)));
+}

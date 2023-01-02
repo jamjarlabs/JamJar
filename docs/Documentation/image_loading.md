@@ -24,18 +24,19 @@ system that allows images and assets to be loaded using standard file system cal
 
 ## Loading an Image
 
-An image can be loaded by sending a `MESSAGE_REQUEST_FILE_TEXTURE_LOAD` message with a `FileTextureRequest` as a
-payload for the message, for example:
+An image can be loaded by using the helper `LoadTexture` function:
 
 ```c++
-messageBus->Publish(new JamJar::MessagePayload<std::unique_ptr<JamJar::Standard::FileTextureRequest>>(
-        JamJar::Standard::FileTextureSystem::MESSAGE_REQUEST_FILE_TEXTURE_LOAD,
-        std::unique_ptr<JamJar::Standard::FileTextureRequest>(
-            new JamJar::Standard::FileTextureRequest({JamJar::hash("smiley"), "/assets/texture.png"}))));
+JamJar::Standard::LoadTexture(new JamJar::Standard::FileTextureRequest({JamJar::hash("smiley"), "/assets/texture.png"}));
 ```
 
 This requests that the `/assets/texture.png` image is loaded, and once it has loaded it will be referrable using the
 `smiley` hash.
+
+### Behind the scenes
+
+This helper function simply wraps up the `FileTextureRequest` in a `unique_ptr` to manage its memory, then publishes
+it with the message type `MESSAGE_REQUEST_FILE_TEXTURE_LOAD`.
 
 ### Advanced Options
 
@@ -43,11 +44,14 @@ The `FileTextureRequest` takes a set of `TextureProperties` which configure how 
 with options around mapping, filtering, and if mipmaps should be generated:
 
 ```c++
-new JamJar::Standard::FileTextureRequest(
-    {.key = JamJar::hash("smiley"),
-     .path = "/assets/texture.png",
-     .properties = JamJar::TextureProperties(
-        {.minFilter = JamJar::TextureFilter::NEAREST, .magFilter = JamJar::TextureFilter::NEAREST})});
+new JamJar::Standard::FileTextureRequest({
+        .key = JamJar::hash("smiley"),
+        .path = "/assets/texture.png",
+        .properties = JamJar::TextureProperties({
+            .minFilter = JamJar::TextureFilter::NEAREST,
+            .magFilter = JamJar::TextureFilter::NEAREST
+        })
+});
 ```
 
 This will load the texture and apply the filtering option of `NEAREST` when it is processed by the rendering system.

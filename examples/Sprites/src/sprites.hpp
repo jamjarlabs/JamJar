@@ -5,12 +5,12 @@
 #include "message/message_bus.hpp"
 #include <memory>
 
-class SimpleGame : public JamJar::Game {
+class Sprites : public JamJar::Game {
   protected:
     virtual void OnStart() override;
 
   public:
-    SimpleGame(JamJar::MessageBus *messageBus);
+    Sprites(JamJar::MessageBus *messageBus);
 };
 
 #endif

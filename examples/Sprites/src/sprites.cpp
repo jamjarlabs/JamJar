@@ -1,4 +1,4 @@
-#include "simple_game.hpp"
+#include "sprites.hpp"
 #include "entity/entity.hpp"
 #include "game.hpp"
 #include "geometry/vector_2d.hpp"
@@ -16,7 +16,6 @@
 using JamJar::Color;
 using JamJar::Entity;
 using JamJar::Material;
-using JamJar::MessagePayload;
 using JamJar::Texture;
 using JamJar::TextureFilter;
 using JamJar::TextureProperties;
@@ -27,17 +26,15 @@ using JamJar::Standard::_2D::Camera;
 using JamJar::Standard::_2D::Sprite;
 using JamJar::Standard::_2D::Transform;
 
-SimpleGame::SimpleGame(JamJar::MessageBus *messageBus) : Game(messageBus) {}
+Sprites::Sprites(JamJar::MessageBus *messageBus) : Game(messageBus) {}
 
-void SimpleGame::OnStart() {
+void Sprites::OnStart() {
 
-    this->messageBus->Publish(new MessagePayload<std::unique_ptr<FileTextureRequest>>(
-        FileTextureSystem::MESSAGE_REQUEST_FILE_TEXTURE_LOAD,
-        std::unique_ptr<FileTextureRequest>(new FileTextureRequest(
-            {.key = JamJar::hash("smiley"),
-             .path = "/assets/texture.png",
-             .properties =
-                 TextureProperties({.minFilter = TextureFilter::NEAREST, .magFilter = TextureFilter::NEAREST})}))));
+    LoadTexture(this->messageBus,
+                new FileTextureRequest({.key = JamJar::hash("smiley"),
+                                        .path = "/assets/texture.png",
+                                        .properties = TextureProperties({.minFilter = TextureFilter::NEAREST,
+                                                                         .magFilter = TextureFilter::NEAREST})}));
 
     auto a = new Entity(messageBus);
     a->Add(new Transform(Vector2D(-30, 0), Vector2D(30, 30)));

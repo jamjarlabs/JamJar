@@ -4,7 +4,7 @@
 #include "input_listener.hpp"
 #include "message/message_bus.hpp"
 #include "message/message_payload.hpp"
-#include "simple_game.hpp"
+#include "sprites.hpp"
 #include "standard/2d/interpolation/interpolation_system.hpp"
 #include "standard/2d/sprite/sprite_system.hpp"
 #include "standard/2d/webgl2/webgl2_system.hpp"
@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 
     auto messageBus = new JamJar::MessageBus();
     new JamJar::EntityManager(messageBus);
-    auto game = new SimpleGame(messageBus);
+    auto game = new Sprites(messageBus);
     new JamJar::Standard::_2D::WebGL2System(messageBus, window, context);
     new JamJar::Standard::_2D::InterpolationSystem(messageBus);
     new JamJar::Standard::_2D::SpriteSystem(messageBus);
