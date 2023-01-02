@@ -1,6 +1,7 @@
 #ifndef STANDARD_FILE_TEXTURE_FILE_TEXTURE_REQUEST_HPP
 #define STANDARD_FILE_TEXTURE_FILE_TEXTURE_REQUEST_HPP
 
+#include "message/message_bus.hpp"
 #include "render/texture.hpp"
 #include <cstdint>
 #include <string>
@@ -11,6 +12,8 @@ struct FileTextureRequest {
     std::string path;
     TextureProperties properties = TextureProperties();
 };
+
+void LoadTexture(MessageBus *const messageBus, FileTextureRequest *request);
 }; // namespace JamJar::Standard
 
 #endif

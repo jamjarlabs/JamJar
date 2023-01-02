@@ -12,26 +12,24 @@
 using JamJar::Color;
 using JamJar::Entity;
 using JamJar::Material;
-using JamJar::MessagePayload;
 using JamJar::Texture;
 using JamJar::TextureFilter;
 using JamJar::TextureProperties;
 using JamJar::Vector2D;
 using JamJar::Standard::FileTextureRequest;
 using JamJar::Standard::FileTextureSystem;
+using JamJar::Standard::LoadTexture;
 using JamJar::Standard::_2D::Camera;
 using JamJar::Standard::_2D::Transform;
 
 MouseInput::MouseInput(JamJar::MessageBus *messageBus) : Game(messageBus) {}
 
 void MouseInput::OnStart() {
-    this->messageBus->Publish(new MessagePayload<std::unique_ptr<FileTextureRequest>>(
-        FileTextureSystem::MESSAGE_REQUEST_FILE_TEXTURE_LOAD,
-        std::unique_ptr<FileTextureRequest>(new FileTextureRequest(
-            {.key = JamJar::hash("smiley"),
-             .path = "/assets/texture.png",
-             .properties =
-                 TextureProperties({.minFilter = TextureFilter::NEAREST, .magFilter = TextureFilter::NEAREST})}))));
+    LoadTexture(this->messageBus,
+                new FileTextureRequest({.key = JamJar::hash("smiley"),
+                                        .path = "/assets/texture.png",
+                                        .properties = TextureProperties({.minFilter = TextureFilter::NEAREST,
+                                                                         .magFilter = TextureFilter::NEAREST})}));
 
     auto camera = new Entity(messageBus);
     camera->Add(new Transform());
