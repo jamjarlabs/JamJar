@@ -1,8 +1,8 @@
 #ifndef STANDARD_FILE_TEXTURE_FILE_TEXTURE_REQUEST_HPP
 #define STANDARD_FILE_TEXTURE_FILE_TEXTURE_REQUEST_HPP
 
-#include "render/texture.hpp"
 #include "message/message_bus.hpp"
+#include "render/texture.hpp"
 #include <cstdint>
 #include <string>
 
