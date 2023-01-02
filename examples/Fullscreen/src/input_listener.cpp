@@ -15,15 +15,13 @@ void InputListener::OnMessage(JamJar::Message *message) {
         auto *eventMessage = static_cast<JamJar::MessagePayload<JamJar::Standard::SDL2KeyEvent> *>(message);
         auto event = eventMessage->payload;
         if (event.key == "F") {
-            auto msg =
-                std::make_unique<JamJar::Message>(JamJar::Standard::WindowSystem::MESSAGE_REQUEST_ENTER_FULLSCREEN);
-            this->messageBus->Publish(std::move(msg));
+            this->messageBus->Publish(
+                new JamJar::Message(JamJar::Standard::WindowSystem::MESSAGE_REQUEST_ENTER_FULLSCREEN));
             break;
         }
         if (event.key == "E") {
-            auto msg =
-                std::make_unique<JamJar::Message>(JamJar::Standard::WindowSystem::MESSAGE_REQUEST_EXIT_FULLSCREEN);
-            this->messageBus->Publish(std::move(msg));
+            this->messageBus->Publish(
+                new JamJar::Message(JamJar::Standard::WindowSystem::MESSAGE_REQUEST_EXIT_FULLSCREEN));
             break;
         }
         break;

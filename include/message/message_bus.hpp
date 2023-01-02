@@ -17,6 +17,7 @@ class MessageBus {
     MessageBus();
     void Dispatch();
     void Publish(std::unique_ptr<Message> message);
+    void Publish(Message *message);
     void Subscribe(Listener *subscriber, uint32_t type);
 };
 }; // namespace JamJar

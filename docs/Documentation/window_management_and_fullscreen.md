@@ -90,9 +90,7 @@ The aspect ratio can be set at runtime with a message.
 
 ...
 
-auto msg = std::make_unique<JamJar::MessagePayload<double>>(
-    JamJar::Standard::WindowSystem::MESSAGE_SET_ASPECT_RATIO, 4/3);
-messageBus->Publish(std::move(msg));
+messageBus->Publish(new JamJar::MessagePayload<double>(JamJar::Standard::WindowSystem::MESSAGE_SET_ASPECT_RATIO, 4/3););
 ```
 
 This sets the aspect ratio to `4/3`.
@@ -120,9 +118,8 @@ The maximum resolution can be set at runtime with a message.
 
 ...
 
-auto msg = std::make_unique<JamJar::MessagePayload<std::pair<int, int>>>(
-    JamJar::Standard::WindowSystem::MESSAGE_SET_MAX_RESOLUTION, std::pair<int, int>(400, 300));
-messageBus->Publish(std::move(msg));
+messageBus->Publish(new JamJar::MessagePayload<std::pair<int, int>>(
+    JamJar::Standard::WindowSystem::MESSAGE_SET_MAX_RESOLUTION, std::pair<int, int>(400, 300)));
 ```
 
 This sets the maximum resolution to `400x300`.
@@ -146,9 +143,7 @@ You can enter fullscreen by sending a message:
 
 ...
 
-auto msg =
-    std::make_unique<JamJar::Message>(JamJar::Standard::WindowSystem::MESSAGE_REQUEST_ENTER_FULLSCREEN);
-this->messageBus->Publish(std::move(msg));
+this->messageBus->Publish(new JamJar::Message(JamJar::Standard::WindowSystem::MESSAGE_REQUEST_ENTER_FULLSCREEN));
 ```
 
 You can check if the request was successful by listening for these two events:
@@ -168,9 +163,7 @@ You can exit fullscreen by sending a message:
 
 ...
 
-auto msg =
-    std::make_unique<JamJar::Message>(JamJar::Standard::WindowSystem::MESSAGE_REQUEST_EXIT_FULLSCREEN);
-this->messageBus->Publish(std::move(msg));
+this->messageBus->Publish(new JamJar::Message(JamJar::Standard::WindowSystem::MESSAGE_REQUEST_EXIT_FULLSCREEN));
 ```
 
 You can check if the request was successful by listening for these two events:

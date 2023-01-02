@@ -28,8 +28,7 @@ An image can be loaded by sending a `MESSAGE_REQUEST_FILE_TEXTURE_LOAD` message 
 payload for the message, for example:
 
 ```c++
-messageBus->Publish(
-    std::make_unique<JamJar::MessagePayload<std::unique_ptr<JamJar::Standard::FileTextureRequest>>>(
+messageBus->Publish(new JamJar::MessagePayload<std::unique_ptr<JamJar::Standard::FileTextureRequest>>(
         JamJar::Standard::FileTextureSystem::MESSAGE_REQUEST_FILE_TEXTURE_LOAD,
         std::unique_ptr<JamJar::Standard::FileTextureRequest>(
             new JamJar::Standard::FileTextureRequest({JamJar::hash("smiley"), "/assets/texture.png"}))));
