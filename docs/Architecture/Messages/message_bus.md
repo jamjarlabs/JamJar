@@ -13,14 +13,26 @@ Messages added to the message bus should be added as a unique pointer
 that a message is sent with should be held by the message bus, helping to prevent memory leaks and memory management
 confusion. The message bus will take ownership of the pointer and will clean it up after it has been sent out.
 
-An example of adding a message to the message bus looks like this (taken from the Game class):
+An example of adding a message to the message bus looks like this:
+
+```c++
+this->m_messageBus->Publish(new JamJar::MessagePayload<float>(
+    JamJar::System::MESSAGE_UPDATE, float(TIME_STEP) / MICROSECOND_TO_SECOND_CONVERSION));
+```
+
+This dispatches a new update message, with the delta time as a payload.
+
+The message is given as a pointer, but once it's published its memory will be managed by the message bus, so you should
+not re-use messages, each time you publish create a new message. The message will be disposed of once it is no longer
+needed.
+
+Behind the scenes the message is wrapped in a `unique_ptr` - you can instead directly pass in a `unique_ptr` message
+to the `Publish` method if you prefer:
 
 ```c++
 this->m_messageBus->Publish(std::make_unique<JamJar::MessagePayload<float>>(
     JamJar::System::MESSAGE_UPDATE, float(TIME_STEP) / MICROSECOND_TO_SECOND_CONVERSION));
 ```
-
-This dispatches a new update message, with the delta time as a payload.
 
 ## Dispatching Messages
 

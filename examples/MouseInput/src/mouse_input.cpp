@@ -9,20 +9,31 @@
 #include "standard/file_texture/file_texture_system.hpp"
 #include <memory>
 
+using JamJar::Color;
+using JamJar::Entity;
+using JamJar::Material;
+using JamJar::MessagePayload;
+using JamJar::Texture;
+using JamJar::TextureFilter;
+using JamJar::TextureProperties;
+using JamJar::Vector2D;
+using JamJar::Standard::FileTextureRequest;
+using JamJar::Standard::FileTextureSystem;
+using JamJar::Standard::_2D::Camera;
+using JamJar::Standard::_2D::Transform;
+
 MouseInput::MouseInput(JamJar::MessageBus *messageBus) : Game(messageBus) {}
 
 void MouseInput::OnStart() {
+    this->messageBus->Publish(new MessagePayload<std::unique_ptr<FileTextureRequest>>(
+        FileTextureSystem::MESSAGE_REQUEST_FILE_TEXTURE_LOAD,
+        std::unique_ptr<FileTextureRequest>(new FileTextureRequest(
+            {.key = JamJar::hash("smiley"),
+             .path = "/assets/texture.png",
+             .properties =
+                 TextureProperties({.minFilter = TextureFilter::NEAREST, .magFilter = TextureFilter::NEAREST})}))));
 
-    this->messageBus->Publish(
-        std::make_unique<JamJar::MessagePayload<std::unique_ptr<JamJar::Standard::FileTextureRequest>>>(
-            JamJar::Standard::FileTextureSystem::MESSAGE_REQUEST_FILE_TEXTURE_LOAD,
-            std::unique_ptr<JamJar::Standard::FileTextureRequest>(new JamJar::Standard::FileTextureRequest(
-                {.key = JamJar::hash("smiley"),
-                 .path = "/assets/texture.png",
-                 .properties = JamJar::TextureProperties(
-                     {.minFilter = JamJar::TextureFilter::NEAREST, .magFilter = JamJar::TextureFilter::NEAREST})}))));
-
-    auto camera = new JamJar::Entity(messageBus);
-    camera->Add(new JamJar::Standard::_2D::Transform());
-    camera->Add(new JamJar::Standard::_2D::Camera(JamJar::Color(0, 0, 0)));
+    auto camera = new Entity(messageBus);
+    camera->Add(new Transform());
+    camera->Add(new Camera(Color(0, 0, 0)));
 }

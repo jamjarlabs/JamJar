@@ -27,6 +27,8 @@ void JamJar::MessageBus::Dispatch() {
 
 void JamJar::MessageBus::Publish(std::unique_ptr<Message> message) { this->m_messages.push(std::move(message)); }
 
+void JamJar::MessageBus::Publish(Message *message) { this->m_messages.push(std::unique_ptr<Message>(message)); }
+
 void JamJar::MessageBus::Subscribe(Listener *subscriber, uint32_t type) {
     if (this->m_subscribers.count(type) == 0) {
         this->m_subscribers[type] = std::vector<Listener *>();

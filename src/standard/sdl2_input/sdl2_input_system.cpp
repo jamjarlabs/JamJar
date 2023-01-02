@@ -89,6 +89,6 @@ JamJar::Standard::SDL2MouseEvent::SDL2MouseEvent(JamJar::Standard::SDL2MouseEven
                                                  const JamJar::Vector2D &position, SDL_Event event)
     : type(type), button(std::nullopt), position(position), event(event) {}
 
-JamJar::Standard::SDL2KeyEvent::SDL2KeyEvent(JamJar::Standard::SDL2KeyEventType type, SDL_Event event, std::string key,
+JamJar::Standard::SDL2KeyEvent::SDL2KeyEvent(JamJar::Standard::SDL2KeyEventType type, SDL_Event event, const std::string& key,
                                              bool repeat)
     : type(type), event(event), key(std::move(key)), repeat(repeat) {}

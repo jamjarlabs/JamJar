@@ -13,24 +13,36 @@
 #include "standard/file_texture/file_texture_system.hpp"
 #include <memory>
 
+using JamJar::Color;
+using JamJar::Entity;
+using JamJar::Material;
+using JamJar::MessagePayload;
+using JamJar::Texture;
+using JamJar::TextureFilter;
+using JamJar::TextureProperties;
+using JamJar::Vector2D;
+using JamJar::Standard::FileTextureRequest;
+using JamJar::Standard::FileTextureSystem;
+using JamJar::Standard::_2D::Camera;
+using JamJar::Standard::_2D::Sprite;
+using JamJar::Standard::_2D::Transform;
+
 Fullscreen::Fullscreen(JamJar::MessageBus *messageBus) : Game(messageBus) {}
 
 void Fullscreen::OnStart() {
-    this->messageBus->Publish(
-        std::make_unique<JamJar::MessagePayload<std::unique_ptr<JamJar::Standard::FileTextureRequest>>>(
-            JamJar::Standard::FileTextureSystem::MESSAGE_REQUEST_FILE_TEXTURE_LOAD,
-            std::unique_ptr<JamJar::Standard::FileTextureRequest>(new JamJar::Standard::FileTextureRequest(
-                {.key = JamJar::hash("smiley"),
-                 .path = "/assets/texture.png",
-                 .properties = JamJar::TextureProperties(
-                     {.minFilter = JamJar::TextureFilter::NEAREST, .magFilter = JamJar::TextureFilter::NEAREST})}))));
+    this->messageBus->Publish(new MessagePayload<std::unique_ptr<FileTextureRequest>>(
+        FileTextureSystem::MESSAGE_REQUEST_FILE_TEXTURE_LOAD,
+        std::unique_ptr<FileTextureRequest>(new FileTextureRequest(
+            {.key = JamJar::hash("smiley"),
+             .path = "/assets/texture.png",
+             .properties =
+                 TextureProperties({.minFilter = TextureFilter::NEAREST, .magFilter = TextureFilter::NEAREST})}))));
 
-    auto a = new JamJar::Entity(messageBus);
-    a->Add(new JamJar::Standard::_2D::Transform(JamJar::Vector2D(0, 0), JamJar::Vector2D(160, 90)));
-    a->Add(new JamJar::Standard::_2D::Sprite(
-        JamJar::Material(JamJar::Color(0, 1, 1, 1), JamJar::Texture(JamJar::hash("smiley")))));
+    auto a = new Entity(messageBus);
+    a->Add(new Transform(Vector2D(0, 0), Vector2D(160, 90)));
+    a->Add(new Sprite(Material(Color(0, 1, 1, 1), Texture(JamJar::hash("smiley")))));
 
-    auto camera = new JamJar::Entity(messageBus);
-    camera->Add(new JamJar::Standard::_2D::Transform());
-    camera->Add(new JamJar::Standard::_2D::Camera(JamJar::Color(0, 0, 0)));
+    auto camera = new Entity(messageBus);
+    camera->Add(new Transform());
+    camera->Add(new Camera(JamJar::Color(0, 0, 0)));
 }

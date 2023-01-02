@@ -29,17 +29,17 @@ duplicated effort that would be great.
 
 The project has the following dependencies:
 
-- `cmake` == `3.22.X`
-- `clang` == `11.1.X`
-- `clang-tidy` == `11.1.X`
-- `clang-format` == `11.1.X`
-- `emscripten` == `3.1.X`
+- `cmake` == `3.22.1`
+- `clang` == `11.0.0`
+- `clang-tidy` == `11.0.0`
+- `clang-format` == `11.0.0`
+- `emscripten` == `3.1.1`
 
 Later minor and patch versions of these dependencies should still work, the CI build just uses the versions above.
 
 To view the docs locally, the project requires:
 
-- `python` == `3.8.X`
+- `python` == `3.8.11`
 
 To install the required pip dependencies to view the docs locally, run:
 
