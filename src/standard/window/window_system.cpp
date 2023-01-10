@@ -5,7 +5,6 @@
 #include <iostream>
 #include <utility>
 
-const double DEFAULT_ASPECT_RATIO = (double)16 / (double)9;
 const char *CANVAS_SELECTOR = "#canvas";
 
 EM_BOOL resizeCallback(int eventType, const EmscriptenUiEvent *e, void *userData) {
@@ -21,24 +20,24 @@ EM_BOOL fullscreenCallback(int eventType, const EmscriptenFullscreenChangeEvent 
 }
 
 JamJar::Standard::WindowSystem::WindowSystem(MessageBus *messageBus, SDL_Window *window, const char *wrapperID,
-                                             double aspectRatio, int maxResolutionX, int maxResolutionY)
-    : System(messageBus), window(window), wrapperID(wrapperID), aspectRatio(aspectRatio), isFullscreen(false),
-      maxResolutionX(maxResolutionX), maxResolutionY(maxResolutionY) {
+                                             WindowSystemProperties properties)
+    : System(messageBus), window(window), wrapperID(wrapperID), aspectRatio(properties.aspectRatio),
+      isFullscreen(false), maxResolutionX(properties.maxResolutionX), maxResolutionY(properties.maxResolutionY),
+      showCursor(properties.showCursor) {
     this->messageBus->Subscribe(this, WindowSystem::MESSAGE_SET_ASPECT_RATIO);
     this->messageBus->Subscribe(this, WindowSystem::MESSAGE_SET_MAX_RESOLUTION);
     this->messageBus->Subscribe(this, WindowSystem::MESSAGE_REQUEST_ENTER_FULLSCREEN);
     this->messageBus->Subscribe(this, WindowSystem::MESSAGE_REQUEST_EXIT_FULLSCREEN);
+    this->messageBus->Subscribe(this, WindowSystem::MESSAGE_REQUEST_EXIT_FULLSCREEN);
+    this->messageBus->Subscribe(this, WindowSystem::MESSAGE_REQUEST_HIDE_CURSOR);
+    this->messageBus->Subscribe(this, WindowSystem::MESSAGE_REQUEST_SHOW_CURSOR);
     emscripten_set_resize_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, this, true, resizeCallback);
     emscripten_set_fullscreenchange_callback(EMSCRIPTEN_EVENT_TARGET_DOCUMENT, this, true, fullscreenCallback);
     this->resizeCanvas();
 }
 
-JamJar::Standard::WindowSystem::WindowSystem(MessageBus *messageBus, SDL_Window *window, const char *wrapperID,
-                                             double aspectRatio)
-    : WindowSystem(messageBus, window, wrapperID, aspectRatio, -1, -1) {}
-
 JamJar::Standard::WindowSystem::WindowSystem(MessageBus *messageBus, SDL_Window *window, const char *wrapperID)
-    : WindowSystem(messageBus, window, wrapperID, DEFAULT_ASPECT_RATIO) {}
+    : WindowSystem(messageBus, window, wrapperID, WindowSystemProperties()) {}
 
 void JamJar::Standard::WindowSystem::FullscreenEvent(bool isFullscreen) {
     this->isFullscreen = isFullscreen;
@@ -82,10 +81,21 @@ void JamJar::Standard::WindowSystem::OnMessage(JamJar::Message *message) {
     case WindowSystem::MESSAGE_REQUEST_EXIT_FULLSCREEN: {
         int result = emscripten_exit_fullscreen();
         if (result != EMSCRIPTEN_RESULT_SUCCESS && result != EMSCRIPTEN_RESULT_DEFERRED) {
-            auto msg =
-                std::make_unique<JamJar::Message>(JamJar::Standard::WindowSystem::MESSAGE_EXIT_FULLSCREEN_FAILURE);
-            this->messageBus->Publish(std::move(msg));
+            this->messageBus->Publish(
+                new JamJar::Message(JamJar::Standard::WindowSystem::MESSAGE_EXIT_FULLSCREEN_FAILURE));
         }
+        break;
+    }
+    case WindowSystem::MESSAGE_REQUEST_HIDE_CURSOR: {
+        SDL_ShowCursor(SDL_DISABLE);
+        this->showCursor = false;
+        this->messageBus->Publish(new JamJar::Message(JamJar::Standard::WindowSystem::MESSAGE_SHOW_CURSOR));
+        break;
+    }
+    case WindowSystem::MESSAGE_REQUEST_SHOW_CURSOR: {
+        SDL_ShowCursor(SDL_ENABLE);
+        this->showCursor = true;
+        this->messageBus->Publish(new JamJar::Message(JamJar::Standard::WindowSystem::MESSAGE_SHOW_CURSOR));
         break;
     }
     }
@@ -118,6 +128,12 @@ void JamJar::Standard::WindowSystem::resizeCanvas() {
         height = maxHeight;
     } else {
         height = (int)((double)maxWidth * (1 / this->aspectRatio));
+    }
+
+    if (this->showCursor) {
+        SDL_ShowCursor(SDL_ENABLE);
+    } else {
+        SDL_ShowCursor(SDL_DISABLE);
     }
 
     if (this->isFullscreen) {
