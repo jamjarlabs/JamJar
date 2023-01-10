@@ -1,12 +1,14 @@
-# Mouse Input
+# Cursor
 
-This is an example that demonstrates how to interpret mouse input into world positions.
+This is an example that demonstrates how to replace the system cursor with a custom one.
 
 The code is designed to be simple and easy to follow.
 
 ## Overview
 
-This example allows left clicking to place a smiley face sprite on the position you have clicked.
+This example hides the system cursor and replacing it with a smiley face cursor.
+
+If you left click the system cursor will be shown again, if you right click it will be hidden.
 
 ## Dependencies
 
@@ -35,7 +37,7 @@ emcmake cmake -D CMAKE_EXPORT_COMPILE_COMMANDS=ON . -B build
 4. Navigate to the generated example build directory:
 
 ```bash
-cd build/examples/MouseInput
+cd build/examples/Cursor
 ```
 
 5. Build the project:

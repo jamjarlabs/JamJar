@@ -148,6 +148,7 @@ add_subdirectory (examples/PhysicsResizing)
 add_subdirectory (examples/Primitives)
 add_subdirectory (examples/Rotator)
 add_subdirectory (examples/Sprites)
+add_subdirectory (examples/Cursor)
 
 ### ===== clang-format ===== ###
 

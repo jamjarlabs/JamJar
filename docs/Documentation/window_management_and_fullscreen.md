@@ -24,14 +24,28 @@ new JamJar::Standard::WindowSystem(messageBus, window, "canvas-wrapper");
 
 This sets up the `WindowSystem` to manage the window, pointing to the canvas wrapper with the ID `canvas-wrapper`.
 
-This constructor also can take in an initial aspect ratio value, if none is provided a default aspect ratio of `16/9`
-is used.
+The `WindowSystem` can take in a set of optional properties to set things such as aspect ratio, max resolution, and
+if the system cursor should be shown.
+
 
 ```c++
 // Using a 4/3 resolution
-new JamJar::Standard::WindowSystem(messageBus, window, "canvas-wrapper", 4/3);
+new JamJar::Standard::WindowSystem(messageBus, window, "canvas-wrapper", JamJar::Standard::WindowSystemProperties({
+    .aspectRatio = 4/3
+}));
 // Using a 4/3 resolution with a max resolution of 400x300
-new JamJar::Standard::WindowSystem(messageBus, window, "canvas-wrapper", 4/3, 400, 300);
+new JamJar::Standard::WindowSystem(messageBus, window, "canvas-wrapper", JamJar::Standard::WindowSystemProperties({
+    .aspectRatio = 4/3,
+    .maxResolutionX = 400,
+    .maxResolutionY = 300
+}));
+// Using a 4/3 resolution with a max resolution of 400x300 with a hidden cursor
+new JamJar::Standard::WindowSystem(messageBus, window, "canvas-wrapper", JamJar::Standard::WindowSystemProperties({
+    .aspectRatio = 4/3,
+    .maxResolutionX = 400,
+    .maxResolutionY = 300,
+    .showCursor = false
+}));
 ```
 
 ## Canvas Wrapper
@@ -123,6 +137,35 @@ messageBus->Publish(new JamJar::MessagePayload<std::pair<int, int>>(
 ```
 
 This sets the maximum resolution to `400x300`.
+
+### System Cursor
+
+You can choose to hide or show the system cursor. By default this is hidden. You can set this value by providing
+a `WindowSystemProperties` when initializing the `WindowSystem`.
+
+At runtime you can choose to show or hide the cursor by sending messages.
+
+To show the cursor you can use:
+
+```c++
+messageBus->Publish(new JamJar::Message(JamJar::Standard::WindowSystem::MESSAGE_REQUEST_SHOW_CURSOR));
+```
+
+To hide the cursor you can use:
+
+```c++
+messageBus->Publish(new JamJar::Message(JamJar::Standard::WindowSystem::MESSAGE_REQUEST_HIDE_CURSOR));
+```
+
+When these events are processed the appropriate message will be published to let other systems know if a cursor has
+been hidden or shown.
+
+You can listen for these messages by listening out for:
+
+- `JamJar::Standard::WindowSystem::MESSAGE_SHOW_CURSOR`
+- `JamJar::Standard::WindowSystem::MESSAGE_HIDE_CURSOR`
+
+These messages have no payload.
 
 ## Fullscreen
 
